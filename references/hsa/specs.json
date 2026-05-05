@@ -1,0 +1,91 @@
+[
+  {
+    "id": "hsa-sysarch-1.2",
+    "title": "HSA Platform System Architecture Specification",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/HSA-SysArch-1.2.pdf",
+    "local_path": "references/hsa/pdfs/HSA-SysArch-1.2.pdf",
+    "relevance": [
+      "shared virtual memory",
+      "cache coherency domains",
+      "signals and synchronization",
+      "user-mode queues",
+      "Architected Queuing Language packets",
+      "agent scheduling",
+      "HSA memory consistency model"
+    ]
+  },
+  {
+    "id": "hsa-prm-1.2",
+    "title": "HSA Programmer's Reference Manual",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/HSA-PRM-1.2.pdf",
+    "local_path": "references/hsa/pdfs/HSA-PRM-1.2.pdf",
+    "relevance": [
+      "HSAIL virtual ISA",
+      "programming model",
+      "compiler writer guidance",
+      "BRIG object format",
+      "memory segments",
+      "signals"
+    ]
+  },
+  {
+    "id": "hsa-runtime-1.2",
+    "title": "HSA Runtime Programmer's Reference",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/HSA-Runtime-1.2.pdf",
+    "local_path": "references/hsa/pdfs/HSA-Runtime-1.2.pdf",
+    "relevance": [
+      "runtime initialization",
+      "agent discovery",
+      "queue creation",
+      "AQL dispatch",
+      "signals",
+      "memory management",
+      "code object loading",
+      "profiling"
+    ]
+  },
+  {
+    "id": "hsa-cat-model-expressions-1.2",
+    "title": "Towards a Formalization of the HSA Memory Model in the cat Language",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/cat_ModelExpressions-1.2-1.pdf",
+    "local_path": "references/hsa/pdfs/cat_ModelExpressions-1.2-1.pdf",
+    "relevance": [
+      "formal HSA memory model",
+      "cat model expressions",
+      "candidate executions"
+    ]
+  },
+  {
+    "id": "hsa-cat-syntax-1.2",
+    "title": "Syntax and Semantics of the cat Language",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/cat_Syntax-1.2.pdf",
+    "local_path": "references/hsa/pdfs/cat_Syntax-1.2.pdf",
+    "relevance": [
+      "cat language syntax",
+      "formal memory model support"
+    ]
+  },
+  {
+    "id": "hsa-cat-test-cases-1.2",
+    "title": "Representative Litmus Tests",
+    "version": "1.2",
+    "issue_date": "2018-05-02",
+    "url": "https://hsafoundation.com/wp-content/uploads/2021/02/cat_TestCases-1.2.pdf",
+    "local_path": "references/hsa/pdfs/cat_TestCases-1.2.pdf",
+    "relevance": [
+      "memory model litmus tests",
+      "validation examples"
+    ]
+  }
+]
+
