@@ -1,0 +1,510 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  backgroundcolor=\color{black!3}
+}
+
+\title{\textbf{HATS: A Heterogeneous Agent Tool Substrate for GPU-Resident AI Workflows}}
+\author{HATS Project}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Agentic AI systems increasingly combine large model inference with tool use:
+retrieval, structured parsing, schema validation, ranking, memory lookup,
+code-like transformations, cancellation, retry, and dependency scheduling. In
+today's systems, the dense tensor work is placed on GPUs, while much of the
+agentic outer loop remains on the CPU. This split is convenient, but it can
+create high-latency, high-power execution patterns: model decoding emits a tool
+request, host software wakes up, validates arguments, launches another kernel or
+IO operation, copies or maps results, and then resumes GPU-side inference.
+
+This paper proposes HATS, a Heterogeneous Agent Tool Substrate inspired by HSA
+principles but scoped to bounded local tools for agentic AI. HATS is not a
+proposal to replace the CPU with a GPU control processor. Instead, it is a
+compiler/runtime substrate that exposes coherent memory, user-mode queues,
+fine-grained signals, capability-scoped tool access, and a narrow set of
+hardware-friendly tool primitives. The initial target set includes retrieval,
+structured parsing, schema validation, constrained decoding support, dependency
+scheduling, data movement, and sandboxed pure compute kernels.
+
+The central claim is conditional and empirical: agentic AI does not justify
+moving arbitrary external tools into accelerator hardware, but it may justify
+moving frequent, memory-resident tool primitives into a coherent GPU-side
+runtime. HATS therefore begins as a compiler and runtime project that can run on
+existing heterogeneous systems, measure bottlenecks, and identify which hardware
+primitives have credible performance, power, and area value.
+\end{abstract}
+
+\section{Introduction}
+
+Modern AI accelerators are designed around dense numerical kernels. This has
+served neural network training and inference well: the central optimization
+problem is to move tensors through high-throughput matrix engines efficiently.
+Agentic AI changes the workload shape. A useful agent does not merely decode
+tokens; it plans, branches, retrieves memory, validates structured arguments,
+invokes tools, cancels stale work, merges results, ranks alternatives, and
+resumes model execution with fresh context.
+
+This outer loop is not a small detail. Many agentic workflows spend substantial
+time outside the core matrix multiplication path. A common execution pattern is:
+
+\begin{lstlisting}
+GPU decode
+  -> CPU observes tool request
+  -> CPU validates arguments
+  -> CPU launches retrieval or parsing work
+  -> GPU or CPU computes the tool result
+  -> CPU synchronizes and formats the result
+  -> GPU resumes decoding
+\end{lstlisting}
+
+Each transition may be reasonable in isolation. Together, the pattern can
+produce poor locality, frequent host wakeups, heavyweight synchronization, and
+unnecessary movement of data that was already close to GPU-resident model state.
+The power and latency cost is especially visible when tool calls are small,
+frequent, and dependent on fine-grained model outputs.
+
+HATS asks whether the agentic outer loop should have a first-class
+heterogeneous execution substrate. The answer should not be assumed. General
+branching, OS policy, arbitrary network APIs, browsers, and shell tools remain
+natural CPU responsibilities. The narrower opportunity is different: many
+agentic systems repeatedly use bounded, local, memory-oriented primitives that
+are close to the model execution path. These include vector retrieval over
+resident indexes, key-value memory lookup, JSON or schema validation, constrained
+decoding checks, fan-out/fan-in scheduling, cancellation propagation, and small
+deterministic scoring or filtering functions.
+
+HATS is inspired by HSA's core philosophy: heterogeneous processors should
+cooperate through shared virtual memory, queues, and signals rather than through
+heavy host-mediated boundaries. HATS applies that philosophy to agentic tool
+workflows. The result is not a general-purpose operating system inside a GPU,
+but a bounded substrate for local tool primitives.
+
+\section{Motivation}
+
+\subsection{Agentic Workloads Are Not Pure Tensor Programs}
+
+Large language model inference is often presented as a sequence of decode
+steps. In agentic systems, those decode steps are embedded in a dynamic control
+program. The model may emit a structured tool request, the runtime may validate
+the request against a schema, retrieval may fetch relevant memory, and the
+result may alter the continuation path. These operations are fine-grained and
+dependency-heavy.
+
+The mismatch with conventional GPU execution is not only control flow. It is
+also ownership. Tool state may live in CPU memory, vector indexes may live in
+GPU memory, parsed arguments may cross host-device boundaries, and scheduling
+metadata may be maintained by a runtime that has no cheap way to expose
+fine-grained futures to GPU work. As a result, the system pays for orchestration
+around the tensor kernels.
+
+\subsection{The PPA Question}
+
+The performance, power, and area question is the core discipline for HATS. CPUs
+are excellent at irregular scalar control. A new accelerator feature is not
+justified simply because it can execute tool-related instructions. It is
+justified only if it saves enough latency or energy to compensate for its area
+and design complexity.
+
+The strongest PPA case for HATS comes from avoiding unnecessary boundaries:
+
+\begin{itemize}[leftmargin=*]
+  \item avoiding CPU wakeups for small, frequent tool operations;
+  \item avoiding host-device synchronization when the continuation is already
+        GPU-resident;
+  \item avoiding copies between model state, retrieval indexes, and tool
+        buffers;
+  \item keeping structured validation near constrained decoding;
+  \item batching or fusing tool operations that would otherwise be tiny kernels;
+  \item letting a low-area scheduler manage dependency metadata close to the
+        queues it serves.
+\end{itemize}
+
+The weak case is equally important. HATS should not accelerate arbitrary
+browser control, network APIs, shell commands, or general-purpose planning
+logic. These operations have variable latency, security-heavy semantics, and
+often poor locality with model state. The CPU and operating system should remain
+responsible for them.
+
+\section{Design Principles}
+
+\subsection{Bounded Tools First}
+
+HATS limits its initial scope to local, bounded tool primitives:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Retrieval}: vector search, key-value memory lookup, embedding
+        cache access, and local index traversal.
+  \item \textbf{Structured parsing}: JSON parsing, schema validation, argument
+        extraction, tokenization, and constrained decoding predicates.
+  \item \textbf{Graph scheduling}: futures, dependency tracking, fan-out/fan-in,
+        retry, timeout, and cancellation.
+  \item \textbf{Data movement}: DMA and placement between model state, tool
+        buffers, indexes, CPU memory, storage, and network-facing buffers.
+  \item \textbf{Sandboxed pure compute}: deterministic kernels for filtering,
+        ranking, scoring, formatting, or lightweight transformations.
+\end{enumerate}
+
+This scope is narrow enough to make a hardware conversation meaningful, but
+broad enough to cover common hot paths in agentic systems.
+
+\subsection{CPU as Policy, HATS as Local Mechanism}
+
+HATS does not eliminate CPU orchestration. Instead, it changes the boundary.
+The CPU remains responsible for high-level planning, OS policy, authentication,
+network security, external tool mediation, and arbitrary software execution.
+HATS handles frequent local mechanisms near model execution: dispatch, signals,
+local retrieval, validation, and bounded compute.
+
+\subsection{Compiler/Runtime Before Silicon}
+
+HATS should begin as a compiler and runtime project. The first version can lower
+agentic tool graphs onto existing CPUs, GPUs, and heterogeneous runtimes. That
+implementation provides the measurement basis for hardware proposals. If vector
+retrieval dominates, near-memory search engines may be justified. If parsing
+dominates, schema units may be justified. If synchronization dominates,
+hardware futures and queues may be justified.
+
+\section{HSA Lineage}
+
+HSA introduced a useful model for heterogeneous cooperation. Rather than treat
+the GPU as a device controlled exclusively by host driver calls, HSA emphasizes
+shared virtual memory, user-mode queues, and low-cost signals between heterogeneous
+agents. HATS borrows these ideas while changing the target workload.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{HSA Concept} & \textbf{HATS Adaptation} & \textbf{Agentic Role} \\
+\midrule
+Shared virtual memory & Coherent tool/model address space & Avoid copies and remapping \\
+User-mode queues & Tool dispatch queues & Cheap small-tool launch \\
+Signals & Futures and cancellation & Fine-grained dependencies \\
+Heterogeneous agents & Tool engines and schedulers & Route work by locality \\
+Memory regions & Capability-scoped buffers & Bound tool access \\
+\bottomrule
+\end{tabular}
+\caption{HSA concepts adapted for HATS.}
+\end{table}
+
+HATS should avoid reviving older portable instruction set ideas directly.
+Instead, it can use modern compiler infrastructure. A plausible stack is an
+MLIR dialect for agentic tool graphs, lowering passes to GPU kernels, CPU
+tasks, SPIR-V-like compute targets, or sandboxed bytecode, and runtime packets
+that look like HSA queues and signals.
+
+\section{Programming Model}
+
+At the programming level, an agentic tool operation can be represented as a
+future-producing call with explicit capabilities and schemas:
+
+\begin{lstlisting}
+future<Result> tool_call(
+    capability cap,
+    tool_id tool,
+    schema_id input_schema,
+    void* input,
+    signal cancel
+);
+\end{lstlisting}
+
+This abstraction is intentionally restrictive. The capability describes the
+memory regions and tool classes available to the call. The schema identifies
+the expected input structure. The cancellation signal lets speculative or stale
+agent branches stop consuming resources. The future becomes a dependency object
+that can wake a model continuation, another tool, or a CPU policy handler.
+
+At a lower level, the runtime may represent a tool request as a packet:
+
+\begin{lstlisting}
+struct hats_packet {
+    uint32_t opcode;          // retrieve, validate, rank, dma, sandbox, ...
+    uint32_t capability_id;   // bounds memory and tool access
+    uint64_t input_ptr;
+    uint64_t output_ptr;
+    uint64_t schema_or_kernel;
+    uint64_t completion_signal;
+    uint64_t cancellation_signal;
+    uint32_t flags;
+    uint32_t priority;
+};
+\end{lstlisting}
+
+The packet form matters because it is the bridge between compiler IR and
+heterogeneous execution. Different backends can consume the same logical packet:
+a CPU task runner, a GPU kernel, a retrieval engine, a parser unit, or a
+simulator for proposed hardware.
+
+\section{Compiler and Runtime Architecture}
+
+\subsection{Agent Tool Graph IR}
+
+HATS begins with an Agent Tool Graph IR. This IR captures tool-producing model
+steps, dependencies, structured data contracts, and cancellation edges. Unlike a
+pure tensor IR, it must represent dynamic control and future-like values:
+
+\begin{lstlisting}
+%args = hats.decode_until_tool %model_state
+%ok   = hats.validate %args schema(@SearchArgs)
+%hits = hats.retrieve %index, %args.query if %ok
+%rank = hats.sandbox @rerank(%hits, %args)
+hats.resume_decode %model_state, %rank
+\end{lstlisting}
+
+The IR should be high-level enough to preserve agentic structure and low-level
+enough to expose placement decisions. The compiler can decide whether
+validation should run as CPU code, GPU code, a parser primitive, or fused logic
+near constrained decoding.
+
+\subsection{Lowering}
+
+The lowering pipeline can proceed in stages:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Graph normalization}: identify tool boundaries, schemas,
+        dependency edges, cancellation scopes, and retry regions.
+  \item \textbf{Placement}: choose CPU, GPU, retrieval, parser, DMA, or sandbox
+        targets based on data locality and profiling.
+  \item \textbf{Packetization}: lower tool operations to HATS packets and
+        dependency signals.
+  \item \textbf{Fusion and batching}: group tiny operations when their
+        dependencies and memory regions permit.
+  \item \textbf{Backend emission}: generate CPU tasks, GPU kernels, sandbox
+        bytecode, or simulator instructions.
+\end{enumerate}
+
+\subsection{Runtime}
+
+The runtime maintains queues, capability tables, signal objects, and memory
+regions. Its job is not to make arbitrary distributed systems calls. Its job is
+to keep local tool work near the data it consumes and the continuation it
+unblocks.
+
+The runtime should expose profiling hooks for:
+
+\begin{itemize}[leftmargin=*]
+  \item host wakeups avoided or incurred;
+  \item queue latency and signal latency;
+  \item bytes moved across CPU-GPU boundaries;
+  \item tool operation size distribution;
+  \item cancellation latency;
+  \item occupancy of retrieval, parser, and sandbox engines;
+  \item continuation latency from tool completion to resumed decode.
+\end{itemize}
+
+\section{Candidate Hardware Primitives}
+
+HATS does not require all of the following primitives. They are hypotheses to
+evaluate through the compiler/runtime prototype.
+
+\subsection{Queue and Signal Fabric}
+
+A low-area queue and signal fabric may provide the highest return. Agentic tool
+work often has many small dependent tasks. If every task requires a host driver
+round trip, the system loses even when the computation itself is cheap. Hardware
+queues, futures, and cancellation signals can reduce latency and CPU wakeups.
+
+\subsection{Retrieval Blocks}
+
+Retrieval is a strong candidate for near-data acceleration. Embedding indexes,
+attention caches, and memory stores may already live in HBM or unified memory.
+Vector distance computation, top-k selection, and coarse filtering map naturally
+to parallel hardware. The PPA case is strongest when the index is resident and
+the result feeds directly into GPU-side continuation.
+
+\subsection{Structured Parsing and Schema Units}
+
+Agentic systems frequently produce structured arguments. JSON validation,
+schema checks, token-level constraints, and format repair can become hot paths
+around decoding. Specialized parsers do not need to be large. Even modest
+support for finite-state validation, bracket matching, type checks, and
+field-level constraints may reduce CPU intervention and failed tool calls.
+
+\subsection{Sandboxed Microkernel Engine}
+
+Some tools are small deterministic functions: filter these hits, rank these
+items, transform this structure, compute a score, or normalize this result. A
+WASM-like or eBPF-like sandbox target could support these functions with
+explicit capabilities and bounded execution. The goal is not general software
+compatibility. The goal is safe, predictable local compute near the data.
+
+\subsection{Data Movement Engine}
+
+Many agent workflows are limited by placement rather than arithmetic. A HATS
+data movement engine would understand tool buffers, model continuations,
+retrieval indexes, and CPU-visible memory regions. It would use capabilities to
+move only authorized regions and signals to wake dependent work.
+
+\section{Security and Isolation}
+
+Tool use is a security boundary. HATS must make this boundary explicit.
+
+Capabilities should specify:
+
+\begin{itemize}[leftmargin=*]
+  \item which memory regions a tool can read or write;
+  \item which queues it can submit to;
+  \item which signals it can wait on or complete;
+  \item which schemas or kernels it can invoke;
+  \item whether it can trigger CPU-mediated external tools.
+\end{itemize}
+
+External tools should remain behind CPU and OS policy. HATS can prepare,
+validate, rank, or format requests, but network APIs, browser automation, shell
+commands, and filesystem side effects require explicit mediation. This boundary
+keeps the first HATS design tractable and prevents the architecture from
+becoming a confused general-purpose OS bypass.
+
+\section{Evaluation Plan}
+
+The first HATS prototype should answer whether the substrate is worth building.
+It should compare a baseline CPU-orchestrated agent runtime against a HATS-style
+runtime on existing hardware.
+
+\subsection{Benchmarks}
+
+Useful benchmarks include:
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Retrieve-and-resume}: model emits retrieval requests, local
+        vector search runs, and decoding resumes with retrieved context.
+  \item \textbf{Schema-heavy tool use}: model emits structured arguments that
+        must be validated and repaired before tool dispatch.
+  \item \textbf{Speculative fan-out}: multiple retrieval or ranking branches
+        launch and stale branches are cancelled.
+  \item \textbf{Small-kernel pipeline}: many small deterministic transforms run
+        between decode steps.
+  \item \textbf{Memory locality stress}: tool buffers and indexes vary across
+        CPU memory, GPU memory, unified memory, and storage-backed regions.
+\end{enumerate}
+
+\subsection{Metrics}
+
+The evaluation should report:
+
+\begin{itemize}[leftmargin=*]
+  \item end-to-end task latency;
+  \item tokens per joule for tool-using decode;
+  \item host wakeups per completed tool call;
+  \item CPU time per agent step;
+  \item bytes copied across host-device boundaries;
+  \item queue and signal overhead;
+  \item cancellation latency;
+  \item failed or malformed tool-call rate;
+  \item sensitivity to tool granularity and batch size.
+\end{itemize}
+
+\subsection{PPA Modeling}
+
+After profiling the runtime, HATS can model candidate hardware primitives. The
+model should be conservative: area estimates for queue fabric, parser units,
+retrieval blocks, and sandbox engines should be compared against measured CPU
+energy, synchronization overhead, and data movement cost. The useful question is
+not whether HATS can beat a CPU on scalar control. The useful question is
+whether small local mechanisms can avoid enough boundary cost to justify their
+area.
+
+\section{Expected Contributions}
+
+HATS aims to contribute:
+
+\begin{enumerate}[leftmargin=*]
+  \item a scoped definition of hardware-friendly agentic tool primitives;
+  \item an Agent Tool Graph IR for tool-producing model workflows;
+  \item a HATS packet and runtime model inspired by HSA queues and signals;
+  \item a placement and lowering strategy for CPU, GPU, retrieval, parser, DMA,
+        and sandbox targets;
+  \item a benchmark suite for agentic outer-loop overhead;
+  \item a PPA-driven method for deciding which hardware primitives are worth
+        adding to future GPUs or heterogeneous packages.
+\end{enumerate}
+
+\section{Limitations}
+
+HATS is deliberately narrow. It does not claim that arbitrary tools belong on
+the GPU. It does not claim that accelerator hardware should own high-level
+agent planning. It does not solve distributed systems latency or make external
+APIs deterministic. It also does not assume that every agent workflow benefits
+from local tool acceleration.
+
+The HATS hypothesis is strongest when:
+
+\begin{itemize}[leftmargin=*]
+  \item model state, indexes, and tool buffers are already local or resident;
+  \item tool calls are frequent and fine-grained;
+  \item continuation latency matters;
+  \item structured validation sits in the decode loop;
+  \item cancellation and dependency scheduling are hot paths.
+\end{itemize}
+
+The hypothesis is weakest when tool latency is dominated by remote services,
+human interaction, OS side effects, or broad scalar planning.
+
+\section{Conclusion}
+
+Agentic AI exposes a gap between dense model execution and the heterogeneous
+tool workflows wrapped around it. Current systems often run the model on a GPU
+and the agentic outer loop on a CPU, paying synchronization and data movement
+costs at every boundary. HATS proposes a narrower alternative: keep the CPU in
+charge of policy and external side effects, but provide a coherent
+GPU-adjacent substrate for bounded local tool primitives.
+
+The project should begin as a compiler and runtime system. That path makes the
+hardware story empirical. By representing tool workflows as graphs, lowering
+them to queues and signals, and profiling execution on existing systems, HATS
+can identify which primitives deserve hardware support. The eventual GPU is not
+the starting assumption. It is the consequence of measured agentic bottlenecks.
+
+\begin{thebibliography}{9}
+
+\bibitem{hsa}
+HSA Foundation.
+\newblock \emph{HSA Platform System Architecture Specification}.
+\newblock Version 1.2, 2017.
+
+\bibitem{mlir}
+Chris Lattner, Mehdi Amini, Uday Bondhugula, Albert Cohen, Andy Davis,
+Jacques Pienaar, River Riddle, Tatiana Shpeisman, Nicolas Vasilache, and
+Oleksandr Zinenko.
+\newblock MLIR: Scaling Compiler Infrastructure for Domain Specific
+Computation.
+\newblock In \emph{CGO}, 2021.
+
+\bibitem{spirv}
+Khronos Group.
+\newblock \emph{SPIR-V Specification}.
+
+\bibitem{wasm}
+World Wide Web Consortium.
+\newblock \emph{WebAssembly Core Specification}.
+
+\bibitem{ebpf}
+Linux Kernel Documentation.
+\newblock \emph{eBPF Documentation}.
+
+\end{thebibliography}
+
+\end{document}
+
