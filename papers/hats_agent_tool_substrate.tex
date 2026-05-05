@@ -22,7 +22,7 @@
   backgroundcolor=\color{black!3}
 }
 
-\title{\textbf{HATS: A Heterogeneous Agent Tool Substrate for GPU-Resident AI Workflows}}
+\title{\textbf{HATS: A Heterogeneous Agent Tool Substrate for Agentic Prefill}}
 \author{HATS Project}
 \date{\today}
 
@@ -32,12 +32,18 @@
 \begin{abstract}
 Agentic AI systems increasingly combine large model inference with tool use:
 retrieval, structured parsing, schema validation, ranking, memory lookup,
-code-like transformations, cancellation, retry, and dependency scheduling. In
-today's systems, the dense tensor work is placed on GPUs, while much of the
-agentic outer loop remains on the CPU. This split is convenient, but it can
-create high-latency, high-power execution patterns: model decoding emits a tool
+code-like transformations, cancellation, retry, and dependency scheduling.
+Meanwhile, much accelerator work is specializing the autoregressive decode path:
+one-token continuation, KV-cache reads, and even separate attention and feed
+forward execution. HATS takes the complementary position. It specializes the
+agentic prefill path: the construction, validation, retrieval, filtering, and
+ingestion of context before model continuation. In today's systems, the dense
+tensor work is placed on GPUs, while much of this agentic prefill and re-prefill
+work remains on the CPU. This split is convenient, but it can create
+high-latency, high-power execution patterns: model decoding emits a tool
 request, host software wakes up, validates arguments, launches another kernel or
-IO operation, copies or maps results, and then resumes GPU-side inference.
+IO operation, copies or maps results, builds continuation context, and then
+resumes GPU-side inference.
 
 This paper proposes HATS, a Heterogeneous Agent Tool Substrate inspired by HSA
 principles but scoped to bounded local tools for agentic AI. HATS is not a
@@ -45,15 +51,16 @@ proposal to replace the CPU with a GPU control processor. Instead, it is a
 compiler/runtime substrate that exposes coherent memory, user-mode queues,
 fine-grained signals, capability-scoped tool access, and a narrow set of
 hardware-friendly tool primitives. The initial target set includes retrieval,
-structured parsing, schema validation, constrained decoding support, dependency
-scheduling, data movement, and sandboxed pure compute kernels.
+structured parsing, schema validation, context construction, tool-result
+ingestion, dependency scheduling, data movement, and sandboxed pure compute
+kernels.
 
 The central claim is conditional and empirical: agentic AI does not justify
 moving arbitrary external tools into accelerator hardware, but it may justify
-moving frequent, memory-resident tool primitives into a coherent GPU-side
-runtime. HATS therefore begins as a compiler and runtime project that can run on
-existing heterogeneous systems, measure bottlenecks, and identify which hardware
-primitives have credible performance, power, and area value.
+moving frequent, memory-resident prefill-side tool primitives into a coherent
+GPU-side runtime. HATS therefore begins as a compiler and runtime project that
+can run on existing heterogeneous systems, measure bottlenecks, and identify
+which hardware primitives have credible performance, power, and area value.
 \end{abstract}
 
 \section{Introduction}
@@ -63,19 +70,29 @@ served neural network training and inference well: the central optimization
 problem is to move tensors through high-throughput matrix engines efficiently.
 Agentic AI changes the workload shape. A useful agent does not merely decode
 tokens; it plans, branches, retrieves memory, validates structured arguments,
-invokes tools, cancels stale work, merges results, ranks alternatives, and
-resumes model execution with fresh context.
+invokes tools, cancels stale work, merges results, ranks alternatives, builds
+fresh context, and resumes model execution.
+
+This paper focuses on the prefill side of that loop. Conventional prefill
+converts an input prompt into model state, including a KV cache that can be used
+by subsequent decode. Agentic systems create prefill-like events repeatedly:
+initial prompts are prefetched once, but tool results, retrieved memories,
+ranked candidates, and repaired structured arguments must be ingested throughout
+the workflow. These re-prefill events are where HATS expects the strongest
+opportunity. Decode should continue to be specialized aggressively, but HATS
+targets the repeated construction of useful context around decode.
 
 This outer loop is not a small detail. Many agentic workflows spend substantial
 time outside the core matrix multiplication path. A common execution pattern is:
 
 \begin{lstlisting}
-GPU decode
+GPU decode emits a tool boundary
   -> CPU observes tool request
   -> CPU validates arguments
   -> CPU launches retrieval or parsing work
   -> GPU or CPU computes the tool result
   -> CPU synchronizes and formats the result
+  -> CPU/GPU builds continuation context and KV state
   -> GPU resumes decoding
 \end{lstlisting}
 
@@ -99,7 +116,7 @@ HATS is inspired by HSA's core philosophy: heterogeneous processors should
 cooperate through shared virtual memory, queues, and signals rather than through
 heavy host-mediated boundaries. HATS applies that philosophy to agentic tool
 workflows. The result is not a general-purpose operating system inside a GPU,
-but a bounded substrate for local tool primitives.
+but a bounded substrate for local tool primitives in the agentic prefill path.
 
 \section{Motivation}
 
@@ -119,6 +136,28 @@ metadata may be maintained by a runtime that has no cheap way to expose
 fine-grained futures to GPU work. As a result, the system pays for orchestration
 around the tensor kernels.
 
+\subsection{Agentic Prefill Is Repeated Work}
+
+The usual prefill/decode split treats prefill as the bulk parallel stage and
+decode as the latency-sensitive sequential stage. Many current accelerator
+efforts therefore specialize decode: minimize per-token latency, optimize
+KV-cache reads, and split attention from feed-forward computation so each can be
+served by more specialized hardware.
+
+HATS is aimed at a different, under-specialized part of the loop. Tool-using
+agents repeatedly create new context that must be validated, retrieved,
+filtered, ranked, transformed, and ingested before the model can continue. This
+is prefill-like work, even when it occurs in the middle of a conversation. A
+tool result may be short, but the system around it may touch resident memory
+indexes, schema state, ranking kernels, context buffers, and KV-cache update
+paths. HATS names this workload \emph{agentic prefill}.
+
+Agentic prefill has a better PPA shape than general decode control. It exposes
+parallelism over retrieved documents, candidate memories, structured fields,
+and context blocks. It is often close to model state and local indexes. It can
+benefit from coherent memory, cheap queues, and fine-grained signals without
+asking the accelerator to own high-level planning or arbitrary external tools.
+
 \subsection{The PPA Question}
 
 The performance, power, and area question is the core discipline for HATS. CPUs
@@ -131,11 +170,12 @@ The strongest PPA case for HATS comes from avoiding unnecessary boundaries:
 
 \begin{itemize}[leftmargin=*]
   \item avoiding CPU wakeups for small, frequent tool operations;
-  \item avoiding host-device synchronization when the continuation is already
-        GPU-resident;
+  \item avoiding host-device synchronization when prefill or re-prefill state is
+        already GPU-resident;
   \item avoiding copies between model state, retrieval indexes, and tool
         buffers;
-  \item keeping structured validation near constrained decoding;
+  \item keeping structured validation near constrained decoding and context
+        ingestion;
   \item batching or fusing tool operations that would otherwise be tiny kernels;
   \item letting a low-area scheduler manage dependency metadata close to the
         queues it serves.
@@ -149,6 +189,21 @@ responsible for them.
 
 \section{Design Principles}
 
+\subsection{Specialize Prefill, Not General Decode}
+
+HATS should be understood as a prefill-side accelerator substrate. It is not a
+replacement for specialized decode engines, and it should not compete with
+hardware whose only job is to minimize one-token latency. Instead, HATS
+specializes the preparation of model continuation: retrieval, argument
+validation, result filtering, context assembly, placement, and dependency
+signals that make the next prefill or decode step cheaper to start.
+
+This distinction keeps the architecture disciplined. The decode path remains
+thin and latency-oriented. The HATS path is wider and locality-oriented: it
+handles the repeated construction of context around tool boundaries, where
+there is enough parallelism and memory traffic to justify heterogeneous
+mechanisms.
+
 \subsection{Bounded Tools First}
 
 HATS limits its initial scope to local, bounded tool primitives:
@@ -158,6 +213,9 @@ HATS limits its initial scope to local, bounded tool primitives:
         cache access, and local index traversal.
   \item \textbf{Structured parsing}: JSON parsing, schema validation, argument
         extraction, tokenization, and constrained decoding predicates.
+  \item \textbf{Context construction}: packing retrieved or tool-produced data
+        into continuation buffers, updating prefill metadata, and preparing
+        KV-cache construction paths.
   \item \textbf{Graph scheduling}: futures, dependency tracking, fan-out/fan-in,
         retry, timeout, and cancellation.
   \item \textbf{Data movement}: DMA and placement between model state, tool
@@ -175,7 +233,7 @@ HATS does not eliminate CPU orchestration. Instead, it changes the boundary.
 The CPU remains responsible for high-level planning, OS policy, authentication,
 network security, external tool mediation, and arbitrary software execution.
 HATS handles frequent local mechanisms near model execution: dispatch, signals,
-local retrieval, validation, and bounded compute.
+local retrieval, validation, context construction, and bounded compute.
 
 \subsection{Compiler/Runtime Before Silicon}
 
@@ -270,13 +328,16 @@ pure tensor IR, it must represent dynamic control and future-like values:
 %ok   = hats.validate %args schema(@SearchArgs)
 %hits = hats.retrieve %index, %args.query if %ok
 %rank = hats.sandbox @rerank(%hits, %args)
-hats.resume_decode %model_state, %rank
+%ctx  = hats.assemble_context %rank, %args
+%kv   = hats.prefill_context %model_state, %ctx
+hats.resume_decode %model_state, %kv
 \end{lstlisting}
 
 The IR should be high-level enough to preserve agentic structure and low-level
 enough to expose placement decisions. The compiler can decide whether
 validation should run as CPU code, GPU code, a parser primitive, or fused logic
-near constrained decoding.
+near constrained decoding, and whether context construction should be batched
+with the next prefill stage.
 
 \subsection{Lowering}
 
@@ -311,7 +372,7 @@ The runtime should expose profiling hooks for:
   \item tool operation size distribution;
   \item cancellation latency;
   \item occupancy of retrieval, parser, and sandbox engines;
-  \item continuation latency from tool completion to resumed decode.
+  \item continuation latency from tool completion to usable prefill or KV state.
 \end{itemize}
 
 \section{Candidate Hardware Primitives}
@@ -332,13 +393,13 @@ Retrieval is a strong candidate for near-data acceleration. Embedding indexes,
 attention caches, and memory stores may already live in HBM or unified memory.
 Vector distance computation, top-k selection, and coarse filtering map naturally
 to parallel hardware. The PPA case is strongest when the index is resident and
-the result feeds directly into GPU-side continuation.
+the result feeds directly into agentic prefill or GPU-side continuation.
 
 \subsection{Structured Parsing and Schema Units}
 
 Agentic systems frequently produce structured arguments. JSON validation,
 schema checks, token-level constraints, and format repair can become hot paths
-around decoding. Specialized parsers do not need to be large. Even modest
+around decoding and context ingestion. Specialized parsers do not need to be large. Even modest
 support for finite-state validation, bracket matching, type checks, and
 field-level constraints may reduce CPU intervention and failed tool calls.
 
@@ -354,7 +415,7 @@ compatibility. The goal is safe, predictable local compute near the data.
 
 Many agent workflows are limited by placement rather than arithmetic. A HATS
 data movement engine would understand tool buffers, model continuations,
-retrieval indexes, and CPU-visible memory regions. It would use capabilities to
+prefill buffers, retrieval indexes, and CPU-visible memory regions. It would use capabilities to
 move only authorized regions and signals to wake dependent work.
 
 \section{Security and Isolation}
@@ -388,16 +449,19 @@ runtime on existing hardware.
 Useful benchmarks include:
 
 \begin{enumerate}[leftmargin=*]
-  \item \textbf{Retrieve-and-resume}: model emits retrieval requests, local
-        vector search runs, and decoding resumes with retrieved context.
+  \item \textbf{Retrieve-prefill-resume}: model emits retrieval requests, local
+        vector search runs, retrieved context is packed, and decode resumes
+        from the resulting prefill or KV state.
   \item \textbf{Schema-heavy tool use}: model emits structured arguments that
-        must be validated and repaired before tool dispatch.
+        must be validated and repaired before tool dispatch or context
+        ingestion.
   \item \textbf{Speculative fan-out}: multiple retrieval or ranking branches
-        launch and stale branches are cancelled.
+        launch and stale branches are cancelled before re-prefill.
   \item \textbf{Small-kernel pipeline}: many small deterministic transforms run
-        between decode steps.
-  \item \textbf{Memory locality stress}: tool buffers and indexes vary across
-        CPU memory, GPU memory, unified memory, and storage-backed regions.
+        between decode and re-prefill steps.
+  \item \textbf{Memory locality stress}: tool buffers, context buffers, and
+        indexes vary across CPU memory, GPU memory, unified memory, and
+        storage-backed regions.
 \end{enumerate}
 
 \subsection{Metrics}
@@ -406,7 +470,8 @@ The evaluation should report:
 
 \begin{itemize}[leftmargin=*]
   \item end-to-end task latency;
-  \item tokens per joule for tool-using decode;
+  \item tokens per joule for tool-using decode and re-prefill;
+  \item time from tool result to usable continuation context or KV state;
   \item host wakeups per completed tool call;
   \item CPU time per agent step;
   \item bytes copied across host-device boundaries;
@@ -436,7 +501,7 @@ HATS aims to contribute:
   \item a HATS packet and runtime model inspired by HSA queues and signals;
   \item a placement and lowering strategy for CPU, GPU, retrieval, parser, DMA,
         and sandbox targets;
-  \item a benchmark suite for agentic outer-loop overhead;
+  \item a benchmark suite for agentic prefill and outer-loop overhead;
   \item a PPA-driven method for deciding which hardware primitives are worth
         adding to future GPUs or heterogeneous packages.
 \end{enumerate}
@@ -455,7 +520,8 @@ The HATS hypothesis is strongest when:
   \item model state, indexes, and tool buffers are already local or resident;
   \item tool calls are frequent and fine-grained;
   \item continuation latency matters;
-  \item structured validation sits in the decode loop;
+  \item agentic re-prefill events are frequent;
+  \item structured validation sits in the prefill/decode loop;
   \item cancellation and dependency scheduling are hot paths.
 \end{itemize}
 
@@ -467,15 +533,19 @@ human interaction, OS side effects, or broad scalar planning.
 Agentic AI exposes a gap between dense model execution and the heterogeneous
 tool workflows wrapped around it. Current systems often run the model on a GPU
 and the agentic outer loop on a CPU, paying synchronization and data movement
-costs at every boundary. HATS proposes a narrower alternative: keep the CPU in
-charge of policy and external side effects, but provide a coherent
-GPU-adjacent substrate for bounded local tool primitives.
+costs at every boundary. While many accelerators specialize the decode path,
+HATS specializes the agentic prefill path: the repeated construction,
+validation, retrieval, filtering, and ingestion of context before model
+continuation. HATS proposes a narrow alternative: keep the CPU in charge of
+policy and external side effects, but provide a coherent GPU-adjacent substrate
+for bounded local tool primitives.
 
 The project should begin as a compiler and runtime system. That path makes the
 hardware story empirical. By representing tool workflows as graphs, lowering
 them to queues and signals, and profiling execution on existing systems, HATS
 can identify which primitives deserve hardware support. The eventual GPU is not
-the starting assumption. It is the consequence of measured agentic bottlenecks.
+the starting assumption. It is the consequence of measured agentic prefill
+bottlenecks.
 
 \begin{thebibliography}{9}
 
