@@ -16,3 +16,6 @@
 # Public HSA specifications are fetched locally but not redistributed in this
 # public repository.
 references/hsa/pdfs/
+
+# Optional local RTL-to-GDS flow harness around the OpenROAD backend.
+third_party/OpenROAD-flow-scripts/

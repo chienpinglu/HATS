@@ -1,0 +1,4 @@
+[submodule "third_party/OpenROAD"]
+	path = third_party/OpenROAD
+	url = https://github.com/The-OpenROAD-Project/OpenROAD.git
+	branch = master
