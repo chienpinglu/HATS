@@ -19,3 +19,16 @@ references/hsa/pdfs/
 
 # Optional local RTL-to-GDS flow harness around the OpenROAD backend.
 third_party/OpenROAD-flow-scripts/
+
+# Local processor exploration; publication is a separate decision.
+.local/
+
+# SpinalHDL tools, generated RTL, simulator outputs, and editor caches.
+hardware/spinal/.tools
+hardware/spinal/build/
+hardware/spinal/target/
+hardware/spinal/project/target/
+hardware/spinal/project/project/
+hardware/spinal/.bsp/
+hardware/spinal/.metals/
+__pycache__/

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+task_root="$(cd "$(dirname "$0")/.." && pwd)"
+task_java="$(python3 "$task_root/tools/toolchain.py")"
+task_launcher="$task_root/.tools/sbt-launch-1.10.7.jar"
+if [[ ! -x "$task_java" || ! -f "$task_launcher" ]]; then
+  echo "Missing JDK or pinned sbt launcher; see README.md" >&2
+  exit 2
+fi
+python3 "$task_root/tools/bootstrap.py" --check
+cd "$task_root"
+export PATH="/opt/homebrew/bin:$PATH"
+export COURSIER_CACHE="$task_root/.tools/coursier"
+exec "$task_java" -Xmx3G -XX:ActiveProcessorCount=4 \
+  -Dsbt.boot.directory="$task_root/.tools/sbt-boot" \
+  -Dsbt.global.base="$task_root/.tools/sbt-global" \
+  -Dsbt.ivy.home="$task_root/.tools/ivy" \
+  -Dsbt.repository.config="$task_root/project/repositories" \
+  -Dsbt.override.build.repos=true -Dsbt.supershell=false \
+  -jar "$task_launcher" "$@"

@@ -16,6 +16,20 @@ The project starts as a compiler/runtime investigation inspired by HSA:
 - capability-scoped access to bounded local tools;
 - profiling feedback to identify hardware primitives with credible PPA value.
 
+## Autonomous Task Tile Prototype
+
+The research now includes a [SpinalHDL task-execution prototype](hardware/spinal/README.md)
+that explores moving supported runtime control flow onto the processor itself.
+Independent A64-subset contexts create child tasks, wait for memory or children,
+and resume without host scheduling after the initial submission.
+
+The [architecture contract](hardware/spinal/ARCHITECTURE.md) separates the target
+Arm plus vector/tensor, HBM/LPDDR processor from the implemented scalar task tile.
+SpinalSim with Verilator passes 41 scenarios at each of 2, 4 and 8 contexts
+(123 test instances). This is mechanism verification, not evidence of agent
+speedup, PPA, full Arm conformance, or a complete AI processor. The initial paper
+below retains its earlier, narrower agentic-prefill scope.
+
 ## Hardware Toolchain
 
 HATS treats hardware as an empirical consequence of the compiler/runtime
@@ -80,6 +94,8 @@ inside modern agent loops.
 
 ```text
 README.md
+hardware/
+  spinal/                         Task tile, architecture contract and RTL tests
 papers/
   hats_agent_tool_substrate.tex  Initial paper draft
 references/
