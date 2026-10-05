@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "reviewed": "2026-10-04",
+  "scope": "Selected upstream components and source corpora; not full agent experiments or HATS execution",
+  "sources": [
+    {
+      "id": "gepa",
+      "repo": "gepa-ai/gepa",
+      "commit": "fb1ed589fd83372caef499cffc2c73173d3b096b",
+      "license": "MIT",
+      "paper": "https://arxiv.org/abs/2507.19457",
+      "family": "candidate-selection",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "10c47467a961feb40adf3294fe27dd9cba79d4d1b7cf27173b1c34586d4126c3",
+          "bytes": 1067
+        },
+        {
+          "path": "README.md",
+          "sha256": "10d7f30035b21bb38fde51fb3ccc0fc64d5e8b64ab51c09731606132782a57b2",
+          "bytes": 39867
+        },
+        {
+          "path": "src/gepa/gepa_utils.py",
+          "sha256": "ac272a7d411c5c6273be369ec012d14121b1ce5a3bdc87409f419216b6f6a0e3",
+          "bytes": 4704
+        }
+      ]
+    },
+    {
+      "id": "ace",
+      "repo": "ace-agent/ace",
+      "commit": "82709de050e1db6e6ef2f07bcb0393560b94992a",
+      "license": "Apache-2.0",
+      "paper": "https://arxiv.org/abs/2510.04618",
+      "family": "context-memory",
+      "files": [
+        {
+          "path": "utils.py",
+          "sha256": "7824aa262de2cd030b6914d1f7de698ec620dbec9c9e5f14ed1fe6322079570c",
+          "bytes": 10659
+        },
+        {
+          "path": "LICENSE.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "path": "README.md",
+          "sha256": "49ade80bc5d5947a439f8c9861b57bde31531e2962638f78ff53b57b90428cd0",
+          "bytes": 14482
+        },
+        {
+          "path": "playbook_utils.py",
+          "sha256": "c67943f06cb0ee747be04d0599216e40d6c00e0cdf96ddc6af38fc26143e3a07",
+          "bytes": 13707
+        }
+      ]
+    },
+    {
+      "id": "aflow",
+      "repo": "FoundationAgents/MetaGPT",
+      "commit": "11cdf466d042aece04fc6cfd13b28e1a70341b1f",
+      "license": "MIT",
+      "paper": "https://arxiv.org/abs/2410.10762",
+      "family": "workflow-search",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "74945da6216c3f6498159a55cd25c0564acc684b791c169f869117a095808b00",
+          "bytes": 1072
+        },
+        {
+          "path": "examples/aflow/README.md",
+          "sha256": "5397424265252d6294fcbc90ecd1ae7978e1a47969c3f9d938820e9938930250",
+          "bytes": 5775
+        },
+        {
+          "path": "metagpt/ext/aflow/scripts/optimizer.py",
+          "sha256": "9f4c8b0e322928496474a76ed59322e1ea91be7c4e390de0cfd28780d2d1904f",
+          "bytes": 7979
+        },
+        {
+          "path": "metagpt/ext/aflow/benchmark/gsm8k.py",
+          "sha256": "b2109ed4eb32dfaeacf05735ec7c23788e62fb9e9f3f34d24b242de13baa9f72",
+          "bytes": 2270
+        }
+      ]
+    },
+    {
+      "id": "dgm",
+      "repo": "jennyzzt/dgm",
+      "commit": "a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2",
+      "license": "Apache-2.0",
+      "paper": "https://arxiv.org/abs/2505.22954",
+      "family": "code-editing",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "84b7504ce8dda1f37f592cdf67ad21371864583720d79ea289b0b0c75bfcdb17",
+          "bytes": 11361
+        },
+        {
+          "path": "README.md",
+          "sha256": "9760f30330e519946592ae88178f579dd717c3e55d3d461322e5facfa09c6bd4",
+          "bytes": 4232
+        },
+        {
+          "path": "tools/edit.py",
+          "sha256": "b53f7ae71c5bcda3de994f32a8553bead0f3fe46b250130adfd47ed40a2dec94",
+          "bytes": 6038
+        },
+        {
+          "path": "utils/evo_utils.py",
+          "sha256": "0eb779270390f39aa0c4ff045ec9b6c3049736c6a008ae3d2e7a2df7ef253570",
+          "bytes": 5599
+        }
+      ]
+    },
+    {
+      "id": "stop",
+      "repo": "microsoft/stop",
+      "commit": "0d6780c54306b2486dd36e9c4ae9b49aceb27ea4",
+      "license": "MIT",
+      "paper": "https://arxiv.org/abs/2310.02304",
+      "family": "program-optimization",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+          "bytes": 1141
+        },
+        {
+          "path": "README.md",
+          "sha256": "8b96b323a605a8fa062960709ee92c4418d108af3be03d8709fe3d6afdd6d580",
+          "bytes": 2987
+        },
+        {
+          "path": "tasks/maxcut/seed_algorithm.py",
+          "sha256": "faaf5e10c71b517428b23bfa0d0ac28932d1dcf8f2c9ea669feca05bf7111389",
+          "bytes": 886
+        },
+        {
+          "path": "tasks/three_sat/seed_algorithm.py",
+          "sha256": "490e375fceb0da8bc815ba4dbb5c910854b9408169464957fc58b92878637579",
+          "bytes": 898
+        },
+        {
+          "path": "tasks/str_grid_dist/seed_algorithm.py",
+          "sha256": "0fc1e5946c15d15d7d093c3b2c98e2e2d142b6fb67acf7ebd0abf4217e0b6e4a",
+          "bytes": 46
+        }
+      ]
+    },
+    {
+      "id": "ahe",
+      "repo": "china-qijizhifeng/agentic-harness-engineering",
+      "commit": "8b2a55d97590363fe50c3cc6b5e833b020a4bb4c",
+      "license": "MIT",
+      "paper": "https://arxiv.org/abs/2604.25850",
+      "family": "harness-evolution",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "d1404dcdb97e84a6f990ed3d205226d481d2bbb857b13f00585c3b863e217d35",
+          "bytes": 1068
+        },
+        {
+          "path": "README.md",
+          "sha256": "cf1706a1e0e2f1f0212a6155d6f40522a3f89e9dc86a6e693bee3dfb2ad8d787",
+          "bytes": 15773
+        },
+        {
+          "path": "agents/evolve_agent/tools/file_tools/apply_patch.py",
+          "sha256": "8c6b72f69e45a44533288bec7db01f330dd8d79321866dfe339f1316d3147b46",
+          "bytes": 22487
+        },
+        {
+          "path": "agents/evolve_agent/tools/file_tools/replace.py",
+          "sha256": "00b4be156573991fc7e6d75235b761618de87d7419953ce2e4b795069c1cc843",
+          "bytes": 16202
+        }
+      ]
+    },
+    {
+      "id": "gascity",
+      "repo": "gastownhall/gascity",
+      "commit": "2f33858ba14280b07ba5ea8e740e70f78f59c7a6",
+      "license": "MIT",
+      "paper": null,
+      "family": "persistent-orchestration",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "8bab40f7557b5ed6936f146436bb10d07f7688c1b1cb83e009ef0376565e31dc",
+          "bytes": 1078
+        },
+        {
+          "path": "README.md",
+          "sha256": "53410c489972eb6697ecd9bd9429a22842c36383a64dae0b4d17779a64c65bbe",
+          "bytes": 8944
+        },
+        {
+          "path": "internal/events/events.go",
+          "sha256": "b62f5e9a24991f5697e22e2c002dc8dbfd0f6fa18e29752264f5754318377f77",
+          "bytes": 35868
+        },
+        {
+          "path": "internal/events/query.go",
+          "sha256": "598cb45bf0dc701dac51bb373f67892ab3abdde1403a099b9ba379c267760c51",
+          "bytes": 787
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "id": "hyperagents",
+      "repo": "facebookresearch/HyperAgents",
+      "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "reason": "CC-BY-NC-SA-4.0; source-available, not part of the default permissively licensed suite",
+      "reference": "https://github.com/facebookresearch/HyperAgents/blob/59a68f672dfb92c74aeb7e61535d776fb36e172d/LICENSE.md"
+    },
+    {
+      "id": "sift",
+      "reference": "https://arxiv.org/abs/2609.19526",
+      "reason": "Paper reference only; official runnable artifact and license not verified in this intake"
+    },
+    {
+      "id": "ai4ai-bench",
+      "reference": "https://arxiv.org/abs/2608.20318",
+      "reason": "Training/evaluation protocol reference only; runnable artifact, datasets and compute not integrated"
+    },
+    {
+      "id": "self-harness",
+      "reference": "https://arxiv.org/abs/2606.09498",
+      "reason": "Paper reference only; official runnable artifact and license not verified in this intake"
+    }
+  ]
+}

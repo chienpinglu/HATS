@@ -32,3 +32,7 @@ hardware/spinal/project/project/
 hardware/spinal/.bsp/
 hardware/spinal/.metals/
 __pycache__/
+
+# Pinned upstream workload downloads and machine-local measurements.
+workloads/cache/
+workloads/results/

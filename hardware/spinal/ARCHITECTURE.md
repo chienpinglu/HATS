@@ -138,6 +138,12 @@ establish agent speedup, PPA, physical memory performance or CPU displacement.
 
 ## Next architecture increments
 
+The [workload coverage and OS cooperation contract](../../workloads/COVERAGE.md)
+now tracks the CPU-side source workloads and the proposed address-space, fault,
+preemption and service interfaces. Its host tests are separate from RTL tests;
+the tile does not yet execute them. OS awareness is an architectural requirement,
+not a claim that this A64 subset supports an OS or application ABI.
+
 1. Broaden scalar execution and add bounded stacks, calls and a compiler-facing
    task runtime. Keep semantics differential-tested against independent models.
 2. Add runnable-task selection, multiple-child futures, generation-tagged

@@ -30,6 +30,15 @@ SpinalSim with Verilator passes 41 scenarios at each of 2, 4 and 8 contexts
 speedup, PPA, full Arm conformance, or a complete AI processor. The initial paper
 below retains its earlier, narrower agentic-prefill scope.
 
+## Agent Workload Suite
+
+The [workload suite](workloads/README.md) pins selected open-source components
+from GEPA, ACE, AFlow, DGM, STOP, AHE and Gas City. It provides 21 host-side
+component and source-processing cases, including text diff/patch and Python
+bytecode compilation. These are not full agent reproductions or HATS execution.
+The [coverage map](workloads/COVERAGE.md) records full-run requirements, missing
+workloads and the proposed OS cooperation contract.
+
 ## Hardware Toolchain
 
 HATS treats hardware as an empirical consequence of the compiler/runtime
@@ -96,6 +105,7 @@ inside modern agent loops.
 README.md
 hardware/
   spinal/                         Task tile, architecture contract and RTL tests
+workloads/                        Pinned host components and architecture coverage
 papers/
   hats_agent_tool_substrate.tex  Initial paper draft
 references/
