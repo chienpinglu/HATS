@@ -6,15 +6,18 @@ HATS will execute supported agent-runtime programs on a task-parallel processor,
 including the control flow between model and tool operations. The CPU provides
 privileged services and compatibility paths instead of scheduling each step.
 SpinalHDL and SpinalSim are the microarchitecture development
-path. The system retains an Arm scalar-execution direction, with HSA-inspired
-queues and memory ordering rather than new instructions inserted into A64.
+path. The scalar-execution direction is now RISC-V, with HSA-inspired queues and
+memory ordering. The [HATS Application Processing Engine (APE)](APE.md) requires speculative
+out-of-order execution independently of the legacy A64 TaskTile described below.
+The two prototypes are not yet integrated: APE does not inherit TaskTile's
+fork/join support merely by sharing this build.
 
 This is a design direction with a first RTL mechanism prototype. It does not
 establish CPU replacement, speedup, power efficiency, or general software support.
 
 ## Target package
 
-An Arm service subsystem with local LPDDR connects to four programmable compute
+A RISC-V service subsystem with local LPDDR connects to four programmable compute
 domains. Each domain contains independently scheduled task contexts, scalar
 execution pipelines, vector/tensor engines, local caches and scratchpad, HBM,
 and independently attached LPDDR. Domains are locality regions, not necessarily
@@ -30,7 +33,7 @@ high-bandwidth data. Domain LPDDR extends capacity for both compute and authoriz
 remote CPU accesses. Locality and tier are distinct properties. Durable task
 archives require storage; neither HBM nor LPDDR is persistent.
 
-## First tile
+## Legacy first tile (A64 mechanism prototype)
 
 The first tile has one shared scalar execution pipeline, four contexts by
 default, and an idle-loadable instruction memory. Each context owns 31 usable

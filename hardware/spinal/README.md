@@ -1,4 +1,18 @@
-# HATS autonomous task tile
+# HATS execution-engine RTL
+
+The current scalar direction is RISC-V. The **HATS Application Processing Engine (APE)**
+develops speculative out-of-order execution in SpinalHDL. Its architecture,
+verification path, supported instructions and limitations are in [APE.md](APE.md).
+Run `python3 tools/verify_ape.py` for that core's RTL tests. Out-of-order execution
+is a mandatory APE requirement. See the [development guide](DEVELOPMENT.md) and
+[APE-0.2 specification](spec/APE-0.2.md) for the primary `ApeCore` implementation.
+Legacy commands are described in [HSE compatibility](HSE.md).
+
+The existing A64 task tile below remains a separate regression anchor. APE is
+not yet connected to its fork/join runtime; neither test suite proves a complete
+HATS processor or agent-workload speedup.
+
+## Legacy autonomous task tile
 
 This research prototype starts the CPU-offload architecture: supported A64 programs
 create child tasks, perform memory operations, suspend, and resume on the tile.

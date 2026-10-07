@@ -16,7 +16,28 @@ The project starts as a compiler/runtime investigation inspired by HSA:
 - capability-scoped access to bounded local tools;
 - profiling feedback to identify hardware primitives with credible PPA value.
 
-## Autonomous Task Tile Prototype
+## HATS Execution Engines
+
+The scalar architecture direction is now **RISC-V**, using SpinalHDL and
+SpinalSim. [HATS Application Processing Engine (APE)](hardware/spinal/APE.md) is an original
+speculative out-of-order integer-core prototype: ROB-tag renaming, oldest-ready
+issue, in-order retirement and head-only publication of memory effects. Its
+verification entry point is `hardware/spinal/tools/verify_ape.py`; generated
+reports distinguish tested mechanisms from full-ISA support and performance.
+Speculative out-of-order execution is mandatory for APE. `ApeCore` now includes
+configurable bimodal branch and direct-jump prediction; HSE names remain adapters.
+It is not yet a complete high-performance big core or HATS task runtime.
+
+- [APE specification](hardware/spinal/spec/APE-0.2.md): instruction subset, OoO rules and interfaces.
+- [Verification map](hardware/spinal/spec/APE-VERIFICATION.md): requirements, tests and limits.
+- [Development guide](hardware/spinal/DEVELOPMENT.md): source layout and reproducible commands.
+- [Processor roadmap](hardware/spinal/spec/APE-ROADMAP.md): remaining application and HATS integration gates.
+
+CPU/GPU are deployment categories rather than mandatory internal boundaries:
+scalar, vector/tensor and command/task-control roles can use different ISAs.
+The command controller and vector/tensor datapaths remain future integration work.
+
+## Legacy Autonomous Task Tile Prototype
 
 The research now includes a [SpinalHDL task-execution prototype](hardware/spinal/README.md)
 that explores moving supported runtime control flow onto the processor itself.
@@ -24,7 +45,7 @@ Independent A64-subset contexts create child tasks, wait for memory or children,
 and resume without host scheduling after the initial submission.
 
 The [architecture contract](hardware/spinal/ARCHITECTURE.md) separates the target
-Arm plus vector/tensor, HBM/LPDDR processor from the implemented scalar task tile.
+RISC-V plus vector/tensor, HBM/LPDDR processor from the legacy A64 scalar task tile.
 SpinalSim with Verilator passes 41 scenarios at each of 2, 4 and 8 contexts
 (123 test instances). This is mechanism verification, not evidence of agent
 speedup, PPA, full Arm conformance, or a complete AI processor. The initial paper

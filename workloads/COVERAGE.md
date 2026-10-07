@@ -45,6 +45,12 @@ privilege levels, full calling conventions, a language runtime, tensor engines
 and OS-service queues. Those are concrete blockers, not software configuration
 options that can enable these workloads today.
 
+The [RISC-V HATS Application Processing Engine (APE)](../hardware/spinal/APE.md) is a separate
+speculative out-of-order prototype. Its tests exercise RV64 integer programs and
+a small compiler-generated C function. Compiling a test *for* APE is not running
+a compiler *on* APE. Neither those tests nor a command-store sink establish
+execution of this agent workload suite, CP integration or autonomous fork/join.
+
 ## OS cooperation contract
 
 HATS should be OS-aware without hardwiring Linux or an agent framework into the
