@@ -1,5 +1,9 @@
 # APE application processor roadmap
 
+This document tracks APE-specific detail. The [HATS end-to-end roadmap](../../../ROADMAP.md)
+coordinates APE with the Parallel Processing Engine (PPE), command processor,
+memory, software and physical implementation through stage issues and closure gates.
+
 The target is an application-processing engine that executes substantial agent
 and tool code within HATS, alongside vector/tensor engines and an independent
 command processor. Speculative out-of-order execution is mandatory. APE-0.2

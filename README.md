@@ -2,6 +2,10 @@
 
 **HATS: Heterogeneous Agent Tool Substrate**
 
+See the [end-to-end processor roadmap](ROADMAP.md) for the APE, PPE, command
+processor, memory, software and physical-implementation stages, with linked
+GitHub issues and evidence-based completion gates.
+
 HATS explores a GPU-adjacent compiler and runtime substrate for bounded,
 local tools used by agentic AI systems. The central idea is to move frequent
 memory-resident tool primitives, such as retrieval, schema validation, context
