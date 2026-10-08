@@ -15,8 +15,15 @@ The A64 TaskTile remains a separate legacy task-mechanism regression.
 | `src/test/scala/hats/ApeReference.scala` | Independent local sequential interpreter; do not reuse RTL decode logic here |
 | `src/test/scala/hats/ApePredictorSim.scala` | Predictor counter and timing checks |
 | `examples/ape/` | Assembly fixtures, freestanding C function and linker script |
+| `examples/ape_app/` | LP64 startup, application linker layout and original bounded diff tool |
+| `src/test/scala/hats/ApeApplicationSim.scala` | Application execution, actual RTL event capture and memory/stack assertions |
+| `tools/ape_app_image.py`, `tools/build_ape_app.py` | Checked static ELF loading and compilation/input preparation |
+| `tools/verify_ape_app.py`, `tools/check_ape_diff.py`, `tools/test_ape_app.py` | Application RTL/Spike gate, independent output checks and rejection tests |
 | `tools/assemble_ape.py` | LLVM compilation/linking, ELF validation, seeded program generation |
 | `tools/verify_ape.py` | Complete matrix, evidence identity and failure aggregation |
+| `tools/bootstrap_spike.py`, `tools/spike.lock.json` | Pinned unmodified external reference build and identity checks |
+| `tools/spike_adapter.cc` | Original platform adapter around upstream Spike instruction semantics |
+| `tools/verify_ape_spike.py`, `tools/compare_ape_spike.py`, `tools/test_ape_spike.py` | Fresh RTL differential gate and fail-closed comparison tests |
 | `APE.md`, `spec/` | Overview, interface contract, verification map and future gates |
 
 Generated RTL, tool caches, ELF images, traces and simulation outputs stay under
@@ -51,6 +58,29 @@ resolution needs network access. Local simulator/sbt IPC may require execution
 permission beyond a restricted sandbox. The two verification commands cover APE
 and the legacy TaskTile independently; both must succeed before reporting both
 as passing. Inspect each aggregate report rather than relying on stale traces.
+
+For independent instruction-semantics validation, also install `dtc` and host
+Clang/Clang++, then run:
+
+```sh
+python3 tools/bootstrap_spike.py
+python3 tools/bootstrap_spike.py --check
+python3 tools/verify_ape_spike.py
+```
+
+The differential command reruns the full APE matrix. It checks a pinned upstream
+model rather than replacing it with the local interpreter. See the
+[Spike validation contract](spec/APE-SPIKE-VALIDATION.md) for the two explicit
+profile differences, provenance checks and evidence paths. APE instruction
+changes must update both verification gates without weakening unexpected-mismatch
+failures or modifying upstream semantics to match the DUT.
+
+Run `python3 tools/verify_ape_app.py` for the separate 144-invocation
+[application ABI and diff gate](spec/APE-APPLICATION-ABI.md). It compiles its own
+executable, loads data, executes startup and checks complete architectural traces
+plus tool outputs. The application suite does not replace the 600-invocation
+mechanism suite or legacy regression. Run sbt-based aggregate suites sequentially
+to avoid concurrent builds in the same workspace.
 
 ## Focused iteration
 

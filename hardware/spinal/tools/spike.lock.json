@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "project": "riscv-software-src/riscv-isa-sim",
+  "repository": "https://github.com/riscv-software-src/riscv-isa-sim.git",
+  "revision": "fdc1ffa05152707a00ca22a9cf50c59a1b487875",
+  "license": "BSD-3-Clause",
+  "license_sha256": "c65e436d18972c9c4bd192494fe4870bd2e158179474975b80a3559f27631632",
+  "isa": "RV64I",
+  "privilege": "M",
+  "notes": "Unmodified upstream semantics. This revision includes Zicsr/Zifencei implicitly; known profile differences are reported, not patched out."
+}

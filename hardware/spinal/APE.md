@@ -135,7 +135,10 @@ ELF identity, entry, allocated sections and unresolved relocations, then runs
 the generated hardware in SpinalSim/Verilator. Each retired instruction is checked
 against a separately written local sequential interpreter. Several directed
 programs also have fixed known-answer checks. This local oracle is not external
-ISA certification; Spike/Sail differential testing remains a milestone.
+ISA certification. A separate [pinned Spike differential gate](spec/APE-SPIKE-VALIDATION.md)
+now compares actual RTL architectural events with unmodified upstream instruction
+semantics. It fully matches 576 invocations and explicitly checks 24 profile
+differences; broader architectural-test coverage remains a milestone.
 
 Directed coverage includes ALU/word arithmetic, renaming hazards, observed
 out-of-order issue and completion, speculation and recovery, calls/returns,
@@ -160,6 +163,13 @@ regression passed 123 test instances. The HSE simulation compatibility entry
 point also passed its delegated 100-invocation, 8-entry, prediction-off suite.
 See the [verification map](spec/APE-VERIFICATION.md) for scope and evidence paths.
 
+The [bounded application path](spec/APE-APPLICATION-ABI.md) adds a static ELF
+loader, LP64 startup/stack checks and an original line-diff tool. Its 144 RTL
+invocations match Spike exactly and pass independent edit-script checks. This
+executes tool logic on APE, not a full Git/compiler/interpreter stack or a measured
+physical acceleration result. A [shared microarchitecture proposal](spec/APE-SHARED-SUBSTRATE.md)
+describes future RISC-V/AArch64 reuse; no dual-ISA backend is implemented yet.
+
 ### Historical HSE baseline
 
 The initial 2026-10-07 HSE validation passed **39 scenarios, each launched twice without
@@ -176,7 +186,8 @@ results, not an exhaustive correctness proof or evidence of agent acceleration.
 
 ## Next gates toward the full execution engine
 
-1. External ISA differential tests; stronger randomized control-flow/memory tests,
+1. Broaden the existing external ISA differential tests and application coverage;
+   stronger randomized control-flow/memory tests,
    assertions and formal checks for rename/ROB/fault invariants.
 2. Earlier branch recovery, stronger prediction, pipelined/multiple execution
    units, physical-register allocation and measured performance design points.

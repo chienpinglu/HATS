@@ -87,6 +87,9 @@ object ApeCoreSim extends App {
           writable = test.writable, busError = test.busError)
         val issuedPcs, finishedPcs, retiredPcs = mutable.ArrayBuffer[BigInt]()
         val trace = mutable.ArrayBuffer[String]()
+        // External-oracle interchange: values below come from DUT signals and
+        // the supplied memory service, never from ApeReference retirement values.
+        val architectural = mutable.ArrayBuffer[String]()
         val memoryRequests = mutable.ArrayBuffer[Request]()
         var pending: Option[(Int, BigInt)] = None
         var held: Option[Request] = None
@@ -146,6 +149,9 @@ object ApeCoreSim extends App {
             }
             pending = Some((cycle + 15 + rng.nextInt(8), data))
             trace += s"$cycle memory ${r.address} ${r.write} ${r.size} ${r.data}"
+            val publishedData = if (r.write) r.data & ((BigInt(1) << (8 * bytes)) - 1)
+              else if (test.busError) BigInt(0) else data
+            architectural += s"""{"kind":"memory","address":"${r.address}","bytes":$bytes,"write":${r.write},"data":"$publishedData","error":${test.busError}}"""
           }
           if (dut.io.issued.valid.toBoolean) {
             issuedPcs += dut.io.issued.pc.toBigInt
@@ -170,6 +176,13 @@ object ApeCoreSim extends App {
             }
             retiredPcs += expected.pc
             trace += s"$cycle retire ${expected.pc} ${expected.rd} ${expected.writes} ${expected.value}"
+            val writes = dut.io.retired.writes.toBoolean
+            val rd = if (writes) dut.io.retired.rd.toInt else 0
+            val value = if (writes) dut.io.retired.value.toBigInt else BigInt(0)
+            val pc = dut.io.retired.pc.toBigInt
+            val next = if (dut.io.controlRetired.valid.toBoolean) dut.io.controlRetired.actualNext.toBigInt
+              else (pc + 4) & ((BigInt(1) << 64) - 1)
+            architectural += s"""{"kind":"retire","pc":"$pc","instruction":${dut.io.retired.instruction.toLong},"writes":$writes,"rd":$rd,"value":"$value","next":"$next"}"""
           }
           if (dut.io.redirect.valid.toBoolean) {
             redirects += 1
@@ -200,12 +213,17 @@ object ApeCoreSim extends App {
             test.expected.foreach(v => assert(dut.io.halt.value.toBigInt == v, s"known-answer mismatch: $v"))
             assert(memory == reference.memory, "memory differs from sequential execution")
             assert(pending.isEmpty && held.isEmpty, "halt published before external memory drained")
+            architectural += s"""{"kind":"trap","pc":"${dut.io.halt.pc.toBigInt}","cause":${dut.io.halt.cause.toInt},"value":"${dut.io.halt.value.toBigInt}"}"""
             halted = true
           }
           edge()
           cycle += 1
         }
         writeFile(s"${test.name}-$invocation.trace", trace.mkString("\n") + "\n")
+        writeFile(s"${test.name}-$invocation.arch.jsonl", architectural.mkString("\n") + "\n")
+        writeFile(s"${test.name}-$invocation.case.json",
+          s"""{"schema":1,"name":"${test.name}","image":"${test.image}","entry":"${test.entry}","writable":${test.writable},"bus_error":${test.busError},"invocation":$invocation}
+""")
         assert(halted, s"timeout in ${test.name}")
         if (test.image == "p1") {
           assert(Seq(4, 8, 12).forall(p => issuedPcs.contains(BigInt(p)) && finishedPcs.contains(BigInt(p))),

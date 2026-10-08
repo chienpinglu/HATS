@@ -10,7 +10,7 @@ it does not yet meet the application-processor target below.
 
 | Role | Responsibility | Current state |
 | --- | --- | --- |
-| APE | RISC-V application execution, dependencies, branching and eventual OS/runtime support | RV64 integer subset, OoO and prediction implemented |
+| APE | RISC-V application execution, dependencies, branching and eventual OS/runtime support | RV64 integer subset, OoO, prediction and bounded LP64 diff application implemented |
 | Command processor | Consume queues, validate dispatch, track completion and route work | Separate embedded-RISC-V controller proposed; not implemented |
 | CU scalar path | Scalar control associated with vector/tensor work | ISA and datapath design pending; not interchangeable with APE |
 | Vector and tensor engines | Model inference and suitable data-parallel tool kernels | Future implementation |
@@ -55,8 +55,16 @@ separate engineering work; this roadmap does not invent a completed controller.
 
 ## Near term order
 
-The next correctness step is an external ISA oracle and stronger recovery tests.
-Then establish the executable/ABI and load-store contracts needed by a selected
-real tool workload. Profile that workload before choosing issue width, ROB size
-or cache capacities. Keep the existing OoO and publication checks as regression
+The first [external ISA differential gate](APE-SPIKE-VALIDATION.md) is implemented:
+576 invocations fully match pinned Spike and 24 have exact documented profile
+differences. The broader architectural-confidence gate remains open for expanded
+instruction coverage, adversarial recovery tests and formal invariants.
+The [first bounded application](APE-APPLICATION-ABI.md) now establishes static ELF
+loading, LP64 startup and an original source-diff tool with 144 RTL invocations.
+This partially addresses application enablement, not the full ISA/OS/tool gate.
+Next select a larger real tool port and profile its executable, runtime and
+memory requirements before choosing issue width, ROB size or cache capacities.
+The [shared ISA substrate proposal](APE-SHARED-SUBSTRATE.md) separates possible
+RISC-V/AArch64 reuse from current RISC-V-only execution.
+Keep the existing OoO and publication checks as regression
 requirements throughout; an in-order controller cannot replace the APE target.

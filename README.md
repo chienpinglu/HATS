@@ -30,6 +30,9 @@ It is not yet a complete high-performance big core or HATS task runtime.
 
 - [APE specification](hardware/spinal/spec/APE-0.2.md): instruction subset, OoO rules and interfaces.
 - [Verification map](hardware/spinal/spec/APE-VERIFICATION.md): requirements, tests and limits.
+- [Independent Spike validation](hardware/spinal/spec/APE-SPIKE-VALIDATION.md): pinned external oracle, exact event comparison and explicit profile differences.
+- [Application ABI and source diff](hardware/spinal/spec/APE-APPLICATION-ABI.md): static ELF loading, LP64 startup and a bounded tool executing on APE RTL.
+- [Shared ISA substrate proposal](hardware/spinal/spec/APE-SHARED-SUBSTRATE.md): reusable backend boundaries and remaining RISC-V/AArch64 differences.
 - [Development guide](hardware/spinal/DEVELOPMENT.md): source layout and reproducible commands.
 - [Processor roadmap](hardware/spinal/spec/APE-ROADMAP.md): remaining application and HATS integration gates.
 

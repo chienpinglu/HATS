@@ -4,8 +4,10 @@ APE-0.2 is verified by executing linked RV64 programs in generated RTL through
 SpinalSim and Verilator. Each successful retirement is checked against a local,
 separately authored sequential interpreter. External memory requests are checked
 at acceptance, before side effects, and final memory is compared at halt.
-This is bounded regression coverage, not independent ISA certification or a
-formal proof. The requirement definitions are in [APE-0.2](APE-0.2.md).
+An additional [independent Spike gate](APE-SPIKE-VALIDATION.md) compares actual
+RTL event streams with pinned upstream instruction semantics. These are bounded
+regressions, not full ISA certification or a formal proof. The requirement
+definitions are in [APE-0.2](APE-0.2.md).
 
 ## Required matrix
 
@@ -28,7 +30,7 @@ lookup/training, disabled training inputs and clear priority over training.
 | --- | --- | --- |
 | APE-OOO-01 rename | `rename_raw_waw_war`, `random_0` through `random_7`; live-producer map assertion | Bounded streams, not exhaustive interleavings |
 | APE-OOO-02 actual OoO | `rename_raw_waw_war` requires PC12 to issue before PC8 and finish before PC4 | Observed in RTL in every matrix configuration |
-| APE-OOO-03 retirement | Every retirement checked for PC, instruction, destination enable/register and value | Local sequential oracle, not Spike/Sail |
+| APE-OOO-03 retirement | Every retirement checked for PC, instruction, destination enable/register and value; separate Spike gate also checks next PC | External gate fully matches 48 scenarios; two exact profile differences remain |
 | APE-REC-01 recovery | `wrong_path_effects`, `nested_redirect`, `predicted_taken_exit`, `illegal_precise`, fault cases | Retirement-time recovery only |
 | APE-BP-01 counters | `ApePredictorSim`; `loop_rob_wrap` requires learned taken predictions and fewer than 10 misses | Tests use 2/16 predictor entries; not all possible sizes |
 | APE-BP-02 training | Predictor unit update/clear tests; core update wired only to successful conditional retirement; `taken_fallthrough_target` | Retirement qualification is structural; no full speculative-history formal proof |
@@ -72,14 +74,34 @@ The corresponding invocation lengths were 505 versus 311 simulated cycles.
 These are mechanism diagnostics for a small test loop with the same instruction
 path, not application speedup, a frequency estimate, energy savings or PPA.
 
+## Independent reference result
+
+On 2026-10-07, `python3 tools/verify_ape_spike.py` reran the full RTL matrix and
+reported 576 fully matched invocations, including 83,052 retirements and 18,924
+memory events. The remaining 24 invocations verified the exact FENCE.I and
+misaligned-launch differences described in the [external validation contract](APE-SPIKE-VALIDATION.md).
+There were no unexpected divergences. Seven comparator unit tests passed and
+all six mutations of current-run RTL trace data were rejected. The evidence is
+`build/ape/spike/validation.json`, with status `passed_with_profile_differences`.
+
+## Compiled application gate
+
+`python3 tools/verify_ape_app.py` separately executes the original bounded line-diff
+application, with static ELF data loading and LP64 startup. On 2026-10-07 all 144
+invocations matched Spike without profile exceptions and passed independent
+edit-script reconstruction/minimum-cost checks. Ten loader/output rejection tests
+also passed. See [application coverage and limits](APE-APPLICATION-ABI.md).
+These 12 inputs repeated across the matrix are not 144 distinct applications.
+
 ## Remaining verification gates
 
-- Spike/Sail or architectural-test differential coverage of the implemented subset.
+- Broader independent architectural-test coverage beyond the bounded Spike matrix.
 - Fault, reset, malformed-response and protection adversarial tests as interfaces expand.
 - Formal rename, retirement, recovery and publication invariants.
 - Additional code-memory configurations, workload-driven branch traces and predictor sizes.
 - Real cache/MMU/coherence tests when those components exist.
-- Compiler, interpreter and agent workloads executing on APE, with no host fallback.
+- Compiler, interpreter and broader agent workloads beyond the bounded diff tool,
+  executing on APE with no host fallback.
 
 The legacy TaskTile suite uses `python3 tools/verify.py`. It is a separate task
 mechanism regression and cannot substitute for APE execution coverage.
