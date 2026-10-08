@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "release": "newlib-4.5.0.20241231",
+  "url": "https://sourceware.org/pub/newlib/newlib-4.5.0.20241231.tar.gz",
+  "archive_sha256": "33f12605e0054965996c25c1382b3e463b0af91799001f5bb8c0630f2ec8c852",
+  "license_sha256": "fcfb5ec69b6ab52676dcc4dab7cf4338c8000ef97812dadd35b8592a640a8419",
+  "provenance": "Release downloaded over HTTPS from the upstream distribution site; digest pinned locally, not an independent publisher signature",
+  "license": "Composite per-file licenses in COPYING.NEWLIB; build infrastructure has separate COPYING/GPL/LGPL notices. Sources and binaries stay in ignored cache/results, not vendored or redistributed.",
+  "upstream_patches": []
+}

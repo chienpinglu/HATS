@@ -1,0 +1,218 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "claim_class": "S01_requirements_and_native_evidence_only",
+  "hats_execution": false,
+  "target_execution": false,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "workloads/suite.py",
+        "fetch",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output_sha256": "e0376a1855006b1b5edaf1757ff75bad539a0315ca3222d5c853e03308a270a0"
+    },
+    {
+      "argv": [
+        "python3",
+        "workloads/native/treesitter/run.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "output_sha256": "08f763eaab57af049b41d21c776f150d8ca8e8562febb130622fa0c37c84e877"
+    },
+    {
+      "argv": [
+        "python3",
+        "workloads/suite.py",
+        "run",
+        "--repeat",
+        "3"
+      ],
+      "exit_code": 0,
+      "output_sha256": "5b03e24814bf85e76523eb93685e2df84d1b2b8891a47c09371a9586f9b7f882"
+    },
+    {
+      "argv": [
+        "python3",
+        "workloads/native/treesitter/run.py",
+        "run",
+        "--repeat",
+        "3",
+        "--sanitize"
+      ],
+      "exit_code": 0,
+      "output_sha256": "7489c326e349fbb8584afe055044204e1e2175935b9fa2197aacb4a618293fef"
+    },
+    {
+      "argv": [
+        "python3",
+        "workloads/profile/run.py",
+        "--summary",
+        "workloads/evidence/S01-DEMAND-PROFILE.json"
+      ],
+      "exit_code": 0,
+      "output_sha256": "c50db8a114ba72169dc2094612dd6cfafc0d37109c8ea3efea98c050f148fc0a"
+    },
+    {
+      "argv": [
+        "python3",
+        "workloads/target/treesitter/audit.py"
+      ],
+      "exit_code": 0,
+      "output_sha256": "20ad37546315981989ca2d72d123bfd70511201246f9b30625b0497894f3e27b"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "workloads",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "8044c3cf270cb3dcf73df9ba7bd8abce54fcec296865c03f0b662cbb516e008e"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "workloads/native/treesitter",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "8d5fc209b94070eca41c55a2a38cb0e52105cbc0c40b33dfa6b845045d5473e8"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "workloads/profile",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "8206c98c802b6ee9ed52c0ab6e43888bf852afbc973483af959a988abeb3f95a"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "workloads/target/treesitter",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "ff202cacf2d5acc0ff9f1b409e5e2718bb8aaaf145d37a998f2263cb916b65a7"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "hardware/spinal/tools",
+        "-p",
+        "test_task_abi.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "961ab3faf8940fdf652820a4982e238c4ba21f40e2c078f67c9ec9543cf446b5"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "hardware/spinal/tools",
+        "-p",
+        "test_ape_spike.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output_sha256": "01b5a0ca54de0b74142ba248da5f9b0c6cb15fc3cc38685dc4310dc857a38343"
+    }
+  ],
+  "reports": [
+    {
+      "path": "workloads/results/run-1791494990148555000.json",
+      "sha256": "642d25ce8f180fcc860e3645fc8ec6643847e47a1a5a1ef4eb26cbc7b2e33b2d",
+      "status": "passed"
+    },
+    {
+      "path": "workloads/results/treesitter-1791494996618113000/validation.json",
+      "sha256": "3d578f8e1b6d2913501e955dc17ba073c41863d99110353c038d1e0a7d134508",
+      "status": "passed"
+    },
+    {
+      "path": "workloads/results/s01-profile-1791495006680981000/profile.json",
+      "sha256": "33fa8f8ac928d85ce96e6738371d95da7ee949c2ae68fe166880a7531e7d76e7",
+      "status": "passed"
+    },
+    {
+      "path": "workloads/results/treesitter-rv-audit-1791495025911995000/audit.json",
+      "sha256": "d71410770c9046ade745dd04dba4b6a57a637fbcf389ca3c9ce093604176b22b",
+      "status": "audit_complete"
+    }
+  ],
+  "demand": {
+    "native_demand_runs": 90,
+    "workflow_valid_checks": 60,
+    "workflow_mutation_checks": 30,
+    "compile_rejection": true
+  },
+  "artifact_sha256": {
+    "hardware/spinal/spec/HATS-TASK-ABI-0.1.md": "fb83b5c8e23c6a9e034fbe26a29f794df6985e5f4b8932e31f806f869452f649",
+    "hardware/spinal/spec/PPE-0.1.md": "f33135c14a3a3d5059b2866ea0f41691518d607a1465fd5687c89eee8c99295b",
+    "hardware/spinal/tools/task_abi.py": "7a33fe4c9cc08e5aebf520cdcfc9665bad108a60eccc067479f96044b922abf7",
+    "hardware/spinal/tools/test_task_abi.py": "e9320f4fce88eef8afd51fb61535756e73fa0ab1ea2d71fac4f534e2df42c0e3",
+    "workloads/COVERAGE.md": "cab4cced9f08e7b74d7cb8648254877cd4e47da7a551d2a97a4112cc4c8408d3",
+    "workloads/S01-CAPABILITY-MAP.md": "14e091a830be05cac2d0e370d05a4d71769cc56f70986d3e0c545caafc6bb9b1",
+    "workloads/S01-COMPLETION.md": "780ce1c88b9955f5f62fc2b1b2b1148b4fcca6d23527f21b3cae8f0ac06a6c71",
+    "workloads/capabilities.json": "fa4d4aa93c77980e3aac80885466fff58bcd4c1d48103eff9a24a200540886ac",
+    "workloads/evidence/S01-DEMAND-PROFILE.json": "86fa4d0f3a7b6c0c4bb397c078436d7e02588010afedc9f3f7c7c20141bfd91f",
+    "workloads/evidence/S01-HOST-BASELINE.json": "9bf756a46a18ccf44a7c97589bb6b48acfc48c5634929647ff79808aaa023fa9",
+    "workloads/evidence/S01-RISCV-AUDIT.json": "3011bf4ba1dbf8a5a86ba7ec6f09dd3613da61b1b202620e07410a215aadfcd0",
+    "workloads/native/treesitter/README.md": "966cf11fdfbdbb8ff2edd910392fb2569a6a4b29f7e303c4ad664af4eed8d6bc",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/native/treesitter/test_baseline.py": "c14826d8e66041766d1dd683ec23b83a64e40708a1471ae7cbab1cfa3303265e",
+    "workloads/profile/README.md": "f7f320b0241256e0f0591e713e4f3e6be2dfc75d64663b530fcce173eec351fd",
+    "workloads/profile/workflow.py": "eb2c0ddc70c9628717add519f16adc67a2f3d4296f53bd5e5e0833675bdd2f64",
+    "workloads/s01_acceptance.json": "1cd02bce5bdde1c5f1a5be079f2025e37a392426b0c20001043abd689b4e4ea0",
+    "workloads/s01_gate.py": "130113272418f79ec2c69b1a7370949614c8a1ed03443c3ca24df58abc432566",
+    "workloads/test_capabilities.py": "8f80dcc24fbf401c6a1576549d4560acf5d94d014a7c58b7cbe8f89a56ff073b",
+    "workloads/test_s01_gate.py": "571f691ae7a68661eb1822ed3b41efdde5cc07b3703e1e102c37d7849be0caa3"
+  },
+  "limits": [
+    "S01 completion is requirements/native evidence, not runnable upstream software on APE or a completed OoO/PPE/CP processor.",
+    "Static I/IM/IMA strict links remain blocked by enumerated providers; target execution belongs to S02.",
+    "Compiler probes are not PMU counters; touched stack is not a worst-case target bound; single-thread atomic counts do not measure contention.",
+    "All seven upstream agent projects are component/source coverage, not full reproduced experiments.",
+    "The local workflow uses deterministic edits, not an LLM. Inference, network, concurrency and full agent-quality evaluation remain unmeasured.",
+    "No HATS speedup, CPU:GPU ratio, optimal ROB/cache size, silicon PPA or tapeout readiness follows from these results."
+  ]
+}

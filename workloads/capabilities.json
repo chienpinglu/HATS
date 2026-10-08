@@ -1,0 +1,286 @@
+{
+  "schema": 1,
+  "revision": "S01-0.3",
+  "claim_class": "proposed_placement_not_target_execution",
+  "component_source_lock_sha256": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+  "profiles": {
+    "pareto": {
+      "ape": "Irregular sets/maps and candidate selection",
+      "ppe": "Candidate-by-metric comparisons/reductions, if batching amortizes transfer/launch",
+      "cp": "Schedule independent evaluations and join results",
+      "memory": "Candidate tables, heap allocation and indirect access",
+      "host_services": "CPython runtime today; full experiment also needs model/evaluator services"
+    },
+    "serialization": {
+      "ape": "Object traversal and JSON serialization",
+      "ppe": "Optional batched byte scans; not serial object traversal by assumption",
+      "cp": "Publish trace buffers and dependent tasks",
+      "memory": "Strings, object heap, output buffers",
+      "host_services": "CPython/json and file persistence; model execution is outside this case"
+    },
+    "playbook": {
+      "ape": "Mutable dictionaries, counters and curator edits",
+      "ppe": "No established benefit for small serial updates",
+      "cp": "Order updates after evaluations; signal version completion",
+      "memory": "Private mutable heap, versioned shared buffers",
+      "host_services": "CPython objects/exceptions; full ACE model and dataset services absent"
+    },
+    "extraction": {
+      "ape": "Regex/JSON control and validation",
+      "ppe": "Optional independent-document scanning",
+      "cp": "Batch dispatch and validation completion",
+      "memory": "Text buffers, parser stack/heap",
+      "host_services": "CPython/re/json; malformed-input handling and I/O stay on host"
+    },
+    "editing": {
+      "ape": "Edit validation, file-buffer transforms and error paths",
+      "ppe": "Optional bulk compare/copy, excluding filesystem semantics",
+      "cp": "Sequence edit then build/test, publish immutable version",
+      "memory": "Old/new buffers, permission bounds and copy-on-write policy",
+      "host_services": "Filesystem permissions, read/write and durable publication; Python runtime"
+    },
+    "search": {
+      "ape": "Branching graph/SAT search, random state and scoring",
+      "ppe": "Independent restarts or batched score reductions, unproven",
+      "cp": "Spawn bounded trials, collect scores and cancel losers",
+      "memory": "Graph/clause arrays, private mutable state and heaps",
+      "host_services": "CPython and deterministic RNG fixtures; full STOP model/safe evaluator absent"
+    },
+    "diff": {
+      "ape": "Git algorithm control, matching and patch validation",
+      "ppe": "Possible batched line hashing/byte comparison, not all of Git",
+      "cp": "Dependency between diff, apply and later tests",
+      "memory": "Variable-sized strings, indexes and working buffers",
+      "host_services": "Git executable, processes, temporary filesystem and patch publication"
+    },
+    "bytecode": {
+      "ape": "CPython AST parsing and bytecode generation",
+      "ppe": "Independent files or scanner kernels only; no evidence for serial compiler speedup",
+      "cp": "File-level work graph and error/result collection",
+      "memory": "AST/object allocation, stacks, symbol tables and pointer traversal",
+      "host_services": "CPython compiler/objects/exceptions and source file input; no native compiler or full Python application"
+    }
+  },
+  "cases": [
+    {
+      "id": "gepa.pareto",
+      "source": "gepa",
+      "profile": "pareto",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "gepa.trace-json",
+      "source": "gepa",
+      "profile": "serialization",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ace.counter-update",
+      "source": "ace",
+      "profile": "playbook",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ace.curator-add",
+      "source": "ace",
+      "profile": "playbook",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ace.json-extract",
+      "source": "ace",
+      "profile": "extraction",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "dgm.edit",
+      "source": "dgm",
+      "profile": "editing",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "stop.maxcut",
+      "source": "stop",
+      "profile": "search",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "stop.sat",
+      "source": "stop",
+      "profile": "search",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "gepa.diff-patch",
+      "source": "gepa",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "gepa.python-compile",
+      "source": "gepa",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ace.diff-patch",
+      "source": "ace",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ace.python-compile",
+      "source": "ace",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "aflow.diff-patch",
+      "source": "aflow",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "aflow.python-compile",
+      "source": "aflow",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "dgm.diff-patch",
+      "source": "dgm",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "dgm.python-compile",
+      "source": "dgm",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "stop.diff-patch",
+      "source": "stop",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "stop.python-compile",
+      "source": "stop",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ahe.diff-patch",
+      "source": "ahe",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "ahe.python-compile",
+      "source": "ahe",
+      "profile": "bytecode",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    },
+    {
+      "id": "gascity.diff-patch",
+      "source": "gascity",
+      "profile": "diff",
+      "measured_backend": "host",
+      "hats_execution": false,
+      "full_agent_experiment": false
+    }
+  ],
+  "native_tool": {
+    "id": "tree-sitter-json",
+    "source_lock": "native/treesitter/sources.lock.json",
+    "case_lock": "native/treesitter/cases.lock.json",
+    "measured_backend": "host_native",
+    "proposed_engine": "APE",
+    "static_target_audit": {
+      "evidence": "evidence/S01-RISCV-AUDIT.json",
+      "profiles": ["rv64i", "rv64im", "rv64ima"],
+      "status": "static_audit_complete_strict_links_blocked",
+      "target_execution": false
+    },
+    "ppe_role": "Only separately measured batched scans; incremental tree traversal stays scalar initially",
+    "cp_role": "Parse/edit/evaluate dependency scheduling in S05",
+    "memory": "Allocator and multi-megabyte retained trees; instruction/data capacity must exceed current app harness",
+    "host_services": "Build/link, runner processes, file input, result serialization and all model/network services",
+    "hats_execution": false,
+    "full_agent_experiment": false
+  },
+  "phases": {
+    "inference": {
+      "measured": false,
+      "engine": "future PPE tensor/S08",
+      "host_role": "Model service/backend not integrated"
+    },
+    "tool": {
+      "measured": true,
+      "engine": "host; proposed APE plus selective PPE",
+      "scope": "Selected components, native parsing, and real git diff/apply in a deterministic coding-tool workflow"
+    },
+    "compilation": {
+      "measured": true,
+      "engine": "host",
+      "scope": "Six CPython bytecode cases and real Clang C compile/link in the traced local coding-tool workflow; not compiler execution on HATS"
+    },
+    "tests": {
+      "measured": true,
+      "engine": "host",
+      "scope": "Independent fixture checks, valid edits, semantic-mutation rejection and compiler rejection in a local tool workflow; not a full agent-quality evaluation"
+    },
+    "orchestration": {
+      "measured": true,
+      "engine": "host controller; proposed CP plus APE runtime",
+      "scope": "Serial edit/build/test dependency chain, subprocess launch/wait and controller gaps; no inference, concurrency or CP acceleration",
+      "evidence": "evidence/S01-DEMAND-PROFILE.json"
+    },
+    "network_wait": {
+      "measured": false,
+      "engine": "host/service OS",
+      "host_role": "Downloads are setup, excluded from operation timing; no model/network calls during cases"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "revision": "S01-0.3",
+  "issue": "https://github.com/chienpinglu/HATS/issues/2",
+  "claim_class": "requirements_and_native_baselines",
+  "work_packages": {
+    "WP1": {"review": "All 21 case IDs and seven pinned projects map to proposed APE/PPE/CP, memory and host services. Components are explicitly separate from full experiments.", "evidence": ["workloads/capabilities.json", "workloads/COVERAGE.md", "workloads/test_capabilities.py"]},
+    "WP2": {"review": "Select unmodified Tree-sitter C plus JSON after comparing Git, CPython and LLVM scope; freeze source/license and input/independent-output identities. No upstream port patches yet.", "evidence": ["workloads/native/treesitter/sources.lock.json", "workloads/native/treesitter/cases.lock.json", "workloads/native/treesitter/README.md", "workloads/evidence/S01-HOST-BASELINE.json"]},
+    "WP3": {"review": "Native sizes, allocator/heap data, instrumented branch outcomes and memory locality, observed touched-stack extent, ordered atomic counts, real Git/Clang process/file use and serial critical path. Static RV64 instruction/link audit is supplemental, not execution. PMU misses, contention and worst-case target bounds remain downstream.", "evidence": ["workloads/evidence/S01-HOST-BASELINE.json", "workloads/evidence/S01-DEMAND-PROFILE.json", "workloads/evidence/S01-RISCV-AUDIT.json", "workloads/profile/README.md"]},
+    "WP4": {"review": "PPE-0.1 fixes wave/scalar/vector state, masks, structured reconvergence, barriers, bounded scratch, one-outstanding memory and partial-store faults. Binary allocation/model/RTL are explicitly S02 tasks.", "evidence": ["hardware/spinal/spec/PPE-0.1.md"]},
+    "WP5": {"review": "HATS-TASK-0.1 fixes 128-byte descriptors, 64-byte completions, queue epochs/ownership, dependency bounds, engine/context identities, release/acquire and drain. Completion correlation and total scratch overflow reviewed and tested. Stateful permission/CP enforcement is not a codec claim.", "evidence": ["hardware/spinal/spec/HATS-TASK-ABI-0.1.md", "hardware/spinal/tools/task_abi.py", "hardware/spinal/tools/test_task_abi.py"]},
+    "WP6": {"review": "Prioritize real code/data capacity, runtime/providers, atomic semantics and error behavior before OoO/cache/tensor sizing. Freeze comparison identities and require native/independent-ISA/RTL parity at their respective gates.", "evidence": ["workloads/S01-CAPABILITY-MAP.md", "workloads/S01-COMPLETION.md"]}
+  },
+  "acceptance": {
+    "AC1": {"review": "Exact per-case map plus tests, without treating proposed placement as existing acceleration.", "evidence": ["workloads/capabilities.json", "workloads/test_capabilities.py"]},
+    "AC2": {"review": "150 checked native/reference/sanitizer runs on ten frozen fixtures; pristine public upstream pins, license notices and independent JSON type/span/depth oracle.", "evidence": ["workloads/evidence/S01-HOST-BASELINE.json", "workloads/native/treesitter/test_baseline.py", "workloads/native/treesitter/sources.lock.json", "workloads/native/treesitter/cases.lock.json"]},
+    "AC3": {"review": "Minimum S02 direct-launch and S05 CP adapter boundaries specified, including memory/fault/completion obligations; follow-ups below remain owned by their original stage issues.", "evidence": ["hardware/spinal/spec/PPE-0.1.md", "hardware/spinal/spec/HATS-TASK-ABI-0.1.md", "workloads/S01-COMPLETION.md"]},
+    "AC4": {"review": "Six phase categories separated. Real local edit/diff/apply/compile/link/test events have serial dependency and wall-clock accounting. Inference/network are unexercised, not assumed cheap or offloadable. No whole-agent acceleration claim.", "evidence": ["workloads/evidence/S01-DEMAND-PROFILE.json", "workloads/profile/workflow.py", "workloads/profile/README.md"]}
+  },
+  "followups": [
+    {"issue": 3, "stage": "S02", "tasks": ["Implement verified compiler/runtime providers and explicit startup/ELF/heap/stack/service adapter; strict-link then execute all frozen fixtures on Spike and APE RTL", "Freeze original PPE encoding/code object; implement independent model/assembler, SpinalHDL PPE and direct engine adapter with negative trace tests"]},
+    {"issue": 4, "stage": "S03", "tasks": ["Design and validate the performance OoO core; measure dynamic stalls/branches before width/ROB/PRF sizing"]},
+    {"issue": 5, "stage": "S04", "tasks": ["Measure real cache/branch PMU behavior where available and target memory stalls; validate cache/MSHR/LSQ ordering and coalescing", "Establish target stack/heap resource bounds, exhaustion tests and concurrency/atomic ordering, rather than inheriting native watermark values"]},
+    {"issue": 6, "stage": "S05", "tasks": ["Implement actual CP queue/dependency/completion state machine including full rings, rejected descriptors, duplicate IDs, stale epochs, timeout/drain and device children", "Demonstrate APE-to-PPE-to-APE continuation without a host scheduler substitution"]},
+    {"issue": 7, "stage": "S06", "tasks": ["Enforce capability/address-generation checks on every master, pin/copy metadata, handle TOCTOU and invalidation", "Specify preemption, faults, syscall/error services and isolation before generated/untrusted code"]},
+    {"issue": 8, "stage": "S07", "tasks": ["Implement four-domain near/far topology discovery, allocation/migration and measured HBM/LPDDR placement/coherence"]},
+    {"issue": 9, "stage": "S08", "tasks": ["Specify tensor/FP and compiler lowering, execute independently checked inference; no extrapolation from parser profiles"]},
+    {"issue": 10, "stage": "S09", "tasks": ["Run authorized model-driven agent/RSI trajectories, larger languages/workloads and concurrent fork/join under fixed quality/evaluation and compute scope", "Measure inference/network/compilation/tests/orchestration critical path and equal-quality end-to-end HATS comparison"]},
+    {"issue": 11, "stage": "S10", "tasks": ["Close separate RTL, FPGA and physical implementation gates using pinned configurations; no frequency/area/tapeout claims from S01"]}
+  ],
+  "limits": [
+    "S01 completion is requirements/native evidence, not runnable upstream software on APE or a completed OoO/PPE/CP processor.",
+    "Static I/IM/IMA strict links remain blocked by enumerated providers; target execution belongs to S02.",
+    "Compiler probes are not PMU counters; touched stack is not a worst-case target bound; single-thread atomic counts do not measure contention.",
+    "All seven upstream agent projects are component/source coverage, not full reproduced experiments.",
+    "The local workflow uses deterministic edits, not an LLM. Inference, network, concurrency and full agent-quality evaluation remain unmeasured.",
+    "No HATS speedup, CPU:GPU ratio, optimal ROB/cache size, silicon PPA or tapeout readiness follows from these results."
+  ]
+}

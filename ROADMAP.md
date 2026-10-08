@@ -24,7 +24,7 @@ Moving conventional CPU work into the package alone does not prove acceleration.
 | --- | --- | --- |
 | APE | Application Processing Engine: speculative out-of-order RISC-V application execution | Small integer OoO RTL prototype with bounded applications; not a complete high-performance big core |
 | PPE | Parallel Processing Engine: GPU-class programmable scalar/vector/tensor execution | Architecture and implementation pending |
-| PpeCore / PpeCluster | Proposed names for a PPE compute core (CU) and a group of such cores | Naming and interfaces to be specified in S01 |
+| PpeCore / PpeCluster | PPE compute core (CU) and a group of such cores | Minimum S01 contract specified; model/encoding/RTL remain S02 |
 | CP | Command Processor: embedded RISC-V controller for queues, dispatch and completion | Separate core/firmware integration pending |
 | Memory/service fabric | Caches, translation/protection, ordering, DMA, locality and asynchronous services | Full system pending; current APE uses a single head-ordered data port |
 
@@ -107,6 +107,13 @@ closure requirements. Keep both aligned when scope or dependencies change.
 
 ### S01: Profile real agent workloads and define the HATS architecture contract
 
+Progress: [S01 completion review and gate](workloads/S01-COMPLETION.md) cover the
+case map, pinned native baseline, branch/memory/atomic/stack demand profiles,
+real local edit/build/test critical path and reviewed minimum architecture
+contracts. The [RISC-V compile/link audit](workloads/target/treesitter/README.md)
+identifies exact missing runtime providers; strict executable links remain
+blocked. Target execution remains an S02 gate, not an S01 acceleration claim.
+
 **Goal:** Produce a workload-backed system contract and select the first pinned upstream tool port, with APE, PPE and CP interfaces defined together.
 
 **Dependencies:** Baseline cc23093; no earlier stage.
@@ -115,19 +122,19 @@ closure requirements. Keep both aligned when scope or dependencies change.
 
 **Work packages**
 
-- [ ] Map the existing 21 host-side cases and the GEPA, ACE, AFlow, DGM, STOP, AHE and Gas City coverage to APE, PPE, CP, memory and OS services; distinguish component tests from full experiments.
-- [ ] Select and pin a real upstream tool, review license/provenance, freeze inputs and expected outputs, and record any port patches separately. Evaluate Tree-sitter runtime plus one grammar as the first candidate rather than treating it as a committed selection.
-- [ ] Capture executable size, instruction requirements, stack/heap use, allocation, branches, locality, synchronization, file/process services and critical-path time on representative inputs.
-- [ ] Specify the PPE execution model: thread/wave grouping, scalar/vector register semantics, predication, divergence/reconvergence, synchronization, memory operations and fault reporting.
-- [ ] Specify versioned task descriptors, queues, completion ownership, engine identifiers and APE/PPE/CP interfaces; record address-space and memory-ordering requirements.
-- [ ] Set the initial prototype scope and comparison protocol; rank missing capabilities before selecting issue width, ROB size, cache size or tensor shape.
+- [x] Map the existing 21 host-side cases and the GEPA, ACE, AFlow, DGM, STOP, AHE and Gas City coverage to APE, PPE, CP, memory and OS services; distinguish component tests from full experiments.
+- [x] Select and pin a real upstream tool, review license/provenance, freeze inputs and expected outputs, and record any port patches separately. Evaluate Tree-sitter runtime plus one grammar as the first candidate rather than treating it as a committed selection.
+- [x] Capture executable size, instruction requirements, stack/heap use, allocation, branches, locality, synchronization, file/process services and critical-path time on representative inputs.
+- [x] Specify the PPE execution model: thread/wave grouping, scalar/vector register semantics, predication, divergence/reconvergence, synchronization, memory operations and fault reporting.
+- [x] Specify versioned task descriptors, queues, completion ownership, engine identifiers and APE/PPE/CP interfaces; record address-space and memory-ordering requirements.
+- [x] Set the initial prototype scope and comparison protocol; rank missing capabilities before selecting issue width, ROB size, cache size or tensor shape.
 
 **Acceptance criteria**
 
-- [ ] A versioned workload-to-capability matrix identifies the execution engine and remaining host service for every selected case.
-- [ ] The selected real tool has a reproducible native baseline, pinned source/license, fixed inputs and independent output checks.
-- [ ] APE/PPE/CP and PPE execution-model specifications resolve the minimum interfaces required to begin S02 and S05; unresolved decisions have explicit follow-up tasks.
-- [ ] The baseline distinguishes inference, tool execution, compilation, tests, orchestration and network wait instead of attributing all CPU time to an offloadable kernel.
+- [x] A versioned workload-to-capability matrix identifies the execution engine and remaining host service for every selected case.
+- [x] The selected real tool has a reproducible native baseline, pinned source/license, fixed inputs and independent output checks.
+- [x] APE/PPE/CP and PPE execution-model specifications resolve the minimum interfaces required to begin S02 and S05; unresolved decisions have explicit follow-up tasks.
+- [x] The baseline distinguishes inference, tool execution, compilation, tests, orchestration and network wait instead of attributing all CPU time to an offloadable kernel.
 
 **Required evidence:** Profile commands, pinned source manifest, input hashes, native output checks, capability matrix and versioned architecture/ABI specifications.
 

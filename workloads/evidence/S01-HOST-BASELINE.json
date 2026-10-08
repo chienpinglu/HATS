@@ -1,0 +1,1250 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "claim_class": "host_only_S01_evidence",
+  "report_hashes": [
+    {
+      "sha256": "719cf1a204a0a637d4d0085d39d4ff57bfa0c7730401b1ef22275472f8690ab0",
+      "local_report": "workloads/results/treesitter-1791468232512704000/validation.json"
+    },
+    {
+      "sha256": "ba4a009807fcb3f6de19c18518a08bf40d7ca77b11f1cb597f5f97620971681e",
+      "local_report": "workloads/results/run-1791467164815413000.json"
+    }
+  ],
+  "native": {
+    "schema": 1,
+    "date": "2026-10-08",
+    "claim_class": "host_native_tool_baseline",
+    "hats_execution": false,
+    "full_agent_experiment": false,
+    "status": "passed",
+    "machine": "arm64",
+    "system": "Darwin",
+    "compiler": "Homebrew clang version 23.1.2",
+    "runs_passed": 150,
+    "source_sha256": {
+      "native/treesitter/README.md": "966cf11fdfbdbb8ff2edd910392fb2569a6a4b29f7e303c4ad664af4eed8d6bc",
+      "native/treesitter/baseline.c": "aa10c8c4df62989bbfaf36542e07bb962ed1001fa9fe88451f94ee35bdf7d10e",
+      "native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+      "native/treesitter/profile.c": "e2ba608e8e609240aedc5407b1534ff60ee0dea55c54da95c0b0e1157b16fc13",
+      "native/treesitter/profile.h": "eb19e80fc468e7a5a2964c296581767e18133e07195049b8a0df9c5b4fbdaf45",
+      "native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+      "native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+      "native/treesitter/test_baseline.py": "c14826d8e66041766d1dd683ec23b83a64e40708a1471ae7cbab1cfa3303265e"
+    },
+    "fixtures": {
+      "schema": 1,
+      "input_class": "Original deterministic fixtures and one repository lockfile; not recorded agent trajectories",
+      "cases": [
+        {
+          "id": "empty",
+          "old_bytes": 2,
+          "new_bytes": 14,
+          "old_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "new_sha256": "b342fc286d0216cc212e0d7ba234894e2e7283ddf14f959adf0fe7fd5924308a",
+          "old_expected_sha256": "67ccee6716e89b02d9c4554b7dfbdad0d38aa52777c96db36ddb3a7baedad9c3",
+          "new_expected_sha256": "48830e9b97cc6f739e567682233a4f729b853091bda49a69120285b67547642e"
+        },
+        {
+          "id": "scalars",
+          "old_bytes": 32,
+          "new_bytes": 32,
+          "old_sha256": "445b32263ae8286be03076e49d2e52abbc2991ee7efe3bfbc6005af6cf073f2a",
+          "new_sha256": "028163c7a9a11cd036067a544f8eea3926d61af59db19f39f5a284631b8e74f5",
+          "old_expected_sha256": "cd0ef21a1d8b7bccf2c1905a626f35e85f24c87b3fb9dbff5300c6ac3358740f",
+          "new_expected_sha256": "58e55df94b1c0bae4e93d0ecebbbbd0d5e071ab231407fa6603bf54761638f0e"
+        },
+        {
+          "id": "unicode",
+          "old_bytes": 46,
+          "new_bytes": 46,
+          "old_sha256": "13b9f7ee209fd788e54e8075758450c8c7a8aaca42955a0485420fbc7df26721",
+          "new_sha256": "8b7641b7e9079d307d84d17cef9fdd81c7bf9b4089c5ed12484d8995266a7bb3",
+          "old_expected_sha256": "4637236b690e829fd7302f86a33b2ca846d74614cd9472f81c61315a18246de0",
+          "new_expected_sha256": "4637236b690e829fd7302f86a33b2ca846d74614cd9472f81c61315a18246de0"
+        },
+        {
+          "id": "nested",
+          "old_bytes": 97,
+          "new_bytes": 99,
+          "old_sha256": "05afd80362c15d6a875250d2a1b5a45179cfb53b01f257bc8a0dce7036735726",
+          "new_sha256": "71a1266ae6e50a0c443111bb90e35f4b50e823a9448190ff54a2efc100533bba",
+          "old_expected_sha256": "4082f2ee4790e29ba9ef04ffa6e8577f0b35098525440754f71188496061f6e2",
+          "new_expected_sha256": "6286399b6d5c0bb0a99cdbee0e181af2ccc4c5a7e01c1964419f9675f615a188"
+        },
+        {
+          "id": "trailing_comma",
+          "old_bytes": 12,
+          "new_bytes": 11,
+          "old_sha256": "2aae835d099e12383ed72a9590aeca9a14ee7f103715892e14c0a76f0c90ebd8",
+          "new_sha256": "036b898f9248c0e83d645e262473d1d93b3085400b881ff658928b81ca06de91",
+          "old_expected_sha256": "290426bba572930d197d932f37dbef7a778c589b6cee1fa585282faf7af73f28",
+          "new_expected_sha256": "ff41e50bd9be47800f80bab104e0e548ed9575d17e4e6046f25085373a8699ae"
+        },
+        {
+          "id": "truncated",
+          "old_bytes": 16,
+          "new_bytes": 16,
+          "old_sha256": "0e544b741fd6c973c1b679755e9e5070c37a4a9b6231c1805a21c8fabcfeb7bb",
+          "new_sha256": "8c35f2c31f5d4103fa01196098f0b63ba6f01c0709d5402977ddb771c3d22a41",
+          "old_expected_sha256": "290426bba572930d197d932f37dbef7a778c589b6cee1fa585282faf7af73f28",
+          "new_expected_sha256": "c164ffd3ee3da93d873fa97da65c0857ddf911eeec1775ea75aacb1b537356ff"
+        },
+        {
+          "id": "records_16",
+          "old_bytes": 852,
+          "new_bytes": 862,
+          "old_sha256": "f0c0e665dde093d976325399d1388e8ae3c78353da80a873f2367d5247c8b54b",
+          "new_sha256": "4bc95c16ae51f27bb29e8b99296fa75b16a0fee5272f7f3fc0b13fa29390d8ee",
+          "old_expected_sha256": "89f33d90c8eccbbf335273723614ec6b9f2ba3c9c4323c43559ee459194b68ba",
+          "new_expected_sha256": "0a00e7551c24602b7775eba6db7b3372c3337ad58374ada0b262667bdf9447f2"
+        },
+        {
+          "id": "records_256",
+          "old_bytes": 14833,
+          "new_bytes": 14841,
+          "old_sha256": "f9e45c70b1150a28c3372197a2e12486ee005bc9ffbc23b36f2d8bb0b9640c46",
+          "new_sha256": "4d8c8269bc6c19b38bc09aa8ab831f050e6780d8ac49efae24ff1ad1b4ab26cb",
+          "old_expected_sha256": "d922252e1fcf6f49fc6321c3aed563f92938a2d45e3aa4fabd9a1b70cda20392",
+          "new_expected_sha256": "f1874a260d337670eb83e68f58caa91df2d51bf8b7cb26cefc15ebdc1b2383ec"
+        },
+        {
+          "id": "records_2048",
+          "old_bytes": 125945,
+          "new_bytes": 125952,
+          "old_sha256": "04669fd3405c245bd9272f708628923d23d1d9ce251abe56294a0c482145fc1f",
+          "new_sha256": "9778f67b54016437cfe2af814f8e3a8e1992d14fcd44d1779495f52e48b707ee",
+          "old_expected_sha256": "5315813521347c609b44b9fbb525ded7e541b7df5a010706ae1927b167338497",
+          "new_expected_sha256": "3760eb77a946a7f2262754815fcef45de1ae293f6e5a1ba739a20e7f26afdb4a"
+        },
+        {
+          "id": "repository_lock",
+          "old_bytes": 7920,
+          "new_bytes": 5672,
+          "old_sha256": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+          "new_sha256": "1cc86a7a66ddaa646f46dba9758d4bc099b12a2a901d9163767c332d0a5449e1",
+          "old_expected_sha256": "6e0aab80f08f9592f4f8e8c09d3d935f4e4534644810507dfec34a2597da95ab",
+          "new_expected_sha256": "01433369fb8edcf7edcc417c68f42950ff3b63de1ce01130c82905bfca51098e"
+        }
+      ]
+    },
+    "limits": [
+      "Host arm64/x86 measurements are not RISC-V code size, cycles or target performance",
+      "Allocator accounting covers requested Tree-sitter bytes, not libc metadata or all process memory",
+      "Instrumented edges/call-stack samples and input-read chunks are diagnostics, not PMU branch/cache counters",
+      "No model inference, compilation-on-target, full agent orchestration or network operation is measured"
+    ],
+    "builds": {
+      "native": {
+        "executable_bytes": 245752,
+        "executable_sha256": "7666572338a502118e19765a557adb2984123ce14773e11b35b8608d18a5670a",
+        "host_build_seconds": 1.8250423329882324
+      },
+      "instrumented": {
+        "executable_bytes": 448328,
+        "executable_sha256": "066e9c2d3bdd0dcb8067667891b84214340661999289e2eb772c7543c13ce683",
+        "host_build_seconds": 1.489690582966432
+      },
+      "sanitized": {
+        "executable_bytes": 772360,
+        "executable_sha256": "bb1892b9a8f9924c2f8e541c7e0468103c9d20ba69fda7cf7babab521cced96e",
+        "host_build_seconds": 2.7312905830331147
+      }
+    },
+    "native_executable_text_bytes": 140072,
+    "native_runtime_undefined_symbols": "__DefaultRuneLocale\n___assert_rtn\n___maskrune\n___stack_chk_fail\n___stack_chk_guard\n___stderrp\n_abort\n_bzero\n_calloc\n_clock_gettime\n_dup\n_fclose\n_fdopen\n_fprintf\n_fputc\n_fputs\n_free\n_fwrite\n_malloc\n_memcmp\n_memcpy\n_memmove\n_realloc\n_snprintf\n_strncmp\n_vsnprintf\n",
+    "cases": [
+      {
+        "id": "empty",
+        "cold_new_native_wall_ns": [
+          12000,
+          16000,
+          21000
+        ],
+        "incremental_native_wall_ns": [
+          7000,
+          8000,
+          20000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 10000,
+            "cpu_ns": 10000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 24000,
+            "cpu_ns": 25000,
+            "alloc_calls": 10,
+            "realloc_calls": 1,
+            "free_calls": 1,
+            "allocated_bytes": 1264,
+            "live_start": 2984,
+            "live_end": 4080,
+            "peak_live": 4112,
+            "edge_visits": 857,
+            "unique_edges": 310,
+            "function_entries": 692,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 13000,
+            "cpu_ns": 12000,
+            "alloc_calls": 14,
+            "realloc_calls": 1,
+            "free_calls": 3,
+            "allocated_bytes": 1864,
+            "live_start": 4080,
+            "live_end": 5312,
+            "peak_live": 5344,
+            "edge_visits": 2287,
+            "unique_edges": 425,
+            "function_entries": 1965,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 2,
+            "delivered_bytes": 2,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 14,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 2000,
+            "cpu_ns": 1000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 32,
+            "allocated_bytes": 128,
+            "live_start": 5312,
+            "live_end": 0,
+            "peak_live": 5376,
+            "edge_visits": 116,
+            "unique_edges": 57,
+            "function_entries": 82,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "nested",
+        "cold_new_native_wall_ns": [
+          21000,
+          21000,
+          23000
+        ],
+        "incremental_native_wall_ns": [
+          17000,
+          19000,
+          20000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 15000,
+            "cpu_ns": 15000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 118000,
+            "cpu_ns": 118000,
+            "alloc_calls": 153,
+            "realloc_calls": 1,
+            "free_calls": 2,
+            "allocated_bytes": 21520,
+            "live_start": 2984,
+            "live_end": 24104,
+            "peak_live": 24368,
+            "edge_visits": 26176,
+            "unique_edges": 319,
+            "function_entries": 20690,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 132000,
+            "cpu_ns": 133000,
+            "alloc_calls": 106,
+            "realloc_calls": 5,
+            "free_calls": 5,
+            "allocated_bytes": 14368,
+            "live_start": 24104,
+            "live_end": 35608,
+            "peak_live": 35872,
+            "edge_visits": 29662,
+            "unique_edges": 419,
+            "function_entries": 28956,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 2,
+            "delivered_bytes": 97,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 52,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 7000,
+            "cpu_ns": 6000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 264,
+            "allocated_bytes": 128,
+            "live_start": 35608,
+            "live_end": 0,
+            "peak_live": 35672,
+            "edge_visits": 1091,
+            "unique_edges": 57,
+            "function_entries": 642,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "records_16",
+        "cold_new_native_wall_ns": [
+          67000,
+          71000,
+          80000
+        ],
+        "incremental_native_wall_ns": [
+          11000,
+          12000,
+          12000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 10000,
+            "cpu_ns": 10000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 439000,
+            "cpu_ns": 438000,
+            "alloc_calls": 435,
+            "realloc_calls": 2,
+            "free_calls": 1,
+            "allocated_bytes": 44608,
+            "live_start": 2984,
+            "live_end": 47360,
+            "peak_live": 47360,
+            "edge_visits": 134086,
+            "unique_edges": 382,
+            "function_entries": 103983,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 43000,
+            "cpu_ns": 43000,
+            "alloc_calls": 33,
+            "realloc_calls": 3,
+            "free_calls": 4,
+            "allocated_bytes": 4184,
+            "live_start": 47360,
+            "live_end": 50448,
+            "peak_live": 50480,
+            "edge_visits": 10541,
+            "unique_edges": 462,
+            "function_entries": 9957,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 5,
+            "delivered_bytes": 852,
+            "unique_256b_chunks": 4,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 256,
+            "unique_256b_chunks": 2,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 18000,
+            "cpu_ns": 18000,
+            "alloc_calls": 2,
+            "realloc_calls": 1,
+            "free_calls": 475,
+            "allocated_bytes": 256,
+            "live_start": 50448,
+            "live_end": 0,
+            "peak_live": 50512,
+            "edge_visits": 2491,
+            "unique_edges": 59,
+            "function_entries": 1401,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "records_2048",
+        "cold_new_native_wall_ns": [
+          7856000,
+          8103000,
+          8367000
+        ],
+        "incremental_native_wall_ns": [
+          341000,
+          349000,
+          350000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 23000,
+            "cpu_ns": 23000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 54464000,
+            "cpu_ns": 54320000,
+            "alloc_calls": 53267,
+            "realloc_calls": 8,
+            "free_calls": 1,
+            "allocated_bytes": 5230144,
+            "live_start": 2984,
+            "live_end": 5224832,
+            "peak_live": 5224832,
+            "edge_visits": 17517232,
+            "unique_edges": 382,
+            "function_entries": 13534847,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 2989000,
+            "cpu_ns": 2984000,
+            "alloc_calls": 2065,
+            "realloc_calls": 3,
+            "free_calls": 4,
+            "allocated_bytes": 199256,
+            "live_start": 5224832,
+            "live_end": 5422992,
+            "peak_live": 5423024,
+            "edge_visits": 918129,
+            "unique_edges": 465,
+            "function_entries": 864714,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 493,
+            "delivered_bytes": 125945,
+            "unique_256b_chunks": 492,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 256,
+            "unique_256b_chunks": 2,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 1554000,
+            "cpu_ns": 1555000,
+            "alloc_calls": 2,
+            "realloc_calls": 3,
+            "free_calls": 55339,
+            "allocated_bytes": 640,
+            "live_start": 5422992,
+            "live_end": 0,
+            "peak_live": 5423056,
+            "edge_visits": 301195,
+            "unique_edges": 59,
+            "function_entries": 168027,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "records_256",
+        "cold_new_native_wall_ns": [
+          928000,
+          958000,
+          976000
+        ],
+        "incremental_native_wall_ns": [
+          45000,
+          53000,
+          55000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 11000,
+            "cpu_ns": 10000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 6675000,
+            "cpu_ns": 6675000,
+            "alloc_calls": 6675,
+            "realloc_calls": 5,
+            "free_calls": 1,
+            "allocated_bytes": 656960,
+            "live_start": 2984,
+            "live_end": 658816,
+            "peak_live": 658816,
+            "edge_visits": 2174012,
+            "unique_edges": 382,
+            "function_entries": 1683434,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 388000,
+            "cpu_ns": 388000,
+            "alloc_calls": 273,
+            "realloc_calls": 3,
+            "free_calls": 4,
+            "allocated_bytes": 27224,
+            "live_start": 658816,
+            "live_end": 684944,
+            "peak_live": 684976,
+            "edge_visits": 117357,
+            "unique_edges": 465,
+            "function_entries": 110561,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 59,
+            "delivered_bytes": 14833,
+            "unique_256b_chunks": 58,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 256,
+            "unique_256b_chunks": 2,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 214000,
+            "cpu_ns": 213000,
+            "alloc_calls": 2,
+            "realloc_calls": 1,
+            "free_calls": 6955,
+            "allocated_bytes": 256,
+            "live_start": 684944,
+            "live_end": 0,
+            "peak_live": 685008,
+            "edge_visits": 37771,
+            "unique_edges": 59,
+            "function_entries": 21081,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "repository_lock",
+        "cold_new_native_wall_ns": [
+          157000,
+          158000,
+          163000
+        ],
+        "incremental_native_wall_ns": [
+          210000,
+          219000,
+          222000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 11000,
+            "cpu_ns": 11000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 1146000,
+            "cpu_ns": 1146000,
+            "alloc_calls": 927,
+            "realloc_calls": 3,
+            "free_calls": 1,
+            "allocated_bytes": 95808,
+            "live_start": 2984,
+            "live_end": 98432,
+            "peak_live": 98432,
+            "edge_visits": 396206,
+            "unique_edges": 377,
+            "function_entries": 281286,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 1689000,
+            "cpu_ns": 1688000,
+            "alloc_calls": 2117,
+            "realloc_calls": 6,
+            "free_calls": 1219,
+            "allocated_bytes": 190680,
+            "live_start": 98432,
+            "live_end": 188000,
+            "peak_live": 188032,
+            "edge_visits": 502530,
+            "unique_edges": 473,
+            "function_entries": 439609,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 32,
+            "delivered_bytes": 7920,
+            "unique_256b_chunks": 31,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 23,
+            "delivered_bytes": 5672,
+            "unique_256b_chunks": 23,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 94000,
+            "cpu_ns": 76000,
+            "alloc_calls": 2,
+            "realloc_calls": 4,
+            "free_calls": 1836,
+            "allocated_bytes": 896,
+            "live_start": 188000,
+            "live_end": 0,
+            "peak_live": 188064,
+            "edge_visits": 10331,
+            "unique_edges": 61,
+            "function_entries": 5427,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "scalars",
+        "cold_new_native_wall_ns": [
+          14000,
+          17000,
+          17000
+        ],
+        "incremental_native_wall_ns": [
+          9000,
+          10000,
+          11000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 13000,
+            "cpu_ns": 12000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 50000,
+            "cpu_ns": 50000,
+            "alloc_calls": 31,
+            "realloc_calls": 1,
+            "free_calls": 1,
+            "allocated_bytes": 3648,
+            "live_start": 2984,
+            "live_end": 6464,
+            "peak_live": 6496,
+            "edge_visits": 5841,
+            "unique_edges": 371,
+            "function_entries": 4522,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 33000,
+            "cpu_ns": 33000,
+            "alloc_calls": 26,
+            "realloc_calls": 2,
+            "free_calls": 8,
+            "allocated_bytes": 2888,
+            "live_start": 6464,
+            "live_end": 8192,
+            "peak_live": 8224,
+            "edge_visits": 5573,
+            "unique_edges": 481,
+            "function_entries": 5175,
+            "max_call_depth": 10,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 2,
+            "delivered_bytes": 32,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 27,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 4000,
+            "cpu_ns": 4000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 60,
+            "allocated_bytes": 128,
+            "live_start": 8192,
+            "live_end": 0,
+            "peak_live": 8256,
+            "edge_visits": 234,
+            "unique_edges": 58,
+            "function_entries": 166,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "trailing_comma",
+        "cold_new_native_wall_ns": [
+          11000,
+          12000,
+          17000
+        ],
+        "incremental_native_wall_ns": [
+          4000,
+          5000,
+          7000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 11000,
+            "cpu_ns": 10000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 57000,
+            "cpu_ns": 57000,
+            "alloc_calls": 47,
+            "realloc_calls": 8,
+            "free_calls": 16,
+            "allocated_bytes": 7464,
+            "live_start": 2984,
+            "live_end": 8024,
+            "peak_live": 8840,
+            "edge_visits": 7040,
+            "unique_edges": 550,
+            "function_entries": 5235,
+            "max_call_depth": 12,
+            "sampled_stack_span": 1376
+          },
+          "incremental_parse": {
+            "wall_ns": 18000,
+            "cpu_ns": 18000,
+            "alloc_calls": 16,
+            "realloc_calls": 2,
+            "free_calls": 5,
+            "allocated_bytes": 2008,
+            "live_start": 8024,
+            "live_end": 9112,
+            "peak_live": 9144,
+            "edge_visits": 3175,
+            "unique_edges": 434,
+            "function_entries": 3125,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 6,
+            "delivered_bytes": 16,
+            "unique_256b_chunks": 1,
+            "backward_reads": 2
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 3,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 3000,
+            "cpu_ns": 3000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 54,
+            "allocated_bytes": 128,
+            "live_start": 9112,
+            "live_end": 0,
+            "peak_live": 9176,
+            "edge_visits": 188,
+            "unique_edges": 58,
+            "function_entries": 120,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "truncated",
+        "cold_new_native_wall_ns": [
+          11000,
+          14000,
+          17000
+        ],
+        "incremental_native_wall_ns": [
+          4000,
+          4000,
+          4000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 11000,
+            "cpu_ns": 11000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 48000,
+            "cpu_ns": 49000,
+            "alloc_calls": 28,
+            "realloc_calls": 2,
+            "free_calls": 12,
+            "allocated_bytes": 3864,
+            "live_start": 2984,
+            "live_end": 5584,
+            "peak_live": 6296,
+            "edge_visits": 4631,
+            "unique_edges": 493,
+            "function_entries": 2859,
+            "max_call_depth": 11,
+            "sampled_stack_span": 1376
+          },
+          "incremental_parse": {
+            "wall_ns": 16000,
+            "cpu_ns": 15000,
+            "alloc_calls": 14,
+            "realloc_calls": 1,
+            "free_calls": 5,
+            "allocated_bytes": 1560,
+            "live_start": 5584,
+            "live_end": 6352,
+            "peak_live": 6384,
+            "edge_visits": 2351,
+            "unique_edges": 441,
+            "function_entries": 2038,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 2,
+            "delivered_bytes": 16,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 2,
+            "delivered_bytes": 11,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 2000,
+            "cpu_ns": 2000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 37,
+            "allocated_bytes": 128,
+            "live_start": 6352,
+            "live_end": 0,
+            "peak_live": 6416,
+            "edge_visits": 128,
+            "unique_edges": 59,
+            "function_entries": 80,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      },
+      {
+        "id": "unicode",
+        "cold_new_native_wall_ns": [
+          16000,
+          16000,
+          16000
+        ],
+        "incremental_native_wall_ns": [
+          7000,
+          8000,
+          8000
+        ],
+        "instrumented_incremental_profile": {
+          "has_error": false,
+          "setup": {
+            "wall_ns": 11000,
+            "cpu_ns": 9000,
+            "alloc_calls": 10,
+            "realloc_calls": 0,
+            "free_calls": 0,
+            "allocated_bytes": 2984,
+            "live_start": 0,
+            "live_end": 2984,
+            "peak_live": 2984,
+            "edge_visits": 40,
+            "unique_edges": 37,
+            "function_entries": 37,
+            "max_call_depth": 5,
+            "sampled_stack_span": 320
+          },
+          "full_parse": {
+            "wall_ns": 53000,
+            "cpu_ns": 52000,
+            "alloc_calls": 30,
+            "realloc_calls": 1,
+            "free_calls": 1,
+            "allocated_bytes": 4048,
+            "live_start": 2984,
+            "live_end": 6864,
+            "peak_live": 6896,
+            "edge_visits": 6021,
+            "unique_edges": 365,
+            "function_entries": 4701,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1120
+          },
+          "incremental_parse": {
+            "wall_ns": 17000,
+            "cpu_ns": 17000,
+            "alloc_calls": 12,
+            "realloc_calls": 1,
+            "free_calls": 3,
+            "allocated_bytes": 1408,
+            "live_start": 6864,
+            "live_end": 7640,
+            "peak_live": 7672,
+            "edge_visits": 2512,
+            "unique_edges": 429,
+            "function_entries": 2354,
+            "max_call_depth": 9,
+            "sampled_stack_span": 1216
+          },
+          "full_reads": {
+            "calls": 2,
+            "delivered_bytes": 46,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "incremental_reads": {
+            "calls": 1,
+            "delivered_bytes": 37,
+            "unique_256b_chunks": 1,
+            "backward_reads": 0
+          },
+          "cleanup": {
+            "wall_ns": 3000,
+            "cpu_ns": 3000,
+            "alloc_calls": 2,
+            "realloc_calls": 0,
+            "free_calls": 50,
+            "allocated_bytes": 128,
+            "live_start": 7640,
+            "live_end": 0,
+            "peak_live": 7704,
+            "edge_visits": 204,
+            "unique_edges": 58,
+            "function_entries": 126,
+            "max_call_depth": 6,
+            "sampled_stack_span": 352
+          },
+          "live_after_cleanup": 0
+        }
+      }
+    ]
+  },
+  "components": {
+    "status": "passed",
+    "claim_class": "host_component_baseline",
+    "hats_execution": false,
+    "full_agent_experiment": false,
+    "lock_sha256": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "runner_sha256": "62ad846c649a871e54e52b673b2f78347d38eebbd4ed8ae2e4997abda8f7bbff",
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.14.3",
+    "cases": [
+      {
+        "id": "gepa.pareto",
+        "status": "passed",
+        "median_wall_seconds": 0.009731541038490832,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28835840
+      },
+      {
+        "id": "gepa.trace-json",
+        "status": "passed",
+        "median_wall_seconds": 0.0033971669618040323,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28590080
+      },
+      {
+        "id": "ace.counter-update",
+        "status": "passed",
+        "median_wall_seconds": 0.004530666978098452,
+        "samples": 3,
+        "peak_worker_rss_bytes": 29425664
+      },
+      {
+        "id": "ace.curator-add",
+        "status": "passed",
+        "median_wall_seconds": 0.004406833089888096,
+        "samples": 3,
+        "peak_worker_rss_bytes": 29294592
+      },
+      {
+        "id": "ace.json-extract",
+        "status": "passed",
+        "median_wall_seconds": 0.004904041066765785,
+        "samples": 3,
+        "peak_worker_rss_bytes": 29655040
+      },
+      {
+        "id": "dgm.edit",
+        "status": "passed",
+        "median_wall_seconds": 0.001531874993816018,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28196864
+      },
+      {
+        "id": "stop.maxcut",
+        "status": "passed",
+        "median_wall_seconds": 0.0012171249836683273,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28082176
+      },
+      {
+        "id": "stop.sat",
+        "status": "passed",
+        "median_wall_seconds": 0.0019294590456411242,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28770304
+      },
+      {
+        "id": "gepa.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.06789641594514251,
+        "samples": 3,
+        "peak_worker_rss_bytes": 29048832
+      },
+      {
+        "id": "gepa.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.0016146659618243575,
+        "samples": 3,
+        "peak_worker_rss_bytes": 29130752
+      },
+      {
+        "id": "ace.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.14124924992211163,
+        "samples": 3,
+        "peak_worker_rss_bytes": 31358976
+      },
+      {
+        "id": "ace.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.005744415917433798,
+        "samples": 3,
+        "peak_worker_rss_bytes": 30064640
+      },
+      {
+        "id": "aflow.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.1209975000238046,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28295168
+      },
+      {
+        "id": "aflow.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.0037964999210089445,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28737536
+      },
+      {
+        "id": "dgm.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.1192451249808073,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28360704
+      },
+      {
+        "id": "dgm.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.0030824580462649465,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28966912
+      },
+      {
+        "id": "stop.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.16593229107093066,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28180480
+      },
+      {
+        "id": "stop.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.001163708046078682,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28409856
+      },
+      {
+        "id": "ahe.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.1163458339869976,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28639232
+      },
+      {
+        "id": "ahe.python-compile",
+        "status": "passed",
+        "median_wall_seconds": 0.00889845797792077,
+        "samples": 3,
+        "peak_worker_rss_bytes": 30851072
+      },
+      {
+        "id": "gascity.diff-patch",
+        "status": "passed",
+        "median_wall_seconds": 0.11677370895631611,
+        "samples": 3,
+        "peak_worker_rss_bytes": 28246016
+      }
+    ]
+  }
+}

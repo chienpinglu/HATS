@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "scope": "Native C incremental JSON parsing baseline; no HATS execution",
+  "sources": [
+    {
+      "id": "native-tree-sitter",
+      "repository": "https://github.com/tree-sitter/tree-sitter.git",
+      "revision": "da6fe9beb4f7f67beb75914ca8e0d48ae48d6406",
+      "release": "v0.25.10",
+      "license": "MIT; bundled Unicode/ICU notices must also be retained",
+      "license_sha256": "5f9cf9fb6acb1972b35ae29119ce563bb60ec097656bc4b69b9bac2d04c7a147",
+      "additional_notices": {"lib/src/unicode/LICENSE": "6a18c5fac70d7860b57f5b72b4e2c9a1ba6b3d2741eef7ff9767c5379364f10d"}
+    },
+    {
+      "id": "native-tree-sitter-json",
+      "repository": "https://github.com/tree-sitter/tree-sitter-json.git",
+      "revision": "ee35a6ebefcef0c5c416c0d1ccec7370cfca5a24",
+      "release": "v0.24.8",
+      "license": "MIT",
+      "license_sha256": "2e0110e07abef7c2548b26ec9d6969775617ca539a0dc8dbeeb14d6452c711d1"
+    }
+  ],
+  "upstream_patches": [],
+  "build_scope": "C runtime lib/src/lib.c plus generated JSON parser; no generator, WASM engine, bindings or upstream build scripts are executed"
+}

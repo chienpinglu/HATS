@@ -4,6 +4,11 @@ The workload collection tests the hypothesis that HATS can reduce external CPU
 participation in agent execution and improvement loops. It does not establish
 that queues, shared memory or moving CPUs onto the package are sufficient.
 
+See the versioned [S01 capability map](S01-CAPABILITY-MAP.md) and
+[machine-readable matrix](capabilities.json) for exact per-case APE/PPE/CP,
+memory and remaining-host responsibilities, plus the first native upstream tool
+baseline. The broader full-experiment gaps below remain open.
+
 ## Upstream experiment coverage
 
 The links below identify upstream setup instructions at the selected commits.

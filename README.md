@@ -44,6 +44,11 @@ CPU/GPU are deployment categories rather than mandatory internal boundaries:
 scalar, vector/tensor and command/task-control roles can use different ISAs.
 The command controller and vector/tensor datapaths remain future integration work.
 
+S01 now has proposed [PPE execution semantics](hardware/spinal/spec/PPE-0.1.md)
+and a [shared task ABI](hardware/spinal/spec/HATS-TASK-ABI-0.1.md), with executable
+descriptor layout/rejection tests. These are specification and host-model
+artifacts, not implemented PPE or command-processor RTL.
+
 ## Legacy Autonomous Task Tile Prototype
 
 The research now includes a [SpinalHDL task-execution prototype](hardware/spinal/README.md)
@@ -66,6 +71,14 @@ component and source-processing cases, including text diff/patch and Python
 bytecode compilation. These are not full agent reproductions or HATS execution.
 The [coverage map](workloads/COVERAGE.md) records full-run requirements, missing
 workloads and the proposed OS cooperation contract.
+
+The [S01 completion gate and S02 handoff](workloads/S01-COMPLETION.md) include
+native branch/memory/atomic/stack profiles and a real local edit/build/test
+critical path. This closes requirements/native evidence, not target execution.
+
+The [S01 capability map](workloads/S01-CAPABILITY-MAP.md) adds a pinned native
+Tree-sitter/JSON baseline and separates measured host demand from target execution
+and unmeasured full-agent phases.
 
 ## Hardware Toolchain
 

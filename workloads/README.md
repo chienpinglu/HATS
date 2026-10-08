@@ -9,6 +9,21 @@ All execution currently uses the host. None of these workloads runs on HATS RTL
 yet. The [coverage map](COVERAGE.md) identifies the missing processor/runtime
 capabilities and the requirements for full upstream experiments.
 
+The [S01 capability map and decisions](S01-CAPABILITY-MAP.md) cover every case
+and rank the next architecture gaps. A separate [native Tree-sitter baseline](native/treesitter/README.md)
+executes the pinned C runtime and JSON grammar with frozen incremental-edit
+fixtures, independent output checks and memory diagnostics. It is host evidence,
+not an additional HATS execution backend.
+
+The subsequent [RISC-V compile/link audit](target/treesitter/README.md) builds
+a pinned target libc and inventories RV64I/IM/IMA code and missing providers.
+Its strict links remain blocked; it does not execute target programs.
+
+The [native demand/workflow profile](profile/README.md) adds branch outcomes,
+memory locality, ordered atomic counts, observed stack use and real Git/Clang
+edit/build/test phase accounting. See the [S01 completion gate and S02 handoff](S01-COMPLETION.md)
+for the full rerun command, acceptance evidence and explicit downstream limits.
+
 ## Run locally
 
 Requirements: Python 3.12 or newer for the full suite, Git, and macOS or Linux. No pip packages,

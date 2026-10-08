@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "input_class": "Original deterministic fixtures and one repository lockfile; not recorded agent trajectories",
+  "cases": [
+    {
+      "id": "empty",
+      "old_bytes": 2,
+      "new_bytes": 14,
+      "old_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "new_sha256": "b342fc286d0216cc212e0d7ba234894e2e7283ddf14f959adf0fe7fd5924308a",
+      "old_expected_sha256": "67ccee6716e89b02d9c4554b7dfbdad0d38aa52777c96db36ddb3a7baedad9c3",
+      "new_expected_sha256": "48830e9b97cc6f739e567682233a4f729b853091bda49a69120285b67547642e"
+    },
+    {
+      "id": "scalars",
+      "old_bytes": 32,
+      "new_bytes": 32,
+      "old_sha256": "445b32263ae8286be03076e49d2e52abbc2991ee7efe3bfbc6005af6cf073f2a",
+      "new_sha256": "028163c7a9a11cd036067a544f8eea3926d61af59db19f39f5a284631b8e74f5",
+      "old_expected_sha256": "cd0ef21a1d8b7bccf2c1905a626f35e85f24c87b3fb9dbff5300c6ac3358740f",
+      "new_expected_sha256": "58e55df94b1c0bae4e93d0ecebbbbd0d5e071ab231407fa6603bf54761638f0e"
+    },
+    {
+      "id": "unicode",
+      "old_bytes": 46,
+      "new_bytes": 46,
+      "old_sha256": "13b9f7ee209fd788e54e8075758450c8c7a8aaca42955a0485420fbc7df26721",
+      "new_sha256": "8b7641b7e9079d307d84d17cef9fdd81c7bf9b4089c5ed12484d8995266a7bb3",
+      "old_expected_sha256": "4637236b690e829fd7302f86a33b2ca846d74614cd9472f81c61315a18246de0",
+      "new_expected_sha256": "4637236b690e829fd7302f86a33b2ca846d74614cd9472f81c61315a18246de0"
+    },
+    {
+      "id": "nested",
+      "old_bytes": 97,
+      "new_bytes": 99,
+      "old_sha256": "05afd80362c15d6a875250d2a1b5a45179cfb53b01f257bc8a0dce7036735726",
+      "new_sha256": "71a1266ae6e50a0c443111bb90e35f4b50e823a9448190ff54a2efc100533bba",
+      "old_expected_sha256": "4082f2ee4790e29ba9ef04ffa6e8577f0b35098525440754f71188496061f6e2",
+      "new_expected_sha256": "6286399b6d5c0bb0a99cdbee0e181af2ccc4c5a7e01c1964419f9675f615a188"
+    },
+    {
+      "id": "trailing_comma",
+      "old_bytes": 12,
+      "new_bytes": 11,
+      "old_sha256": "2aae835d099e12383ed72a9590aeca9a14ee7f103715892e14c0a76f0c90ebd8",
+      "new_sha256": "036b898f9248c0e83d645e262473d1d93b3085400b881ff658928b81ca06de91",
+      "old_expected_sha256": "290426bba572930d197d932f37dbef7a778c589b6cee1fa585282faf7af73f28",
+      "new_expected_sha256": "ff41e50bd9be47800f80bab104e0e548ed9575d17e4e6046f25085373a8699ae"
+    },
+    {
+      "id": "truncated",
+      "old_bytes": 16,
+      "new_bytes": 16,
+      "old_sha256": "0e544b741fd6c973c1b679755e9e5070c37a4a9b6231c1805a21c8fabcfeb7bb",
+      "new_sha256": "8c35f2c31f5d4103fa01196098f0b63ba6f01c0709d5402977ddb771c3d22a41",
+      "old_expected_sha256": "290426bba572930d197d932f37dbef7a778c589b6cee1fa585282faf7af73f28",
+      "new_expected_sha256": "c164ffd3ee3da93d873fa97da65c0857ddf911eeec1775ea75aacb1b537356ff"
+    },
+    {
+      "id": "records_16",
+      "old_bytes": 852,
+      "new_bytes": 862,
+      "old_sha256": "f0c0e665dde093d976325399d1388e8ae3c78353da80a873f2367d5247c8b54b",
+      "new_sha256": "4bc95c16ae51f27bb29e8b99296fa75b16a0fee5272f7f3fc0b13fa29390d8ee",
+      "old_expected_sha256": "89f33d90c8eccbbf335273723614ec6b9f2ba3c9c4323c43559ee459194b68ba",
+      "new_expected_sha256": "0a00e7551c24602b7775eba6db7b3372c3337ad58374ada0b262667bdf9447f2"
+    },
+    {
+      "id": "records_256",
+      "old_bytes": 14833,
+      "new_bytes": 14841,
+      "old_sha256": "f9e45c70b1150a28c3372197a2e12486ee005bc9ffbc23b36f2d8bb0b9640c46",
+      "new_sha256": "4d8c8269bc6c19b38bc09aa8ab831f050e6780d8ac49efae24ff1ad1b4ab26cb",
+      "old_expected_sha256": "d922252e1fcf6f49fc6321c3aed563f92938a2d45e3aa4fabd9a1b70cda20392",
+      "new_expected_sha256": "f1874a260d337670eb83e68f58caa91df2d51bf8b7cb26cefc15ebdc1b2383ec"
+    },
+    {
+      "id": "records_2048",
+      "old_bytes": 125945,
+      "new_bytes": 125952,
+      "old_sha256": "04669fd3405c245bd9272f708628923d23d1d9ce251abe56294a0c482145fc1f",
+      "new_sha256": "9778f67b54016437cfe2af814f8e3a8e1992d14fcd44d1779495f52e48b707ee",
+      "old_expected_sha256": "5315813521347c609b44b9fbb525ded7e541b7df5a010706ae1927b167338497",
+      "new_expected_sha256": "3760eb77a946a7f2262754815fcef45de1ae293f6e5a1ba739a20e7f26afdb4a"
+    },
+    {
+      "id": "repository_lock",
+      "old_bytes": 7920,
+      "new_bytes": 5672,
+      "old_sha256": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+      "new_sha256": "1cc86a7a66ddaa646f46dba9758d4bc099b12a2a901d9163767c332d0a5449e1",
+      "old_expected_sha256": "6e0aab80f08f9592f4f8e8c09d3d935f4e4534644810507dfec34a2597da95ab",
+      "new_expected_sha256": "01433369fb8edcf7edcc417c68f42950ff3b63de1ce01130c82905bfca51098e"
+    }
+  ]
+}
