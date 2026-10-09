@@ -1,4 +1,4 @@
-# APE development guide
+# APE and PPE development guide
 
 APE is the primary RISC-V application-processing core in this repository.
 Develop the SpinalHDL source, run generated hardware in SpinalSim, and keep the
@@ -24,6 +24,10 @@ The A64 TaskTile remains a separate legacy task-mechanism regression.
 | `tools/bootstrap_spike.py`, `tools/spike.lock.json` | Pinned unmodified external reference build and identity checks |
 | `tools/spike_adapter.cc` | Original platform adapter around upstream Spike instruction semantics |
 | `tools/verify_ape_spike.py`, `tools/compare_ape_spike.py`, `tools/test_ape_spike.py` | Fresh RTL differential gate and fail-closed comparison tests |
+| `src/main/scala/hats/PpeCore.scala`, `src/test/scala/hats/PpeCoreSim.scala` | Original programmable eight-lane integer PPE and actual-RTL transport |
+| `tools/ppe_isa.py`, `tools/ppe_programs.py`, `tools/build_ppe_cases.py`, `tools/verify_ppe.py` | Independent PPE model, binary fixtures and full-state RTL gate |
+| `../../workloads/target/treesitter/execute/`, `../../workloads/target/treesitter/bulk/` | Strict real-tool port, small SpinalSim and full-stream Verilator paths |
+| `../../workloads/s02/run_all.py` | Reproducible two-engine build, native/reference comparison and regression gate |
 | `APE.md`, `spec/` | Overview, interface contract, verification map and future gates |
 
 Generated RTL, tool caches, ELF images, traces and simulation outputs stay under
@@ -83,6 +87,25 @@ mechanism suite or legacy regression. Run sbt-based aggregate suites sequentiall
 to avoid concurrent builds in the same workspace.
 
 ## Focused iteration
+
+For the complete S02 two-engine gate, use Python 3.12+ from the repository root:
+
+```sh
+python3 workloads/s02/run_all.py
+```
+
+This rebuilds and runs all tool/PPE/legacy matrices sequentially; it is not a
+fast unit-test shortcut. First populate the pinned Tree-sitter, Newlib and Spike
+caches and install the documented [S02 host dependencies](../../workloads/S02-COMPLETION.md).
+The native digest adapters currently use Homebrew OpenSSL 3 paths. The gate's
+legacy test builds the committed TaskTile source through a recorded temporary
+sbt override; it does not overwrite a dirty TaskTile checkout. To test local
+TaskTile edits themselves, continue to use `tools/verify.py` separately.
+
+For PPE-only iteration, run `python3 tools/verify_ppe.py` from this directory.
+It generates `build/ppe/rtl/PpeCore.v` and compares actual instruction, memory,
+register and fault traces with an independent Python oracle; see
+[PPE-RTL-0.1](spec/PPE-RTL-0.1.md) for tested scope and direct-adapter obligations.
 
 These commands are diagnostic subsets, not the complete matrix gate:
 

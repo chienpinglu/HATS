@@ -1,7 +1,9 @@
 # Tree-sitter RISC-V compile/link audit
 
-S01 static requirement evidence, 2026-10-09. **No target execution and no APE RTL
-execution are performed by this directory.** The complete validated native
+S01 static requirement evidence, 2026-10-09. **The audit below performs no target
+or APE RTL execution.** S02 now has a separate [executable port](execute/README.md)
+with independent Spike checks and a selected APE RTL gate; it does not replace
+or relabel the frozen audit results. The complete validated native
 parser workload remains in [native/treesitter](../../native/treesitter/README.md).
 This audit resolves the earlier missing-target-header blocker and identifies
 the next runtime and hardware-capacity requirements without fabricating a

@@ -1,0 +1,1114 @@
+{
+  "schema": 1,
+  "status": "checkpoint_verified",
+  "created_utc": "2026-10-09T03:04:10.884348+00:00",
+  "issue": 3,
+  "stage": "S02",
+  "S02_complete": false,
+  "ppe_rtl_implemented": false,
+  "claim_class": "real_upstream_tool_on_selected_ape_rtl_plus_ppe_reference_model",
+  "source_sha256": {
+    "hardware/spinal/tools/bootstrap_spike.py": "afb670b4d1bb7aa557c0d7e8d803486273ded7000f1223365f7ac049a8c594b9",
+    "hardware/spinal/tools/spike.lock.json": "fa9d6b046f1f6d191e949d4e533c4bb77114f068428a63d13c93f27227651614",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/sources.lock.json": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "workloads/target/treesitter/audit.py": "9c14318c7f35972ca386e603ecf9408a7e252b9af4bde3cf1b898bbc16170601",
+    "workloads/target/treesitter/execute/application.c": "cc1585894943b6f6d6829a9e72c074a3d6497d02f3adbc7891e2c3c15f58bb36",
+    "workloads/target/treesitter/execute/compiler_rt.c": "fbeb2b91f1622e606318d507edabdf25b9c3eb15a4e35cc3976084134f3bb2e4",
+    "workloads/target/treesitter/execute/helper_test.c": "9d0b09c02180be7bb6d1ddadd85c47aaf9caf92a845ab9735d13cf126ba2eb06",
+    "workloads/target/treesitter/execute/image.py": "bc0f4feeb0765f2fbd4f31ccea0cb8b624560b8553ad4c4f4e10266213905781",
+    "workloads/target/treesitter/execute/link.ld": "91d2dc62e32820577d34a705f953d931ccababf762b7c0c759a09388d5a1f04f",
+    "workloads/target/treesitter/execute/platform.h": "3c9a0ab6706b049baf536e25bcfd4b1a08a85edc22b07f8470b51a94c3e9551f",
+    "workloads/target/treesitter/execute/run.py": "5da55396802370d0aeb1d1fac5dd7b882d0cdcf9e5ff704685c304a93ea12956",
+    "workloads/target/treesitter/execute/runtime.c": "de7a05df2045a6e2172bbbd1f0c304f65c58444208da5c6a068127b00e69d96e",
+    "workloads/target/treesitter/execute/runtime_test.c": "edc5c5a0bdca686bdca7612c343bff58993d6fb939110ff3fea0a17ac08437d8",
+    "workloads/target/treesitter/execute/spike_runner.cc": "94071ddb8c03ebc8fdeef8ff1ccbfce1b779c03c1ea7092dacce602d73bb2d54",
+    "workloads/target/treesitter/execute/start.S": "25464c475fa3a1f48a4735a24ce3531089457f699941bceaf662678cbd50033f",
+    "workloads/target/treesitter/execute/test_execution.py": "967b05f3f0e90714923153a2b0e97ea8822894a69acefdf2c88627b62aa65b62",
+    "workloads/target/treesitter/execute/verify_rtl.py": "2e363ddca25326e1e76995d8a86350a048089c727d3f3837283065d2f402a810",
+    "workloads/target/treesitter/newlib.lock.json": "655f4c03b0254c0d86c232e3e14caf2c78841435d6df14a245a910c1abfb2134",
+    "workloads/target/treesitter/newlib.py": "3cc9b55335a1bb7b383d9942e88c223ec4bacf3660c7098ef5b408fb7b111a6e",
+    "hardware/spinal/src/main/scala/hats/ApeCore.scala": "c0c4e780c94f602e6cecf699ada4c12624da9d30b064f5941cd32208b55967d6",
+    "hardware/spinal/src/main/scala/hats/ApeBranchPredictor.scala": "8b24ad864369a8c49467c1986e540356754b8142306a0d6c4ac4d918d136cb43",
+    "hardware/spinal/src/test/scala/hats/ApeReference.scala": "f96d4c2d6933f73665b7a0ecd5e2a25531f41d7d9e6ccc23b09ab6488010d61a",
+    "hardware/spinal/src/test/scala/hats/ApeCoreSim.scala": "f7fd388282fd8784172d9e22860e02d296f1c4a8115f998b4c062e2045a040d7",
+    "hardware/spinal/src/test/scala/hats/ApePredictorSim.scala": "807e150e36dc9a4b26e81b6ae55d083077500510b94f3347652351808db26e77",
+    "hardware/spinal/src/test/scala/hats/ApeToolSim.scala": "ab6588b17335e11dff72eac26ba0d12bbc4ac2c76f05ac3994be06962cc2fde1",
+    "hardware/spinal/src/test/scala/hats/ApeApplicationSim.scala": "f2db3510581c0114be242f258b1afa13e4ef2bd1f34f63a87a52b5fa892b6300",
+    "hardware/spinal/build.sbt": "0bb5d5bce4b58f0a78fdcab0016e5b102cd5ab3ccefc6c0331a084357a3c4564",
+    "hardware/spinal/project/build.properties": "84d1a08240c782d6691e9829ec54530a45d10809b0e5200db4035723d852928c",
+    "hardware/spinal/project/repositories": "e5b455eae2debe0d031194347c324649c2ab215485ad67dfc487c69102325c8e",
+    "hardware/spinal/tools/sbtw": "0fbfc2c691eefae15630057d5d02a8ffa27ea88e07730e71c6650cc7bc29bba3",
+    "hardware/spinal/tools/toolchain.py": "a39229236a5ca8ee15bfb1a710f5615f0c5fb5e208906392a55116762913fc96",
+    "hardware/spinal/tools/compare_ape_spike.py": "1810c75f7dbb050411199dcaf84f369f26b1cc30d39857104c7ef15f53fade87",
+    "hardware/spinal/examples/ape/kernel.c": "84c889fafa97d8611a97119822e5949f1e1bb7891690a9fdd09bab1fbbfc9b6f",
+    "hardware/spinal/examples/ape/link.ld": "44f96f9434e855f0250f2247a4a8c437782ce786f9c063b99bb7a8df6823ba8e",
+    "hardware/spinal/examples/ape/programs.S": "fd1396cedf99fc256702431e6bca6a0b938acfbdd5dbdd14d8ffd4f03cd260c6",
+    "hardware/spinal/src/main/scala/hats/HseCore.scala": "58f6f07547a94ae56e8e5b3c22ab9b6fc6ed38a567a697fa7a0d3cd1f45fa647",
+    "hardware/spinal/src/test/scala/hats/HseCoreSim.scala": "3bd37de6a2723e1b082a7075606408f671cabf0019c771aa9c95635008c81686",
+    "hardware/spinal/tools/assemble_ape.py": "4f64a6aff7de418b56a1c113594c2fa81b04eddd61822015557dba0920b137cf",
+    "hardware/spinal/tools/assemble_hse.py": "144f7a53b70251966d47637ba013503d21e98e7e906caa72a789aa31ae007882",
+    "hardware/spinal/tools/verify_ape.py": "ae0ddbab63ac01d580dc24809b7eb5ef422ab4e303f86f54c25aead1b8934603",
+    "hardware/spinal/tools/verify_hse.py": "4379c2f8602fca6c92f51d7f01e74178c3af0cb74f5636c656dd37b0aa55882b",
+    "hardware/spinal/tools/spike_adapter.cc": "fd1469dc0beff9e60c1f5f655a36187e223453130e3d9abb1d9927c1837cde25",
+    "hardware/spinal/tools/test_ape_spike.py": "ca40147129eb5c985d1af6cb32878677ca051ad75ec801cfd0842a6e3efc1797",
+    "hardware/spinal/tools/verify_ape_spike.py": "34a8188f3cf4a73a4fd1a09581b2d45884b83cb6a251f6787dc0b4f9c720cf7c",
+    "hardware/spinal/examples/ape_app/diff.c": "76e68a85f983b52100f4d5f6d5392b4d0965dbe913e2c00a3aff9cda794f564a",
+    "hardware/spinal/examples/ape_app/link.ld": "d335bd920c575f516aa3e3e6590b2eb671a4c488021db7e4fe0266b60ecd9cd5",
+    "hardware/spinal/examples/ape_app/start.S": "a368353f11cb36f310ca8569ee77caa792eda60595110e77191104b84ef9dd5c",
+    "hardware/spinal/tools/ape_app_image.py": "19994cf5378c7832b5fabe431ca6681c2e28b574f14b2eed4c05e3655b58986a",
+    "hardware/spinal/tools/build_ape_app.py": "bcd00b97e18093036c8641feea900081a15f4c8856df3af9af56bfeaeacce880",
+    "hardware/spinal/tools/check_ape_diff.py": "edaa63ac95ceddf81e3fbf81a96704cdd150591802c5d598a9d3368828634ece",
+    "hardware/spinal/tools/test_ape_app.py": "bbd9ac635810ccde2f2bdc52978db6d82bbbb092474048152aef499e042408a3",
+    "hardware/spinal/tools/verify_ape_app.py": "485124f5713af55a405cd9d33fdb4ef8708c772f1d2ccd2b666a778438f29b65",
+    "hardware/spinal/tools/ppe_isa.py": "6496bb6867a7b7f622e3b4826c0638764847e9a89270355e2ac3eaee4c639230",
+    "hardware/spinal/tools/ppe_programs.py": "67c939b746dfdb7940aa29a147747c1ae958aa1991324ae8454a141d28e7a664",
+    "hardware/spinal/tools/test_ppe_isa.py": "5214ce57a073a99b3a29ff44b7647d36567ed13c227b0ab2a254a28efc6bbb39",
+    "workloads/s02/checkpoint.py": "4dca42365f9b017fb4aeb365e9655bac165d5ef46ccc714cf738abec0a3fb107",
+    "workloads/s02/test_checkpoint.py": "8462a33acb2ff12b22d2de4a406847c499d58e5c6c049f67aa5019e63a502619"
+  },
+  "dependencies": {
+    "sources": [
+      {
+        "id": "native-tree-sitter",
+        "repository": "https://github.com/tree-sitter/tree-sitter.git",
+        "revision": "da6fe9beb4f7f67beb75914ca8e0d48ae48d6406",
+        "release": "v0.25.10",
+        "license": "MIT; bundled Unicode/ICU notices must also be retained",
+        "license_sha256": "5f9cf9fb6acb1972b35ae29119ce563bb60ec097656bc4b69b9bac2d04c7a147",
+        "additional_notices": {
+          "lib/src/unicode/LICENSE": "6a18c5fac70d7860b57f5b72b4e2c9a1ba6b3d2741eef7ff9767c5379364f10d"
+        }
+      },
+      {
+        "id": "native-tree-sitter-json",
+        "repository": "https://github.com/tree-sitter/tree-sitter-json.git",
+        "revision": "ee35a6ebefcef0c5c416c0d1ccec7370cfca5a24",
+        "release": "v0.24.8",
+        "license": "MIT",
+        "license_sha256": "2e0110e07abef7c2548b26ec9d6969775617ca539a0dc8dbeeb14d6452c711d1"
+      }
+    ],
+    "compiler": "Homebrew clang version 23.1.2",
+    "newlib_build_sha256": "0bc63d64bb4641f7af1cb5e60c0db16d1a693edb02d88b0c601b1037cb49bf08",
+    "spike_revision": "fdc1ffa05152707a00ca22a9cf50c59a1b487875",
+    "spike_build_sha256": "ec3b0e5a4ef8a5b1d44d8e62b066342266b79f52267489bebd01f930d5a06b0b"
+  },
+  "reference": {
+    "report_sha256": "62126fbed6096919f146f71fdb85f4d5c616996588dc38ac0eb4b1bb06384c52",
+    "cases_passed": 30,
+    "helper_results": 1062,
+    "runtime_checks": 160,
+    "negative_cases": 10,
+    "code_bytes": 94944,
+    "elf_sha256": "c2c74a82a17490c4a6dbf285a34715ddfdeaad5a4a0b787fd51c7ee4c6270965",
+    "runs": [
+      {
+        "case": "empty",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 1
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 4136,
+          "allocation_calls": 21,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 21796,
+          "loads": 4110,
+          "stores": 4460,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "274918f9e0dae6f5ccc84e43818ed7987e38833145430dd8717e738b8a1621e8",
+          "input_sha256": {
+            "args.bin": "f9a5c021d1cc6cb4f5a065ed8dff3828b5be6d08b30a03613d1e2421fa8bd007",
+            "old.bin": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "empty",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 3
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 4904,
+          "allocation_calls": 26,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 38295,
+          "loads": 8019,
+          "stores": 7362,
+          "observed_stack_pointer_bytes": 1536,
+          "exit_pc": 56,
+          "output_sha256": "907fd023398991434f721cdb8adf5dbfb76e7f536e1dd1f46250b4323f86a829",
+          "input_sha256": {
+            "args.bin": "90f747b058079138bff0eb40190f566e2587bc1b048169e4717c2d5df49b6302",
+            "old.bin": "b342fc286d0216cc212e0d7ba234894e2e7283ddf14f959adf0fe7fd5924308a",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "empty",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 3
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5368,
+          "allocation_calls": 36,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 54326,
+          "loads": 11551,
+          "stores": 10254,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "440fe0eafb55c2458a159a64d3e05ed28039b656a253a4075696250161cb61cb",
+          "input_sha256": {
+            "args.bin": "a123771415246985f89af1a980a079d8a8cc82d01855ba447d6553ad57f48f4c",
+            "old.bin": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "new.bin": "b342fc286d0216cc212e0d7ba234894e2e7283ddf14f959adf0fe7fd5924308a"
+          }
+        }
+      },
+      {
+        "case": "scalars",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 8
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6520,
+          "allocation_calls": 42,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 94690,
+          "loads": 21522,
+          "stores": 17413,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "062e7fe0daa56fe7dac4993c07d95e4d4f2b4cfd86ad28f9a0831862aa1fbe6c",
+          "input_sha256": {
+            "args.bin": "cc2f4c1839f9fe68453d192ed38489c3a0188cb83677c3b7dd1ac3d035c5b1fe",
+            "old.bin": "445b32263ae8286be03076e49d2e52abbc2991ee7efe3bfbc6005af6cf073f2a",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "scalars",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 8
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6520,
+          "allocation_calls": 42,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 94696,
+          "loads": 21521,
+          "stores": 17413,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "b6cd7449ab663edae87275dc3e2a5178dbf373c738888c384da2eb132538948d",
+          "input_sha256": {
+            "args.bin": "cc2f4c1839f9fe68453d192ed38489c3a0188cb83677c3b7dd1ac3d035c5b1fe",
+            "old.bin": "028163c7a9a11cd036067a544f8eea3926d61af59db19f39f5a284631b8e74f5",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "scalars",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 8
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 8248,
+          "allocation_calls": 69,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 165355,
+          "loads": 37771,
+          "stores": 29758,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "d4964950b4ebf6356e36391151a78b563ebc5adb0c7c4aec219f59509a77af29",
+          "input_sha256": {
+            "args.bin": "03ad26699e69cf43078173141d2643266112627bb03014e4207e3cf855cf7f09",
+            "old.bin": "445b32263ae8286be03076e49d2e52abbc2991ee7efe3bfbc6005af6cf073f2a",
+            "new.bin": "028163c7a9a11cd036067a544f8eea3926d61af59db19f39f5a284631b8e74f5"
+          }
+        }
+      },
+      {
+        "case": "unicode",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 5
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6920,
+          "allocation_calls": 41,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 88213,
+          "loads": 19768,
+          "stores": 16329,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "87462633ab9e26b56deb8e39793e9623c75a79eb6b5fbc923464c9f46e74cd41",
+          "input_sha256": {
+            "args.bin": "8f3f9b0c575312ede68c2bd95a044e49b9550b52486d323c3dfb6f4d0ab2f08a",
+            "old.bin": "13b9f7ee209fd788e54e8075758450c8c7a8aaca42955a0485420fbc7df26721",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "unicode",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 5
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6920,
+          "allocation_calls": 41,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 88213,
+          "loads": 19768,
+          "stores": 16329,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "87462633ab9e26b56deb8e39793e9623c75a79eb6b5fbc923464c9f46e74cd41",
+          "input_sha256": {
+            "args.bin": "8f3f9b0c575312ede68c2bd95a044e49b9550b52486d323c3dfb6f4d0ab2f08a",
+            "old.bin": "8b7641b7e9079d307d84d17cef9fdd81c7bf9b4089c5ed12484d8995266a7bb3",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "unicode",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 5
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 7696,
+          "allocation_calls": 54,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 121526,
+          "loads": 27157,
+          "stores": 21957,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "fb9c624729987cdc2d51149eb7b3bea79b5d2171df8624c3761b4b1c0230ebd2",
+          "input_sha256": {
+            "args.bin": "561d54d161254d73b3ab1f55de60793d74741cb6c4d6c0c5708c345cf1b4dda7",
+            "old.bin": "13b9f7ee209fd788e54e8075758450c8c7a8aaca42955a0485420fbc7df26721",
+            "new.bin": "8b7641b7e9079d307d84d17cef9fdd81c7bf9b4089c5ed12484d8995266a7bb3"
+          }
+        }
+      },
+      {
+        "case": "nested",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 49
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 24360,
+          "allocation_calls": 164,
+          "heap_granted": 32768
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 390917,
+          "loads": 90258,
+          "stores": 72702,
+          "observed_stack_pointer_bytes": 7600,
+          "exit_pc": 56,
+          "output_sha256": "ded9673bbb690e20a2a73167d52e9c4860e8898aa1019866865b349112c4e4da",
+          "input_sha256": {
+            "args.bin": "c38aa06aedea679bf3f4e23983a184a200993c71654f2f779e62e10c884ceb06",
+            "old.bin": "05afd80362c15d6a875250d2a1b5a45179cfb53b01f257bc8a0dce7036735726",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "nested",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 49
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 24360,
+          "allocation_calls": 164,
+          "heap_granted": 32768
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 391243,
+          "loads": 90343,
+          "stores": 72738,
+          "observed_stack_pointer_bytes": 7600,
+          "exit_pc": 56,
+          "output_sha256": "f40edc4c20f956569e225a11330166158eb0e9ec75dacfad40ff1596b0b8cbb1",
+          "input_sha256": {
+            "args.bin": "796be90a2ab9bb92baddf164cb2d930afd3ae1ad2d9179a307e86a637b588457",
+            "old.bin": "71a1266ae6e50a0c443111bb90e35f4b50e823a9448190ff54a2efc100533bba",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "nested",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 49
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 35864,
+          "allocation_calls": 271,
+          "heap_granted": 49152
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 760569,
+          "loads": 171288,
+          "stores": 138748,
+          "observed_stack_pointer_bytes": 7600,
+          "exit_pc": 56,
+          "output_sha256": "e8aaac9228c3e62a14c2c15db787e7a90eec1960a9a91f0c820cb8f3c33e3696",
+          "input_sha256": {
+            "args.bin": "0dd7de9f8303bc2657af87f29270912294d8bf2c7b5564d1a9b7ebab03c0c4ed",
+            "old.bin": "05afd80362c15d6a875250d2a1b5a45179cfb53b01f257bc8a0dce7036735726",
+            "new.bin": "71a1266ae6e50a0c443111bb90e35f4b50e823a9448190ff54a2efc100533bba"
+          }
+        }
+      },
+      {
+        "case": "trailing_comma",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": false
+        },
+        "result": {
+          "status": 0,
+          "has_error": true,
+          "live_after_cleanup": 0,
+          "peak_bytes": 8832,
+          "allocation_calls": 58,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 102599,
+          "loads": 22865,
+          "stores": 18310,
+          "observed_stack_pointer_bytes": 1840,
+          "exit_pc": 56,
+          "output_sha256": "1b197a6d6c63da7b9ce390ea83d6066daee075c690d89818440b17f0c671262b",
+          "input_sha256": {
+            "args.bin": "0029dd2023a516c6113c4018144446d790d2b04273a0e9b132baa62fa50e9b23",
+            "old.bin": "2aae835d099e12383ed72a9590aeca9a14ee7f103715892e14c0a76f0c90ebd8",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "trailing_comma",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 5
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5984,
+          "allocation_calls": 33,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 53474,
+          "loads": 11529,
+          "stores": 10214,
+          "observed_stack_pointer_bytes": 1536,
+          "exit_pc": 56,
+          "output_sha256": "0a716563f14b205a996e7f28ea2954d8466416b25ec2927996b541b93d41befa",
+          "input_sha256": {
+            "args.bin": "8a2c83957ee0d9b613fdb4e5302f4adbd2975f8f4d55fdfdd17b6b0f953dc18f",
+            "old.bin": "036b898f9248c0e83d645e262473d1d93b3085400b881ff658928b81ca06de91",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "trailing_comma",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 5
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 9168,
+          "allocation_calls": 75,
+          "heap_granted": 12288
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 148758,
+          "loads": 33227,
+          "stores": 26342,
+          "observed_stack_pointer_bytes": 1840,
+          "exit_pc": 56,
+          "output_sha256": "19502b750153f723ffdbff63e00c391d11d7b2ebca60831de278d21553718de5",
+          "input_sha256": {
+            "args.bin": "c36d98295980166be5f0d6bd7e3beb9eb636e1f9b0ba0e6259e1c30df4cd0e99",
+            "old.bin": "2aae835d099e12383ed72a9590aeca9a14ee7f103715892e14c0a76f0c90ebd8",
+            "new.bin": "036b898f9248c0e83d645e262473d1d93b3085400b881ff658928b81ca06de91"
+          }
+        }
+      },
+      {
+        "case": "truncated",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": false
+        },
+        "result": {
+          "status": 0,
+          "has_error": true,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6288,
+          "allocation_calls": 39,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 66915,
+          "loads": 14929,
+          "stores": 10890,
+          "observed_stack_pointer_bytes": 1872,
+          "exit_pc": 56,
+          "output_sha256": "00c385d975dc2ebcce49e2215b66fe666d6b757c1abf3e7c713c4fd358546aa2",
+          "input_sha256": {
+            "args.bin": "9be5de93bdec7383dc2835b18360a98717efb6af623f8de1cfab1d91a149efc5",
+            "old.bin": "0e544b741fd6c973c1b679755e9e5070c37a4a9b6231c1805a21c8fabcfeb7bb",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "truncated",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 3
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5472,
+          "allocation_calls": 29,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 43587,
+          "loads": 9252,
+          "stores": 8332,
+          "observed_stack_pointer_bytes": 1536,
+          "exit_pc": 56,
+          "output_sha256": "ed4c07c84641fe7ad781bc9b565ac508a9d9c8612d4a55f38d9ca58539690fae",
+          "input_sha256": {
+            "args.bin": "9be5de93bdec7383dc2835b18360a98717efb6af623f8de1cfab1d91a149efc5",
+            "old.bin": "8c35f2c31f5d4103fa01196098f0b63ba6f01c0709d5402977ddb771c3d22a41",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "truncated",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 3
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 6408,
+          "allocation_calls": 54,
+          "heap_granted": 8192
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 101631,
+          "loads": 22845,
+          "stores": 16923,
+          "observed_stack_pointer_bytes": 1872,
+          "exit_pc": 56,
+          "output_sha256": "ad303672a2b1d2ee72ab2fbca34ad7100578a7f400a4d6b924de48c4fa04befc",
+          "input_sha256": {
+            "args.bin": "0b5f01f40e2930dbc23c5c7dee0d18c1458715a03ac3ad8d39a68d253d92b83e",
+            "old.bin": "0e544b741fd6c973c1b679755e9e5070c37a4a9b6231c1805a21c8fabcfeb7bb",
+            "new.bin": "8c35f2c31f5d4103fa01196098f0b63ba6f01c0709d5402977ddb771c3d22a41"
+          }
+        }
+      },
+      {
+        "case": "records_16",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 177
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 47416,
+          "allocation_calls": 446,
+          "heap_granted": 69632
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 1857723,
+          "loads": 439100,
+          "stores": 335208,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "199475892601fceed1e418ad8ff96ded3d0e27870e446587d8ae0b7336438633",
+          "input_sha256": {
+            "args.bin": "65b504e69967de18f43ea9c284ce64412bd92b42b3ef44b51470ea5c74c0aa56",
+            "old.bin": "f0c0e665dde093d976325399d1388e8ae3c78353da80a873f2367d5247c8b54b",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_16",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 177
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 47416,
+          "allocation_calls": 446,
+          "heap_granted": 69632
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 1859283,
+          "loads": 439530,
+          "stores": 335388,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "22f6ae7e087e36f2837883483808ffc8950465468a337979a5ac4530d61439a1",
+          "input_sha256": {
+            "args.bin": "bd28894fa8623698898fc85e506f80152f2f074fcfaa4fc814184ce26f8f2c32",
+            "old.bin": "4bc95c16ae51f27bb29e8b99296fa75b16a0fee5272f7f3fc0b13fa29390d8ee",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_16",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 177
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 50504,
+          "allocation_calls": 480,
+          "heap_granted": 73728
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 2000466,
+          "loads": 471099,
+          "stores": 355974,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "141f93fe03444faf63c80f2b3483ed0fbdf9805e703fee0720883ab53d0f9d9c",
+          "input_sha256": {
+            "args.bin": "26b3a0dc40aa6df1d864fe7c0c4735a3f84f571c59d0818f0f3b14b17dda87a8",
+            "old.bin": "f0c0e665dde093d976325399d1388e8ae3c78353da80a873f2367d5247c8b54b",
+            "new.bin": "4bc95c16ae51f27bb29e8b99296fa75b16a0fee5272f7f3fc0b13fa29390d8ee"
+          }
+        }
+      },
+      {
+        "case": "records_256",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 2817
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 658872,
+          "allocation_calls": 6686,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 29998514,
+          "loads": 7115913,
+          "stores": 5383145,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "25f9a7042e9e4cd4a28536681c7a793c7f84fac7d6e304d106a784408fcbb212",
+          "input_sha256": {
+            "args.bin": "6a54e70637e40741bbd8f5cd6b13905c3aa11ce686ebe26bd8455b458afcb474",
+            "old.bin": "f9e45c70b1150a28c3372197a2e12486ee005bc9ffbc23b36f2d8bb0b9640c46",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_256",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 2817
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 658872,
+          "allocation_calls": 6686,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 29999762,
+          "loads": 7116257,
+          "stores": 5383289,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "c0fe2d418d8ccf302cae65f440bc3fb19c6608d38ce9f28688adae702944f30d",
+          "input_sha256": {
+            "args.bin": "25900fc1ff4fb168f41f5a34805d6aa7fd1bc533f4b17423959a2041334c30e4",
+            "old.bin": "4d8c8269bc6c19b38bc09aa8ab831f050e6780d8ac49efae24ff1ad1b4ab26cb",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_256",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 2817
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 685000,
+          "allocation_calls": 6960,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 31566445,
+          "loads": 7470668,
+          "stores": 5583518,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "e88111f2276391dce263c1d124bcfb85c46c409cca99a010d6147303119c4cb2",
+          "input_sha256": {
+            "args.bin": "acb3b0f8546d49db6423703c1bfdb91e24cba66290655595dccfe1c899439842",
+            "old.bin": "f9e45c70b1150a28c3372197a2e12486ee005bc9ffbc23b36f2d8bb0b9640c46",
+            "new.bin": "4d8c8269bc6c19b38bc09aa8ab831f050e6780d8ac49efae24ff1ad1b4ab26cb"
+          }
+        }
+      },
+      {
+        "case": "records_2048",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 22529
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5224888,
+          "allocation_calls": 53278,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 242284963,
+          "loads": 57541668,
+          "stores": 43381105,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "f883f989baec63b5c491f8518335613e1236e8e03a58e7980ac3707cddc3cf44",
+          "input_sha256": {
+            "args.bin": "2899cda241e69db68c4cff25935124213c04d5855ab90ceffeadc494022930e7",
+            "old.bin": "04669fd3405c245bd9272f708628923d23d1d9ce251abe56294a0c482145fc1f",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_2048",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 22529
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5224888,
+          "allocation_calls": 53278,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 242286056,
+          "loads": 57541969,
+          "stores": 43381231,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "f09cbcdae3270bbef1e7c8c3ccccc6379192768e5409071d19ca97931438f15f",
+          "input_sha256": {
+            "args.bin": "7bacdc92f913fda840d3512570c49e511fbbcbcf4652fdde659ad6edd1418751",
+            "old.bin": "9778f67b54016437cfe2af814f8e3a8e1992d14fcd44d1779495f52e48b707ee",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "records_2048",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 22529
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 5423048,
+          "allocation_calls": 55344,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 254647791,
+          "loads": 60333079,
+          "stores": 44923946,
+          "observed_stack_pointer_bytes": 1584,
+          "exit_pc": 56,
+          "output_sha256": "5a9bd4f4111f717ef0253650438728b030c868f80515674d6bfa9408ff9b3dc4",
+          "input_sha256": {
+            "args.bin": "c96cd0ed1ffd642e19607531cbbe846a02de62609a27c5864c8a810ee64a3cc7",
+            "old.bin": "04669fd3405c245bd9272f708628923d23d1d9ce251abe56294a0c482145fc1f",
+            "new.bin": "9778f67b54016437cfe2af814f8e3a8e1992d14fcd44d1779495f52e48b707ee"
+          }
+        }
+      },
+      {
+        "case": "repository_lock",
+        "kind": "cold_old",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 344
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 98488,
+          "allocation_calls": 938,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 5038500,
+          "loads": 1226349,
+          "stores": 848803,
+          "observed_stack_pointer_bytes": 1840,
+          "exit_pc": 56,
+          "output_sha256": "a327032f7dc36a7bc200af30c4d09edb50654b5714b375efa07cd425b8911f5d",
+          "input_sha256": {
+            "args.bin": "a6e3f2ccdc0abcb96f93e1798894e9945a2a38cadabdb0f099953cf651d7d97f",
+            "old.bin": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "repository_lock",
+        "kind": "cold_new",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 344
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 98488,
+          "allocation_calls": 938,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 4688949,
+          "loads": 1132127,
+          "stores": 807835,
+          "observed_stack_pointer_bytes": 1840,
+          "exit_pc": 56,
+          "output_sha256": "a72d695c9bc467dd76181c9b37d7cf0ad03215327898f3b9270f5511b00f6bf2",
+          "input_sha256": {
+            "args.bin": "5640caa2e34eaeea79fc9204a793305fbf65fdaa56050275db399a49bd9235f6",
+            "old.bin": "1cc86a7a66ddaa646f46dba9758d4bc099b12a2a901d9163767c332d0a5449e1",
+            "new.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      {
+        "case": "repository_lock",
+        "kind": "incremental",
+        "check": {
+          "valid_json": true,
+          "semantic_nodes": 344
+        },
+        "result": {
+          "status": 0,
+          "has_error": false,
+          "live_after_cleanup": 0,
+          "peak_bytes": 188056,
+          "allocation_calls": 3056,
+          "heap_granted": 4096
+        },
+        "execution": {
+          "status": "executed",
+          "result": 0,
+          "retired": 11027300,
+          "loads": 2615911,
+          "stores": 1858702,
+          "observed_stack_pointer_bytes": 1840,
+          "exit_pc": 56,
+          "output_sha256": "6157daf4ddf9da0df526186f926fcd8698e9e47a5a177631dc0dc1b8257cfb4b",
+          "input_sha256": {
+            "args.bin": "043f9471d2e87d7c400b204a88480c08da1a462cf8a7669c3d2ea435b700d9d5",
+            "old.bin": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+            "new.bin": "1cc86a7a66ddaa646f46dba9758d4bc099b12a2a901d9163767c332d0a5449e1"
+          }
+        }
+      }
+    ]
+  },
+  "ape_rtl": {
+    "report_sha256": "ff3d3cf8b2d9472005bd5c6c72d21db28a2af794bb98a779099581126900265d",
+    "invocations": 18,
+    "rob_entries": 8,
+    "prediction": "bimodal",
+    "program_words": 65536,
+    "selected_cases": [
+      "empty",
+      "scalars",
+      "unicode"
+    ],
+    "kinds": [
+      "cold_old",
+      "cold_new",
+      "incremental"
+    ],
+    "toolchain": {
+      "verilator": "Verilator 5.052 2026-09-05 rev vUNKNOWN-built20260905",
+      "java": "openjdk version \"25.0.2\" 2026-01-20",
+      "host_cxx": "Apple clang version 17.0.0 (clang-1700.0.13.5)"
+    },
+    "matched_retirements": 1534220,
+    "matched_memory_events": 624924,
+    "generated_rtl_sha256": [
+      "8a8f4809555aaa10ffc0c9ef845d41aceedf9e96db78fd1dbf54effef9a1aa53"
+    ]
+  },
+  "regressions": {
+    "ape": {
+      "runs_passed": 600,
+      "report_sha256": "cacf0c24104e077d0bc075486ab08a1883de1c318919ccb977c7f31fa4373ba7",
+      "predictor_checks": 4096
+    },
+    "ape_spike": {
+      "fully_matched_invocations": 576,
+      "expected_profile_differences": 24,
+      "report_sha256": "9fc45dc459cecfb089e312b8dfaff1d59275ccc54c93724ec870421ccb8bb6dc"
+    },
+    "bounded_diff": {
+      "runs_passed": 144,
+      "report_sha256": "257e6fd150c441a8ec9e361a2c445450671599aaa7f90ec312727797ff731941"
+    },
+    "legacy_task_tile": {
+      "tests_passed": 123,
+      "local_modified_source": true,
+      "task_tile_sha256": "c1dc70983152278f1c15b15b1f0893d0d135964d34a8c856093a274727b8a7ae",
+      "report_sha256": "acc51a93b3eb20cd2260a2ff40ce0119ee687d477a4df4f2dd4bbc5f62756a5e"
+    }
+  },
+  "fast_tests": [
+    {
+      "directory": "hardware/spinal/tools",
+      "pattern": "test_ppe_isa.py",
+      "status": "passed",
+      "output_sha256": "232205eb2823e99e67dc884cc75dc3f5ea96c7a442ac382e59e52a0eebdce6a4"
+    },
+    {
+      "directory": "workloads/target/treesitter/execute",
+      "pattern": "test_*.py",
+      "status": "passed",
+      "output_sha256": "973496d263c03f8409d6618dfed1dbbe432d89386ddbee75d6627496388457e7"
+    },
+    {
+      "directory": "workloads/s02",
+      "pattern": "test_*.py",
+      "status": "passed",
+      "output_sha256": "84e4e7493d8b5eeace9a693ab075922617cca234258f7ea4477c44d390c97b24"
+    }
+  ],
+  "limits": [
+    "Checkpoint validation checks prior local execution artifacts; it does not rerun RTL",
+    "Only nine tool inputs/modes on one APE configuration; helper/negative/large cases currently Spike-only",
+    "PPE has an independent functional model and codec, not an implemented RTL engine",
+    "Legacy regression includes a pre-existing local TaskTile change when flagged; not clean-checkout evidence",
+    "No CP, OS, caches/coherence, CPU-offload speedup, high-performance big core or PPA claim"
+  ]
+}

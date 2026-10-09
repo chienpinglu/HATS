@@ -5,8 +5,9 @@ from public projects covered in the RSI survey: GEPA, ACE, AFlow, DGM, STOP,
 AHE and Gas City. It provides runnable component tests and source-processing
 workloads, not complete reproductions of those agents or papers.
 
-All execution currently uses the host. None of these workloads runs on HATS RTL
-yet. The [coverage map](COVERAGE.md) identifies the missing processor/runtime
+The 21 component/source-processing cases below still use the host. The separate
+[S02 Tree-sitter port and PPE gate](S02-COMPLETION.md) now execute actual HATS RTL;
+they are not an RTL backend for those 21 cases. The [coverage map](COVERAGE.md) identifies the missing processor/runtime
 capabilities and the requirements for full upstream experiments.
 
 The [S01 capability map and decisions](S01-CAPABILITY-MAP.md) cover every case
@@ -17,7 +18,8 @@ not an additional HATS execution backend.
 
 The subsequent [RISC-V compile/link audit](target/treesitter/README.md) builds
 a pinned target libc and inventories RV64I/IM/IMA code and missing providers.
-Its strict links remain blocked; it does not execute target programs.
+Its frozen S01 strict links remain blocked; that historical audit does not execute
+target programs. S02 supplies a separately checked executable/runtime port.
 
 The [native demand/workflow profile](profile/README.md) adds branch outcomes,
 memory locality, ordered atomic counts, observed stack use and real Git/Clang

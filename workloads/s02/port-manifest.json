@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "scope": "Original platform port of a pinned public parser to the bounded APE RV64I/LP64 profile",
+  "upstream_revisions": {
+    "native-tree-sitter": "da6fe9beb4f7f67beb75914ca8e0d48ae48d6406",
+    "native-tree-sitter-json": "ee35a6ebefcef0c5c416c0d1ccec7370cfca5a24"
+  },
+  "upstream_patches": [],
+  "original_adapters": [
+    "workloads/target/treesitter/execute/application.c",
+    "workloads/target/treesitter/execute/compiler_rt.c",
+    "workloads/target/treesitter/execute/runtime.c",
+    "workloads/target/treesitter/execute/platform.h",
+    "workloads/target/treesitter/execute/start.S",
+    "workloads/target/treesitter/execute/link.ld",
+    "workloads/target/treesitter/execute/image.py"
+  ],
+  "target": "RV64I, LP64, static freestanding, no relaxation; EBREAK registered exit sentinel",
+  "platform_definitions": ["_POSIX_C_SOURCE=200809L", "HAVE_SYS_ENDIAN_H=1", "_DEFAULT_SOURCE=1"],
+  "libc_lock": "workloads/target/treesitter/newlib.lock.json",
+  "reference_lock": "hardware/spinal/tools/spike.lock.json",
+  "atomic_contract": "One isolated hart, no interrupts, DMA, shared tree or other writer; software helpers are not general shared atomics",
+  "residual_host_work": ["compile and strict link", "validate/load code and frozen inputs", "direct launch", "modeled memory service", "trace collection and output verification"],
+  "target_work": ["integer compiler helpers", "startup and BSS clearing", "stack and bounded Newlib heap", "Tree-sitter parser and JSON grammar", "incremental edit and parse", "tree traversal and cleanup"],
+  "redistribution": "No upstream source or generated binary is vendored. Preserve Tree-sitter MIT/Unicode notices, grammar MIT, Newlib per-file notices and Spike license when distributing their artifacts."
+}

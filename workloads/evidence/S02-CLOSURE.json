@@ -1,0 +1,2908 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "issue": 3,
+  "stage": "S02",
+  "S02_complete": true,
+  "created_utc": "2026-10-09T03:46:26.939941+00:00",
+  "claim_class": "actual_APE_tool_and_first_PPE_RTL",
+  "source_sha256": {
+    "workloads/target/treesitter/bulk/verify.py": "3f11c5f8fa080b1a1d8a0fcdd7389d27a4b9983778e9f7f4226f15936264a240",
+    "workloads/target/treesitter/bulk/rtl_runner.cc": "5b15cd3c149c9cbe8f5e86cea761854bb0c38894aee7aea0aafa5396c7bb0e2e",
+    "workloads/target/treesitter/bulk/digest.h": "98d90c07a400a57228d4f1afdc7f1e07f0453122cc07e4252de08ea89e7dc9db",
+    "hardware/spinal/src/main/scala/hats/ApeToolGenerate.scala": "a7e910587901892541969d3e665021d90269fcf8dd0b82db4e40de4c64f0ccc2",
+    "hardware/spinal/src/main/scala/hats/ApeCore.scala": "c0c4e780c94f602e6cecf699ada4c12624da9d30b064f5941cd32208b55967d6",
+    "hardware/spinal/src/main/scala/hats/ApeBranchPredictor.scala": "8b24ad864369a8c49467c1986e540356754b8142306a0d6c4ac4d918d136cb43",
+    "hardware/spinal/src/test/scala/hats/ApeReference.scala": "f96d4c2d6933f73665b7a0ecd5e2a25531f41d7d9e6ccc23b09ab6488010d61a",
+    "hardware/spinal/src/test/scala/hats/ApeCoreSim.scala": "f7fd388282fd8784172d9e22860e02d296f1c4a8115f998b4c062e2045a040d7",
+    "hardware/spinal/src/test/scala/hats/ApePredictorSim.scala": "807e150e36dc9a4b26e81b6ae55d083077500510b94f3347652351808db26e77",
+    "hardware/spinal/src/test/scala/hats/ApeToolSim.scala": "ab6588b17335e11dff72eac26ba0d12bbc4ac2c76f05ac3994be06962cc2fde1",
+    "hardware/spinal/src/test/scala/hats/ApeApplicationSim.scala": "f2db3510581c0114be242f258b1afa13e4ef2bd1f34f63a87a52b5fa892b6300",
+    "hardware/spinal/build.sbt": "0bb5d5bce4b58f0a78fdcab0016e5b102cd5ab3ccefc6c0331a084357a3c4564",
+    "hardware/spinal/project/build.properties": "84d1a08240c782d6691e9829ec54530a45d10809b0e5200db4035723d852928c",
+    "hardware/spinal/project/repositories": "e5b455eae2debe0d031194347c324649c2ab215485ad67dfc487c69102325c8e",
+    "hardware/spinal/tools/sbtw": "0fbfc2c691eefae15630057d5d02a8ffa27ea88e07730e71c6650cc7bc29bba3",
+    "hardware/spinal/tools/toolchain.py": "a39229236a5ca8ee15bfb1a710f5615f0c5fb5e208906392a55116762913fc96",
+    "hardware/spinal/tools/compare_ape_spike.py": "1810c75f7dbb050411199dcaf84f369f26b1cc30d39857104c7ef15f53fade87",
+    "hardware/spinal/tools/verify_ppe.py": "ab42883319e9b15a5067c31511f843d48d774df59240e96dac2c9134163c4f07",
+    "hardware/spinal/tools/build_ppe_cases.py": "078591355e33a7a8baa56a4b33a6770c47df1f0c73d7ab327cedd24364b5037e",
+    "hardware/spinal/tools/ppe_programs.py": "67c939b746dfdb7940aa29a147747c1ae958aa1991324ae8454a141d28e7a664",
+    "hardware/spinal/tools/test_ppe_isa.py": "5214ce57a073a99b3a29ff44b7647d36567ed13c227b0ab2a254a28efc6bbb39",
+    "hardware/spinal/tools/ppe_isa.py": "6496bb6867a7b7f622e3b4826c0638764847e9a89270355e2ac3eaee4c639230",
+    "hardware/spinal/src/main/scala/hats/PpeCore.scala": "f194e959d62d43c86f088e4a7a86fd24273c862d9ac0971fb6200ed0b14b64c7",
+    "hardware/spinal/src/test/scala/hats/PpeCoreSim.scala": "305055962ef43594ccc706c0460b7679c444f621abd6214dab0a1d40f613b357",
+    "workloads/native/treesitter/README.md": "966cf11fdfbdbb8ff2edd910392fb2569a6a4b29f7e303c4ad664af4eed8d6bc",
+    "workloads/native/treesitter/baseline.c": "aa10c8c4df62989bbfaf36542e07bb962ed1001fa9fe88451f94ee35bdf7d10e",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/profile.c": "e2ba608e8e609240aedc5407b1534ff60ee0dea55c54da95c0b0e1157b16fc13",
+    "workloads/native/treesitter/profile.h": "eb19e80fc468e7a5a2964c296581767e18133e07195049b8a0df9c5b4fbdaf45",
+    "workloads/native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/native/treesitter/test_baseline.py": "c14826d8e66041766d1dd683ec23b83a64e40708a1471ae7cbab1cfa3303265e",
+    "hardware/spinal/src/test/scala/hats/TaskTileSim.scala": "5a7f8137e78bcf40b187a94f466304c3c21706cd79f493fd409b4454482ec273",
+    "hardware/spinal/examples/workloads.s": "ea8488e5510cc19290462f02370abbe6a02ae3684c83c9a931f0f75a59c4063d",
+    "hardware/spinal/tools/assemble.py": "1506229953c7db8110934badfce726fcb3556089660f38eaddc429914fa2b216",
+    "workloads/s02/verify_legacy.py": "8e3d1a7094d381accbdab87435d788b572e6b661ae27669075cab87e198fd92a",
+    "workloads/s02/checkpoint.py": "4dca42365f9b017fb4aeb365e9655bac165d5ef46ccc714cf738abec0a3fb107",
+    "hardware/spinal/tools/bootstrap_spike.py": "afb670b4d1bb7aa557c0d7e8d803486273ded7000f1223365f7ac049a8c594b9",
+    "hardware/spinal/tools/spike.lock.json": "fa9d6b046f1f6d191e949d4e533c4bb77114f068428a63d13c93f27227651614",
+    "workloads/sources.lock.json": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "workloads/target/treesitter/audit.py": "9c14318c7f35972ca386e603ecf9408a7e252b9af4bde3cf1b898bbc16170601",
+    "workloads/target/treesitter/execute/application.c": "cc1585894943b6f6d6829a9e72c074a3d6497d02f3adbc7891e2c3c15f58bb36",
+    "workloads/target/treesitter/execute/compiler_rt.c": "fbeb2b91f1622e606318d507edabdf25b9c3eb15a4e35cc3976084134f3bb2e4",
+    "workloads/target/treesitter/execute/helper_test.c": "9d0b09c02180be7bb6d1ddadd85c47aaf9caf92a845ab9735d13cf126ba2eb06",
+    "workloads/target/treesitter/execute/image.py": "bc0f4feeb0765f2fbd4f31ccea0cb8b624560b8553ad4c4f4e10266213905781",
+    "workloads/target/treesitter/execute/link.ld": "91d2dc62e32820577d34a705f953d931ccababf762b7c0c759a09388d5a1f04f",
+    "workloads/target/treesitter/execute/platform.h": "3c9a0ab6706b049baf536e25bcfd4b1a08a85edc22b07f8470b51a94c3e9551f",
+    "workloads/target/treesitter/execute/run.py": "d58e0037bd466684603d5119d68c30344000773704b6d862713880e515d73ed6",
+    "workloads/target/treesitter/execute/runtime.c": "de7a05df2045a6e2172bbbd1f0c304f65c58444208da5c6a068127b00e69d96e",
+    "workloads/target/treesitter/execute/runtime_test.c": "edc5c5a0bdca686bdca7612c343bff58993d6fb939110ff3fea0a17ac08437d8",
+    "workloads/target/treesitter/execute/spike_runner.cc": "f5eb26a93c561b3fb40ed0a619633467e2a1e0b50e5dc8baecdef9cc0e17db11",
+    "workloads/target/treesitter/execute/start.S": "25464c475fa3a1f48a4735a24ce3531089457f699941bceaf662678cbd50033f",
+    "workloads/target/treesitter/execute/test_execution.py": "967b05f3f0e90714923153a2b0e97ea8822894a69acefdf2c88627b62aa65b62",
+    "workloads/target/treesitter/execute/verify_rtl.py": "2e363ddca25326e1e76995d8a86350a048089c727d3f3837283065d2f402a810",
+    "workloads/target/treesitter/newlib.lock.json": "655f4c03b0254c0d86c232e3e14caf2c78841435d6df14a245a910c1abfb2134",
+    "workloads/target/treesitter/newlib.py": "3cc9b55335a1bb7b383d9942e88c223ec4bacf3660c7098ef5b408fb7b111a6e",
+    "hardware/spinal/examples/ape/kernel.c": "84c889fafa97d8611a97119822e5949f1e1bb7891690a9fdd09bab1fbbfc9b6f",
+    "hardware/spinal/examples/ape/link.ld": "44f96f9434e855f0250f2247a4a8c437782ce786f9c063b99bb7a8df6823ba8e",
+    "hardware/spinal/examples/ape/programs.S": "fd1396cedf99fc256702431e6bca6a0b938acfbdd5dbdd14d8ffd4f03cd260c6",
+    "hardware/spinal/src/main/scala/hats/HseCore.scala": "58f6f07547a94ae56e8e5b3c22ab9b6fc6ed38a567a697fa7a0d3cd1f45fa647",
+    "hardware/spinal/src/test/scala/hats/HseCoreSim.scala": "3bd37de6a2723e1b082a7075606408f671cabf0019c771aa9c95635008c81686",
+    "hardware/spinal/tools/assemble_ape.py": "4f64a6aff7de418b56a1c113594c2fa81b04eddd61822015557dba0920b137cf",
+    "hardware/spinal/tools/assemble_hse.py": "144f7a53b70251966d47637ba013503d21e98e7e906caa72a789aa31ae007882",
+    "hardware/spinal/tools/verify_ape.py": "ae0ddbab63ac01d580dc24809b7eb5ef422ab4e303f86f54c25aead1b8934603",
+    "hardware/spinal/tools/verify_hse.py": "4379c2f8602fca6c92f51d7f01e74178c3af0cb74f5636c656dd37b0aa55882b",
+    "hardware/spinal/tools/spike_adapter.cc": "fd1469dc0beff9e60c1f5f655a36187e223453130e3d9abb1d9927c1837cde25",
+    "hardware/spinal/tools/test_ape_spike.py": "ca40147129eb5c985d1af6cb32878677ca051ad75ec801cfd0842a6e3efc1797",
+    "hardware/spinal/tools/verify_ape_spike.py": "34a8188f3cf4a73a4fd1a09581b2d45884b83cb6a251f6787dc0b4f9c720cf7c",
+    "hardware/spinal/examples/ape_app/diff.c": "76e68a85f983b52100f4d5f6d5392b4d0965dbe913e2c00a3aff9cda794f564a",
+    "hardware/spinal/examples/ape_app/link.ld": "d335bd920c575f516aa3e3e6590b2eb671a4c488021db7e4fe0266b60ecd9cd5",
+    "hardware/spinal/examples/ape_app/start.S": "a368353f11cb36f310ca8569ee77caa792eda60595110e77191104b84ef9dd5c",
+    "hardware/spinal/tools/ape_app_image.py": "19994cf5378c7832b5fabe431ca6681c2e28b574f14b2eed4c05e3655b58986a",
+    "hardware/spinal/tools/build_ape_app.py": "bcd00b97e18093036c8641feea900081a15f4c8856df3af9af56bfeaeacce880",
+    "hardware/spinal/tools/check_ape_diff.py": "edaa63ac95ceddf81e3fbf81a96704cdd150591802c5d598a9d3368828634ece",
+    "hardware/spinal/tools/test_ape_app.py": "bbd9ac635810ccde2f2bdc52978db6d82bbbb092474048152aef499e042408a3",
+    "hardware/spinal/tools/verify_ape_app.py": "485124f5713af55a405cd9d33fdb4ef8708c772f1d2ccd2b666a778438f29b65",
+    "workloads/s02/test_gate.py": "bd5cbf76a1438437ccd53ae680e09ef8769f78e6ca09a5201290064bc903ba6d",
+    "workloads/s02/gate.py": "877a41efb0e51258f284ba4edc99921f054b39852ef25721f9621b4e8ef7fc0d",
+    "workloads/s02/run_all.py": "62abf62b962a188d8ae427a81bc83521e4e5090e3a77ad14da56b77670a722c1",
+    "workloads/s02/test_checkpoint.py": "8462a33acb2ff12b22d2de4a406847c499d58e5c6c049f67aa5019e63a502619",
+    "workloads/s02/port-manifest.json": "ca6bd79bb0d9c1ddc79a13d113a759915f8e77c347d34d73cd2d848203681722"
+  },
+  "reports_sha256": {
+    "bulk": "50a4e702989761724abdec0f38f35bf3f21ec1c8878bd9c0a2fc1a34f5321490",
+    "spinal": "d0e0d4bde6d05b07319b0d393d9b3c274267a83f81120852b8cd49e2076b6e2a",
+    "ppe": "ff96653d418480d41745e71f3fc78bc9b4339a9e4908c96e129a47252ab74b3b",
+    "native": "172474ed13abd72d37125a1d873c732d026c75a6dd76dc3fc9c2a086d680b4b0",
+    "legacy": "6ff2b16f8b3711be76c0a57cf6266130aa8594c3897ba0b76136f1447b29df60"
+  },
+  "documentation_sha256": {
+    "README.md": "4f600e7dd4efa84f8a4163802fdb71d9095c40b6d10d3768c3104f61d1a2a43e",
+    "ROADMAP.md": "c40bd24adeab108017c9f462b3ff39fc2ffdd11042b534c9aed83958b1cde120",
+    "workloads/S02-COMPLETION.md": "8d4e5a48b8500c80d99fcb6bd5d5fec2b64a73fc6cea0b9f0d27f8ca599f3365",
+    "hardware/spinal/DEVELOPMENT.md": "39ebd89ab86a456d798c72014593d2c1d0cb9c1950a2f475bf8ad83c664db80a",
+    "hardware/spinal/spec/PPE-ISA-0.1.md": "1cbbb5eff2650805b43d9558b5335500702b61e944b93ba5b8aeb22983b383cb",
+    "hardware/spinal/spec/PPE-RTL-0.1.md": "089916c4839702ba3cc49378878c4f6fbbe8060a0aa8d6baff668988de74500d",
+    "workloads/target/treesitter/execute/README.md": "2c14068e23e837ae185908b6b3a23b97f3d59c6d7b57332e3954c16ae5f95a85",
+    "workloads/target/treesitter/bulk/README.md": "9292b9cccbd448e0f07a6952c6ec1e2d1bf815bc5ffee9e0d346a7ae7d7fbab6"
+  },
+  "dependencies": {
+    "sources": [
+      {
+        "id": "native-tree-sitter",
+        "repository": "https://github.com/tree-sitter/tree-sitter.git",
+        "revision": "da6fe9beb4f7f67beb75914ca8e0d48ae48d6406",
+        "release": "v0.25.10",
+        "license": "MIT; bundled Unicode/ICU notices must also be retained",
+        "license_sha256": "5f9cf9fb6acb1972b35ae29119ce563bb60ec097656bc4b69b9bac2d04c7a147",
+        "additional_notices": {
+          "lib/src/unicode/LICENSE": "6a18c5fac70d7860b57f5b72b4e2c9a1ba6b3d2741eef7ff9767c5379364f10d"
+        }
+      },
+      {
+        "id": "native-tree-sitter-json",
+        "repository": "https://github.com/tree-sitter/tree-sitter-json.git",
+        "revision": "ee35a6ebefcef0c5c416c0d1ccec7370cfca5a24",
+        "release": "v0.24.8",
+        "license": "MIT",
+        "license_sha256": "2e0110e07abef7c2548b26ec9d6969775617ca539a0dc8dbeeb14d6452c711d1"
+      }
+    ],
+    "compiler": "Homebrew clang version 23.1.2",
+    "newlib_build_sha256": "0bc63d64bb4641f7af1cb5e60c0db16d1a693edb02d88b0c601b1037cb49bf08",
+    "spike_revision": "fdc1ffa05152707a00ca22a9cf50c59a1b487875",
+    "spike_build_sha256": "ec3b0e5a4ef8a5b1d44d8e62b066342266b79f52267489bebd01f930d5a06b0b",
+    "toolchain": {
+      "verilator": "Verilator 5.052 2026-09-05 rev vUNKNOWN-built20260905",
+      "java": "openjdk version \"25.0.2\" 2026-01-20",
+      "crypto": "OpenSSL 3.6.2 7 Apr 2026 (Library: OpenSSL 3.6.2 7 Apr 2026)"
+    }
+  },
+  "native": {
+    "runs": 90,
+    "sanitizers": true,
+    "semantic_result_matches_to_RTL": 30,
+    "complete_valid_tree_matches": 28,
+    "invalid_syntax_error_matches": 2
+  },
+  "ape": {
+    "bulk_invocations": 42,
+    "parser_cases": 30,
+    "negative_cases": 10,
+    "helper_results": 1062,
+    "runtime_checks": 160,
+    "spinal_invocations": 18,
+    "spinal_bulk_stream_matches": 18,
+    "rob_entries": 8,
+    "prediction": "bimodal",
+    "program_words": 65536,
+    "parser_elf_sha256": "c2c74a82a17490c4a6dbf285a34715ddfdeaad5a4a0b787fd51c7ee4c6270965",
+    "parser_code_bytes": 94944,
+    "generated_rtl_sha256": {
+      "ApeCore.v": "8d28d01b62ae32a56cd3c33ff3d0ba2eef3d85c79aaa4d1e79dab8f8758054e8"
+    },
+    "matched_retirements": 860981474,
+    "matched_memory_events": 357201875,
+    "cases": [
+      {
+        "mode": "helpers",
+        "case": "integer-vectors",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 827407,
+          "retirements": 825412,
+          "memory_events": 1994,
+          "sha256": "7ec971aa7cd4008c98ebbb61b3dcbb1446a836177c3fca40b5c2fa2c4d6accc7"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "bad_magic",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3116,
+          "retirements": 2472,
+          "memory_events": 643,
+          "sha256": "5842ae426c0142edd34ec3463bbd58aada3258641e2a3c38ad6b68db8916e430"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "bad_mode",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3121,
+          "retirements": 2476,
+          "memory_events": 644,
+          "sha256": "08387ab0db1748ca3810e991d785223c880ab97369f5353cf25a4145baf0ce17"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "empty-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 53677,
+          "retirements": 38295,
+          "memory_events": 15381,
+          "sha256": "52381d719540acdadcfde1b87d4a9da09da3d8b39f821318473b115affaaf66e"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "empty-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 30367,
+          "retirements": 21796,
+          "memory_events": 8570,
+          "sha256": "e926cda3d8e78cc39062feff2cfc8a8c279a15b580e0d9b85933cfa1e5f1706f"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "empty-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 76132,
+          "retirements": 54326,
+          "memory_events": 21805,
+          "sha256": "a2cf65ab0f6296f7d2aebd9ee0a5b1971d2d42d1762230d88fdd1c65884cb635"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "heap_small",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3636,
+          "retirements": 2915,
+          "memory_events": 720,
+          "sha256": "ae8242d77d653203f11db893b5eff5544296d9a3740e0a919385124e5a9f26dd"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "heap_zero",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3636,
+          "retirements": 2915,
+          "memory_events": 720,
+          "sha256": "f1407b73f84b0aa11ce20a3e00a5b08b9ea6e1232a07a05e23050dd6630f0eb3"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "input_bound",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3125,
+          "retirements": 2479,
+          "memory_events": 645,
+          "sha256": "f43f760d98798f812abc4f3316c529dcc92f798cedd683d9bda3c8024a75826c"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "invalid_heap_bound",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3136,
+          "retirements": 2488,
+          "memory_events": 647,
+          "sha256": "ee1a32e03fc27c9b8903e2f2ec1ee46028ed334a6a4b4a4c914123c8581310e4"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "nested-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 554325,
+          "retirements": 391243,
+          "memory_events": 163081,
+          "sha256": "6320dc52921c28c9ba34047747d89be27b096410453f29a2a300ca910e26bacd"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "nested-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 553878,
+          "retirements": 390917,
+          "memory_events": 162960,
+          "sha256": "5c2b0636d9ff2346961d8f11c32f736b7e38e17ea0bef198524a68628783eeea"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "nested-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 1070606,
+          "retirements": 760569,
+          "memory_events": 310036,
+          "sha256": "9f0bbed5d25cd4869109b04442da499502aa1cc6b089b777f5b5b0cbf1fc81a6"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "output_bound",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3143,
+          "retirements": 2494,
+          "memory_events": 648,
+          "sha256": "d9a79ce8d7c43eaad346926208918309a11885e94e277bb7efb3e39e5fe87e8a"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "output_full",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 26507,
+          "retirements": 19013,
+          "memory_events": 7493,
+          "sha256": "71ad19014e2f65b912d8e9d237a336a2fcad62ecb6d6e6a8dc792e7de814eebc"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "output_short",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3143,
+          "retirements": 2494,
+          "memory_events": 648,
+          "sha256": "1b531372d0c2ff5704d2584cf8fd53c0d5ebef605bf6acfcc372758865aeabb0"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_16-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 2634202,
+          "retirements": 1859283,
+          "memory_events": 774918,
+          "sha256": "462f3f8a470a05336493169a6524175b6bdbc1af9969397cf90d3ac1e4945ef6"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_16-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 2632032,
+          "retirements": 1857723,
+          "memory_events": 774308,
+          "sha256": "6a2e64e6078030bcc281783ee508a9666c4d6a7a58709c145f381f15cdff1416"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_16-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 2827540,
+          "retirements": 2000466,
+          "memory_events": 827073,
+          "sha256": "41ba9430b3db6e940d1b6afb3498ff655acc3cd3fdb097c48b413fab5eafb61f"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_2048-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 343209257,
+          "retirements": 242286056,
+          "memory_events": 100923200,
+          "sha256": "1490b9f5cb5cecc2379250012edb81beac818e8abd530e7e35c59113bfd8cb63"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_2048-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 343207737,
+          "retirements": 242284963,
+          "memory_events": 100922773,
+          "sha256": "ab2267ecc7f00905ef4940bbf79e484beeda5c89bf25601febfdff2a08e4445b"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_2048-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 359904817,
+          "retirements": 254647791,
+          "memory_events": 105257025,
+          "sha256": "959b5445d09f11d2806b78b9f2ebbd3db7c59b2eab619c5136bb120c5cecd384"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_256-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 42499309,
+          "retirements": 29999762,
+          "memory_events": 12499546,
+          "sha256": "68ac7e2200227e9591f86971fb89a67a70c5eceb3bf63e148ea3caeac405cbf6"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_256-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 42497573,
+          "retirements": 29998514,
+          "memory_events": 12499058,
+          "sha256": "f88106992944bdaa48696d805a8fa6880f5f6ce0fe9012782b2430b8a656c660"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "records_256-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 44620632,
+          "retirements": 31566445,
+          "memory_events": 13054186,
+          "sha256": "c58107568adf4d22ad0d58aa3b7243a6cda3c30b01326e9a99cd099d9e15c4ed"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "repository_lock-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 6628912,
+          "retirements": 4688949,
+          "memory_events": 1939962,
+          "sha256": "cb266d62bf504a748419b00699f1baafddda2c0fad546e2eae8a50af689f964d"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "repository_lock-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 7113653,
+          "retirements": 5038500,
+          "memory_events": 2075152,
+          "sha256": "4fc0d5d6c7b6cf15e5e58b668a525ab4989b329def19b2b863b82bf0806d9857"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "repository_lock-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 15501914,
+          "retirements": 11027300,
+          "memory_events": 4474613,
+          "sha256": "37a9d38c89911bca51fa7b4e03ec5aee389b3fd42a07164cd32639e10f23405d"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "reserved",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 3146,
+          "retirements": 2496,
+          "memory_events": 649,
+          "sha256": "6a3ebce90cfa75317716936a8a4bb4838f31ea904a036969cb95cc8bf6531940"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "scalars-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 133631,
+          "retirements": 94696,
+          "memory_events": 38934,
+          "sha256": "11bcd7124518c4dfd37adbd1994b2510b7db395c75eb0f380e5c20991363eb52"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "scalars-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 133626,
+          "retirements": 94690,
+          "memory_events": 38935,
+          "sha256": "ef1016d14721260db7babe95b54715d18c6472296d028b19682460a3196f6079"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "scalars-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 232885,
+          "retirements": 165355,
+          "memory_events": 67529,
+          "sha256": "27af3aaadc53e6c46af3ba53a6241e82da665237e38d126c97a2fe2000e89d38"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "trailing_comma-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 75218,
+          "retirements": 53474,
+          "memory_events": 21743,
+          "sha256": "9931629fb2dca8ef2a3beda7ee92e19e4ba13955b81d0f6fcb20d316398d35bc"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "trailing_comma-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 143775,
+          "retirements": 102599,
+          "memory_events": 41175,
+          "sha256": "ef3de610732199573e202e0e87a93fcd9ea84fd6ac902aea7429046e164b6994"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "trailing_comma-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 208328,
+          "retirements": 148758,
+          "memory_events": 59569,
+          "sha256": "b1143ea142171875621f713f696abdc42f6a1023cad97c37697896ea4393b181"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "truncated-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 61172,
+          "retirements": 43587,
+          "memory_events": 17584,
+          "sha256": "09e2e69ecb0ea3d3fd780769b297de008ca6fbc48f039ff890963e03c5cacb07"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "truncated-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 92735,
+          "retirements": 66915,
+          "memory_events": 25819,
+          "sha256": "a207199d2d733784c3a29063a06e3f1b3b3c0569d50bfd484d97b2fc823026df"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "truncated-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 141400,
+          "retirements": 101631,
+          "memory_events": 39768,
+          "sha256": "6805388d84f41ab837f74dba96b324386340be4138f0c0bf0c807acd1619a861"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "unicode-cold_new",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 124311,
+          "retirements": 88213,
+          "memory_events": 36097,
+          "sha256": "7fe1e0150899e1417155ee9e94198e4d42e270fe2a68e9544f8ea41c427d827d"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "unicode-cold_old",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 124311,
+          "retirements": 88213,
+          "memory_events": 36097,
+          "sha256": "78c813f690fc1054d41b4463cec831ee1881126d32702b89756dfb19f0588cb9"
+        }
+      },
+      {
+        "mode": "parser",
+        "case": "unicode-incremental",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 170641,
+          "retirements": 121526,
+          "memory_events": 49114,
+          "sha256": "69517b2123d4710534cde09b177ce98b1c592e87ba4dd9cdff7394e439f2c124"
+        }
+      },
+      {
+        "mode": "runtime",
+        "case": "runtime-tests",
+        "digest": {
+          "schema": 1,
+          "encoding": "hats-architectural-state-le64-v1",
+          "events": 41679,
+          "retirements": 31265,
+          "memory_events": 10413,
+          "sha256": "8a893f1e1929ea94579da72cc0745a4ddd4745ad2b8d46650887d2cf86aa2018"
+        }
+      }
+    ]
+  },
+  "ppe": {
+    "isa_oracle_invocations": 180,
+    "protocol_decode_invocations": 44,
+    "opcodes_exercised": [
+      "ADD",
+      "AND",
+      "BARRIER",
+      "FENCE",
+      "JMP",
+      "JNZ",
+      "JOIN",
+      "LOAD",
+      "LT",
+      "LTU",
+      "MOV",
+      "MOVI",
+      "OR",
+      "RETURN",
+      "SAR",
+      "SELECT",
+      "SHL",
+      "SHR",
+      "SPLIT",
+      "STORE",
+      "SUB",
+      "VADD",
+      "VAND",
+      "VCMPEQ",
+      "VCMPLT",
+      "VCMPLTU",
+      "VLOAD",
+      "VMOV",
+      "VMOVI",
+      "VOR",
+      "VSAR",
+      "VSHL",
+      "VSHR",
+      "VSTORE",
+      "VSUB",
+      "VXOR",
+      "XOR"
+    ],
+    "generated_rtl_sha256": [
+      "df90cd06b76fb1342aa0505c127d0fa49cbaaab19af776a22d0d1a3a620fce5b"
+    ],
+    "manifest": [
+      {
+        "name": "return",
+        "kind": 0,
+        "instructions": 1,
+        "retired": 1,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "arithmetic_w2_e0",
+        "kind": 0,
+        "instructions": 44,
+        "retired": 44,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "BARRIER",
+          "FENCE",
+          "LT",
+          "LTU",
+          "MOV",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SELECT",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VMOVI",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "arithmetic_w2_e1",
+        "kind": 0,
+        "instructions": 44,
+        "retired": 44,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "BARRIER",
+          "FENCE",
+          "LT",
+          "LTU",
+          "MOV",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SELECT",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VMOVI",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "arithmetic_w3_e0",
+        "kind": 0,
+        "instructions": 44,
+        "retired": 44,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "BARRIER",
+          "FENCE",
+          "LT",
+          "LTU",
+          "MOV",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SELECT",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VMOVI",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "conditional_loop",
+        "kind": 0,
+        "instructions": 5,
+        "retired": 21,
+        "opcodes": [
+          "JNZ",
+          "MOVI",
+          "RETURN",
+          "SUB"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "split_0",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 6,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "split_3",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 9,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "split_8",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 7,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "nested_mixed",
+        "kind": 0,
+        "instructions": 16,
+        "retired": 18,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "empty_then",
+        "kind": 0,
+        "instructions": 7,
+        "retired": 8,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "empty_else",
+        "kind": 0,
+        "instructions": 7,
+        "retired": 8,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "depth_8",
+        "kind": 0,
+        "instructions": 27,
+        "retired": 27,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "RETURN",
+          "SPLIT",
+          "VCMPEQ",
+          "VMOVI"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "depth_9",
+        "kind": 0,
+        "instructions": 30,
+        "retired": 9,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "RETURN",
+          "SPLIT",
+          "VCMPEQ",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_movi",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_load",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_store",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "STORE",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_fence",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "FENCE",
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_barrier",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "BARRIER",
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "nonuniform_return",
+        "kind": 0,
+        "instructions": 8,
+        "retired": 3,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "memory_s0_w0",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s0_w1",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s0_w2",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s0_w3",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s2_w0",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s2_w1",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s2_w2",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "memory_s2_w3",
+        "kind": 0,
+        "instructions": 13,
+        "retired": 13,
+        "opcodes": [
+          "BARRIER",
+          "FENCE",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "STORE",
+          "VLOAD",
+          "VMOVI",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "load_error",
+        "kind": 0,
+        "instructions": 5,
+        "retired": 3,
+        "opcodes": [
+          "MOVI",
+          "RETURN",
+          "VLOAD",
+          "VMOVI",
+          "VSHL"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "store_partial",
+        "kind": 0,
+        "instructions": 6,
+        "retired": 4,
+        "opcodes": [
+          "MOVI",
+          "RETURN",
+          "VADD",
+          "VSHL",
+          "VSTORE"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "alignment",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "readonly",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "RETURN",
+          "STORE"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "range",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "underflow",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "overflow",
+        "kind": 0,
+        "instructions": 3,
+        "retired": 1,
+        "opcodes": [
+          "LOAD",
+          "MOVI",
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "scratch_bounds",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "falloff",
+        "kind": 0,
+        "instructions": 1,
+        "retired": 1,
+        "opcodes": [
+          "VMOVI"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "masked_invalid",
+        "kind": 0,
+        "instructions": 10,
+        "retired": 11,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "MOVI",
+          "RETURN",
+          "SPLIT",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSHL"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "stale_reply",
+        "kind": 0,
+        "instructions": 2,
+        "retired": 2,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "raw_illegal_0",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_1",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_2",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_3",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_4",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_5",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_6",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_7",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "raw_illegal_8",
+        "kind": 1,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "reject_code_empty",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_code_capacity",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_scratch_capacity",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_scratch_alignment",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_no_groups",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_group_bounds",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_no_task",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_no_budget",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_bad_range",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "reject_argument_overflow",
+        "kind": 2,
+        "instructions": 1,
+        "retired": 0,
+        "opcodes": [
+          "RETURN"
+        ],
+        "status": "rejected"
+      },
+      {
+        "name": "budget_late_response",
+        "kind": 3,
+        "instructions": 4,
+        "retired": 2,
+        "opcodes": [
+          "MOVI",
+          "RETURN",
+          "VMOV",
+          "VSTORE"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "budget_held_request",
+        "kind": 3,
+        "instructions": 4,
+        "retired": 2,
+        "opcodes": [
+          "MOVI",
+          "RETURN",
+          "VMOV",
+          "VSTORE"
+        ],
+        "status": "fault"
+      },
+      {
+        "name": "never_responds",
+        "kind": 4,
+        "instructions": 2,
+        "retired": 0,
+        "opcodes": [
+          "LOAD",
+          "RETURN"
+        ],
+        "status": "quiescence_required"
+      },
+      {
+        "name": "delimiter_0_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 18,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_1_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 34,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_8_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_9_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_9_g1",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 34,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g1",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g2",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g3",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g4",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g5",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_53_g6",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 34,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g0",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g1",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g2",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g3",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g4",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g5",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g6",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g7",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g8",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g9",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g10",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g11",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g12",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g13",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g14",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g15",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g16",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g17",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g18",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g19",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g20",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g21",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g22",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g23",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g24",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g25",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g26",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g27",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g28",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g29",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g30",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "delimiter_256_g31",
+        "kind": 0,
+        "instructions": 33,
+        "retired": 33,
+        "opcodes": [
+          "JMP",
+          "JOIN",
+          "LOAD",
+          "MOVI",
+          "RETURN",
+          "SELECT",
+          "SHL",
+          "SPLIT",
+          "VADD",
+          "VCMPEQ",
+          "VCMPLTU",
+          "VLOAD",
+          "VMOVI",
+          "VSTORE"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_0",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_1",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_2",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_3",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_4",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_5",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_6",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      },
+      {
+        "name": "random_7",
+        "kind": 0,
+        "instructions": 113,
+        "retired": 113,
+        "opcodes": [
+          "ADD",
+          "AND",
+          "LT",
+          "LTU",
+          "MOVI",
+          "OR",
+          "RETURN",
+          "SAR",
+          "SHL",
+          "SHR",
+          "SUB",
+          "VADD",
+          "VAND",
+          "VCMPEQ",
+          "VCMPLT",
+          "VCMPLTU",
+          "VMOV",
+          "VOR",
+          "VSAR",
+          "VSHL",
+          "VSHR",
+          "VSUB",
+          "VXOR",
+          "XOR"
+        ],
+        "status": "success"
+      }
+    ]
+  },
+  "regressions": {
+    "ape_rtl_invocations": 600,
+    "predictor_checks": 4096,
+    "spike_matches": 576,
+    "explicit_profile_differences": 24,
+    "bounded_application_invocations": 144,
+    "committed_legacy_invocations": 123,
+    "legacy_source": {
+      "repository_path": "hardware/spinal/src/main/scala/hats/TaskTile.scala",
+      "commit": "1cc1e18c4a2c8c4bc4dda8831f76fbfc52cbc0ca",
+      "sha256": "cdf0e4b8a2d71cad50f5ba368c74812c5cbdd7e9804dd8fa434c0036d2e38fb6"
+    }
+  },
+  "fast_tests": [
+    {
+      "directory": "hardware/spinal/tools",
+      "pattern": "test_ppe_isa.py",
+      "status": "passed"
+    },
+    {
+      "directory": "workloads/target/treesitter/execute",
+      "pattern": "test_*.py",
+      "status": "passed"
+    },
+    {
+      "directory": "workloads/s02",
+      "pattern": "test_*.py",
+      "status": "passed"
+    },
+    {
+      "gate": "workloads/s01_gate.py",
+      "tests": 56,
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "Evidence collection rechecks existing executions; run_all.py reruns all builds and simulations",
+    "Bulk SHA-256 includes every event and full architectural retirement state; not a formal proof or sampling",
+    "PPE is one eight-lane wave with trusted loading, direct launch, uncached serialized memory and single-wave barriers",
+    "No CP, OS, coherent memory hierarchy, tensor/LLM engine, target-hosted compiler, big-core performance, speedup or PPA claim"
+  ]
+}

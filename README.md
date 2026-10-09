@@ -42,12 +42,23 @@ It is not yet a complete high-performance big core or HATS task runtime.
 
 CPU/GPU are deployment categories rather than mandatory internal boundaries:
 scalar, vector/tensor and command/task-control roles can use different ISAs.
-The command controller and vector/tensor datapaths remain future integration work.
+The command controller, tensor datapaths and system integration remain future work.
 
 S01 now has proposed [PPE execution semantics](hardware/spinal/spec/PPE-0.1.md)
 and a [shared task ABI](hardware/spinal/spec/HATS-TASK-ABI-0.1.md), with executable
-descriptor layout/rejection tests. These are specification and host-model
-artifacts, not implemented PPE or command-processor RTL.
+descriptor layout/rejection tests. The shared queue/CP ABI is still a specification,
+not implemented command-processor RTL.
+
+The [S02 completion gate](workloads/S02-COMPLETION.md) now runs the pinned
+Tree-sitter/JSON executable on actual APE RTL for all 30 frozen parser cases,
+plus helper/runtime/error suites. Every retirement state and memory event is
+checked against independent Spike execution, with native semantic-result parity.
+An original [PPE integer ISA](hardware/spinal/spec/PPE-ISA-0.1.md) and
+[SpinalHDL PpeCore](hardware/spinal/spec/PPE-RTL-0.1.md) now execute scalar/vector
+programs with masks, reconvergence, scratch and tagged global memory. The 224-run
+PPE gate checks actual hardware, not merely its reference model. This is a first
+single-wave programmable PPE; high-performance APE, caches, CP, tensor execution
+and end-to-end acceleration remain later milestones.
 
 ## Legacy Autonomous Task Tile Prototype
 

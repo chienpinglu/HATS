@@ -23,8 +23,8 @@ Moving conventional CPU work into the package alone does not prove acceleration.
 | Component | Full name and responsibility | Current state |
 | --- | --- | --- |
 | APE | Application Processing Engine: speculative out-of-order RISC-V application execution | Small integer OoO RTL prototype with bounded applications; not a complete high-performance big core |
-| PPE | Parallel Processing Engine: GPU-class programmable scalar/vector/tensor execution | Architecture and implementation pending |
-| PpeCore / PpeCluster | PPE compute core (CU) and a group of such cores | Minimum S01 contract specified; model/encoding/RTL remain S02 |
+| PPE | Parallel Processing Engine: GPU-class programmable scalar/vector/tensor execution | First single-wave integer scalar/vector RTL implemented and independently verified; tensor/cluster work remains |
+| PpeCore / PpeCluster | PPE compute core (CU) and a group of such cores | Original PpeCore RTL, ISA model/encoding and full-state gate delivered in S02; PpeCluster remains future work |
 | CP | Command Processor: embedded RISC-V controller for queues, dispatch and completion | Separate core/firmware integration pending |
 | Memory/service fabric | Caches, translation/protection, ordering, DMA, locality and asynchronous services | Full system pending; current APE uses a single head-ordered data port |
 
@@ -87,9 +87,8 @@ closure requirements. Keep both aligned when scope or dependencies change.
 
 ## Work sequencing and parallel tracks
 
-- Start S01 now: real-tool selection/profiling and PPE architecture are parallel
-  priorities.
-- S02 implements APE application support and the first PPE core in parallel.
+- S01 requirements/profiling and S02 real-tool/first-PPE gates are complete;
+  see their linked completion records for exact implemented profiles.
 - S03 (OoO), S04 (memory), S05 (CP/runtime) and S08 numeric/compiler design
   overlap after their minimum interfaces are stable.
 - S06 adds protected execution; S07 integrates the locality domains; S09
@@ -142,6 +141,9 @@ blocked. Target execution remains an S02 gate, not an S01 acceleration claim.
 
 ### S02: Enable real APE applications and implement the first programmable PPE core
 
+Completed: [S02 review, coverage and reproduction](workloads/S02-COMPLETION.md).
+This is a functional first-engine gate, not a high-performance or physical result.
+
 **Goal:** Execute a pinned real tool on APE RTL and independently checked scalar/vector programs on the first PPE RTL core.
 
 **Dependencies:** S01
@@ -150,20 +152,20 @@ blocked. Target execution remains an S02 gate, not an S01 acceleration claim.
 
 **Work packages**
 
-- [ ] Extend APE instruction/data capacity, checked executable loading, startup, stack/heap and required library support according to the selected tool's measured needs.
-- [ ] Implement and independently verify only the ISA/runtime additions required by the declared application profile; preserve the bounded diff application as a regression anchor.
-- [ ] Port the selected upstream tool with explicit platform adapters and a residual-host-work inventory; keep the original source identity and patch set reproducible.
-- [ ] Build an independent PPE ISA model and assembler/disassembler with positive and illegal-instruction tests.
-- [ ] Implement PpeCore fetch/decode, runnable-thread selection, scalar/vector register files and integer execution, masks, divergence/reconvergence, load/store, scratchpad and barriers.
-- [ ] Add SpinalSim/Verilator tests for actual PPE instruction execution, resource conflicts, stalls, relaunch and failure handling.
+- [x] Extend APE instruction/data capacity, checked executable loading, startup, stack/heap and required library support according to the selected tool's measured needs.
+- [x] Implement and independently verify only the ISA/runtime additions required by the declared application profile; preserve the bounded diff application as a regression anchor.
+- [x] Port the selected upstream tool with explicit platform adapters and a residual-host-work inventory; keep the original source identity and patch set reproducible.
+- [x] Build an independent PPE ISA model and assembler/disassembler with positive and illegal-instruction tests.
+- [x] Implement PpeCore fetch/decode, runnable-thread selection, scalar/vector register files and integer execution, masks, divergence/reconvergence, load/store, scratchpad and barriers.
+- [x] Add SpinalSim/Verilator tests for actual PPE instruction execution, resource conflicts, stalls, relaunch and failure handling.
 
 **Acceptance criteria**
 
-- [ ] Identical inputs produce matching native and APE-target results; the declared supported instruction profile also passes independent architectural comparison.
-- [ ] The actual upstream tool logic executes on APE RTL without a host implementation supplying its results.
-- [ ] PPE instruction and final-state traces match its independent reference on the supported profile, including divergence and synchronization cases.
-- [ ] Current APE, predictor, bounded-application and legacy-task regression anchors remain passing or have an explicitly reviewed architectural-profile change.
-- [ ] A reproducible build generates both engines' RTL and records source, toolchain and generated-artifact identity.
+- [x] Identical inputs produce matching native and APE-target results; the declared supported instruction profile also passes independent architectural comparison.
+- [x] The actual upstream tool logic executes on APE RTL without a host implementation supplying its results.
+- [x] PPE instruction and final-state traces match its independent reference on the supported profile, including divergence and synchronization cases.
+- [x] Current APE, predictor, bounded-application and legacy-task regression anchors remain passing or have an explicitly reviewed architectural-profile change.
+- [x] A reproducible build generates both engines' RTL and records source, toolchain and generated-artifact identity.
 
 **Required evidence:** Upstream lock and patch manifest, application ELF/runtime artifacts, native/reference/RTL comparisons, PPE ISA model/tests, generated RTL hashes and regression reports.
 
