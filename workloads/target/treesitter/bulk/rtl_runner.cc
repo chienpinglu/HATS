@@ -3,6 +3,9 @@
 #include "verilated.h"
 #include "digest.h"
 #include "../execute/platform.h"
+#ifdef HATS_S03
+#include "../../../s03/service_schedule.h"
+#endif
 #include <algorithm>
 #include <cstring>
 #include <fstream>
@@ -28,7 +31,15 @@ struct Request {
 struct Reply { uint64_t due,data; bool error; };
 int main(int argc,char **argv) {
   try {
+#ifdef HATS_S03
+    check(argc==8,"parser-folder case-folder output-prefix repetitions max-cycles response-base service-seed");
+    const unsigned long parsedBase=std::stoul(argv[6]);
+    check(parsedBase<=UINT32_MAX,"response base overflow");
+    const uint32_t responseBase=parsedBase;
+    const uint64_t serviceSeed=std::stoull(argv[7]);
+#else
     check(argc==6,"parser-folder case-folder output-prefix repetitions max-cycles");
+#endif
     const std::string root=argv[1], input=argv[2], output=argv[3];
     unsigned repetitions=std::stoul(argv[4]); uint64_t maximum=std::stoull(argv[5]);
     check(repetitions>=1&&repetitions<=2&&maximum>0,"bad run limits");
@@ -56,17 +67,40 @@ int main(int argc,char **argv) {
       std::array<uint64_t,32> registers{}; registers[10]=HATS_ARGUMENT;
       EventDigest digest; std::optional<Reply> pending; std::optional<Request> held;
       std::mt19937 rng(0x48415453+invocation); uint64_t cycles=0,requests=0,stalls=0,minimum_sp=HATS_STACK_TOP; bool halted=false;
+#ifdef HATS_S03
+      hats::s03::TransactionService service(responseBase,serviceSeed);
+      uint64_t issued=0,dualIssue=0,executionStalls=0,completionStalls=0,renameStalls=0,checkpointStalls=0,robStalls=0;
+      uint64_t readySum=0,occupancySum=0,branches=0,branchMisses=0,redirects=0,lateRejected=0;
+      uint64_t acceptanceWait=0,responseWait=0,firstRequestCycle=0;
+      unsigned peakOccupancy=0,minimumFree=UINT32_MAX;
+      bool requestPresented=false;
+#endif
       dut.io_launch_valid=1; dut.eval(); check(dut.io_launch_ready,"launch not ready"); edge(); dut.io_launch_valid=0;
       for(;cycles<maximum;cycles++) {
+#ifdef HATS_S03
+        // Requests are registered; readiness cannot change their presentation.
+        dut.eval();
+        dut.io_memory_ready=service.requestReady(cycles,dut.io_memory_valid);
+        if(dut.io_memory_valid&&!requestPresented) { firstRequestCycle=cycles; requestPresented=true; }
+        bool reply=service.responseReady(cycles);
+        check(reply==bool(pending&&pending->due<=cycles),"service/payload response disagreement");
+#else
         dut.io_memory_ready=cycles%5>=2 && rng()%4!=0;
         bool reply=pending&&pending->due<=cycles;
+#endif
         dut.io_response_valid=reply; dut.io_response_payload_data=reply?pending->data:0; dut.io_response_payload_error=reply&&pending->error;
         dut.eval();
         std::optional<Request> request;
         if(dut.io_memory_valid) request=Request{dut.io_memory_payload_address,dut.io_memory_payload_data,dut.io_memory_payload_size,bool(dut.io_memory_payload_write)};
         check(!held || request==held,"held memory request changed"); held=!dut.io_memory_ready?request:std::nullopt;
         if(held) stalls++;
-        if(reply&&dut.io_response_ready) pending.reset();
+        if(reply&&dut.io_response_ready) {
+#ifdef HATS_S03
+          check(cycles==pending->due,"response received extra core-dependent delay");
+          service.responseConsumed(cycles);
+#endif
+          pending.reset();
+        }
         if(request&&dut.io_memory_ready) {
           check(!pending,"multiple outstanding requests"); auto r=*request; size_t bytes=1u<<r.size;
           check(r.address%bytes==0,"misaligned request");
@@ -80,8 +114,30 @@ int main(int argc,char **argv) {
             for(size_t i=0;i<bytes;i++) value |= uint64_t(ptr[i])<<(i*8);
           }
           digest.access(r.address,bytes,r.write,value,!permitted);
-          pending=Reply{cycles+2+rng()%8,value,!permitted}; requests++;
+#ifdef HATS_S03
+          auto waits=service.delays();
+          check(requestPresented&&cycles-firstRequestCycle==waits.acceptance,"realized request service differs");
+          service.accepted(cycles); requestPresented=false;
+          pending=Reply{cycles+waits.response,value,!permitted};
+          acceptanceWait+=waits.acceptance; responseWait+=waits.response;
+#else
+          pending=Reply{cycles+2+rng()%8,value,!permitted};
+#endif
+          requests++;
         }
+#ifdef HATS_S03
+        issued+=dut.io_issueCount; dualIssue+=dut.io_issueCount==2;
+        executionStalls+=dut.io_executionBlocked; completionStalls+=dut.io_completionBlocked;
+        renameStalls+=dut.io_renameBlocked; checkpointStalls+=dut.io_checkpointBlocked; robStalls+=dut.io_robBlocked;
+        readySum+=dut.io_readyCount; occupancySum+=dut.io_occupancy;
+        peakOccupancy=std::max(peakOccupancy,unsigned(dut.io_occupancy));
+        minimumFree=std::min(minimumFree,unsigned(dut.io_physicalFree));
+        if(dut.io_controlRetired_valid&&dut.io_controlRetired_payload_conditional) {
+          branches++; branchMisses+=dut.io_controlRetired_payload_predictedNext!=dut.io_controlRetired_payload_actualNext;
+        }
+        redirects+=dut.io_redirect_valid;
+        lateRejected+=dut.io_completion_valid&&!dut.io_completion_payload_accepted;
+#endif
         if(dut.io_retired_valid) {
           if(dut.io_retired_payload_writes) {
             check(dut.io_retired_payload_rd!=0,"x0 publication");
@@ -101,13 +157,28 @@ int main(int argc,char **argv) {
         edge();
       }
       check(halted,"hardware cycle budget exhausted");
+#ifdef HATS_S03
+      check(service.idle()&&service.ordinal()==requests&&!requestPresented,"controlled service did not drain");
+#endif
       std::string prefix=output+"-"+std::to_string(invocation);
       digest.save((prefix+".digest.json").c_str());
       std::ofstream result(prefix+".result.bin",std::ios::binary);
       result.write(reinterpret_cast<char*>(memory.data()+HATS_OUTPUT-HATS_DATA_BASE),HATS_OUTPUT_BYTES);
       std::ofstream stats(prefix+".execution.json");
       stats<<"{\"cycles\":"<<cycles<<",\"retired\":"<<digest.retirements<<",\"requests\":"<<requests
-        <<",\"stalls\":"<<stalls<<",\"stack_bytes\":"<<HATS_STACK_TOP-minimum_sp<<",\"result\":"<<dut.io_halt_payload_value<<"}\n";
+        <<",\"stalls\":"<<stalls<<",\"stack_bytes\":"<<HATS_STACK_TOP-minimum_sp<<",\"result\":"<<dut.io_halt_payload_value;
+#ifdef HATS_S03
+      stats<<",\"service_seed\":"<<serviceSeed<<",\"response_base\":"<<responseBase
+        <<",\"acceptance_wait_sum\":"<<acceptanceWait<<",\"response_wait_sum\":"<<responseWait
+        <<",\"issued_operations\":"<<issued<<",\"dual_issue_cycles\":"<<dualIssue
+        <<",\"execution_stall_cycles\":"<<executionStalls<<",\"completion_stall_cycles\":"<<completionStalls
+        <<",\"rename_stall_cycles\":"<<renameStalls<<",\"checkpoint_stall_cycles\":"<<checkpointStalls
+        <<",\"rob_stall_cycles\":"<<robStalls<<",\"ready_sum\":"<<readySum<<",\"occupancy_sum\":"<<occupancySum
+        <<",\"peak_occupancy\":"<<peakOccupancy<<",\"minimum_free_registers\":"<<minimumFree
+        <<",\"branches\":"<<branches<<",\"branch_misses\":"<<branchMisses<<",\"redirects\":"<<redirects
+        <<",\"late_rejected\":"<<lateRejected;
+#endif
+      stats<<"}\n";
       check(bool(result)&&bool(stats),"output write failed");
       uint64_t result_value=dut.io_halt_payload_value;
       dut.io_response_valid=0;

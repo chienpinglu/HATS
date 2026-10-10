@@ -29,11 +29,13 @@ def main():
     inputs += [ROOT / "tools" / n for n in ("assemble_ape.py", "verify_ape.py", "assemble_hse.py",
                                               "verify_hse.py", "sbtw", "toolchain.py")]
     initial = hashes(inputs)
-    report = {"status": "running", "spec_revision": "APE-0.2",
+    report = {"status": "running", "spec_revision": "APE-0.5",
               "started_utc": datetime.now(timezone.utc).isoformat(),
               "claim": "Speculative out-of-order RV64I-subset RTL mechanism verification",
               "path": "LLVM linked RV64 programs -> SpinalHDL -> Verilator/SpinalSim -> retirement scoreboard",
-              "configurations": [{"rob_entries": n, "prediction": mode} for n, mode in CONFIGS],
+              "configurations": [{"rob_entries": n, "prediction": mode, "physical_registers": 64,
+                                   "early_recovery": True, "checkpoint_capacity": 4,
+                                   "execution_stages": 2, "generation_bits": 2} for n, mode in CONFIGS],
               "source_sha256": initial,
               "limits": ["Not full RV64I/privileged conformance or a high-performance CPU",
                          "Local sequential oracle, not external Spike/Sail certification",
@@ -71,6 +73,9 @@ def main():
         suites = [json.loads((BUILD / f"r{n}-{mode}/validation.json").read_text()) for n, mode in CONFIGS]
         for (n, mode), suite in zip(CONFIGS, suites):
             if not (suite["status"] == "passed" and suite["rob_entries"] == n and suite["prediction"] == mode
+                    and suite["physical_registers"] == 64
+                    and suite["early_recovery"] is True and suite["checkpoint_capacity"] == 4 and suite["recovery_suite"] is False
+                    and suite["execution_stages"] == 2 and suite["generation_bits"] == 2
                     and suite["runs"] == len(suite["results"]) == suite["scenarios"] * 2
                     and suite["scenarios"] == 50 and all(c["passed"] for c in suite["results"])):
                 raise RuntimeError(f"Incomplete suite: {n}/{mode}")

@@ -4,110 +4,37 @@ import spinal.core._
 import spinal.lib._
 
 /** HATS Application Processing Engine: RV64I-subset, not yet a privileged CPU.
-  * Single dispatch/issue/retire; ROB-tag renaming; oldest-ready out-of-order issue.
-  * Configurable branch prediction, recover at retirement. Memory is head-only.
+  * Single dispatch/retire; configurable one/two-lane issue; physical-register renaming; oldest-ready OoO issue.
+  * Registered execution with qualified completion; checkpointed branch recovery.
+  * Memory is head-only.
   */
 case class ApeConfig(robEntries: Int = 8, programWords: Int = 1024,
-                     prediction: Boolean = true, predictorEntries: Int = 16) {
+                     prediction: Boolean = true, predictorEntries: Int = 16,
+                     physicalRegisters: Int = 64, earlyRecovery: Boolean = true,
+                     branchCheckpoints: Int = 4, executionStages: Int = 2,
+                     generationBits: Int = 2, issueWidth: Int = 1) {
   require(robEntries >= 4 && isPow2(robEntries))
   require(programWords >= 16 && isPow2(programWords))
   require(predictorEntries >= 2 && isPow2(predictorEntries))
+  require(physicalRegisters >= 33 && physicalRegisters <= 256)
+  require(branchCheckpoints >= 1 && branchCheckpoints <= robEntries)
+  require(executionStages >= 2 && executionStages <= 32)
+  require(generationBits >= 1 && generationBits <= 4)
+  require(issueWidth >= 1 && issueWidth <= 2)
+  val physicalTagBits = log2Up(physicalRegisters)
   val tagBits = log2Up(robEntries)
   val codeBits = log2Up(programWords)
 }
 
-object ApeOp extends SpinalEnum {
-  val ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND,
-      LUI, AUIPC, BRANCH, JAL, JALR, LOAD, STORE, FENCE, BREAK, ILLEGAL = newElement()
-}
-
-/** Public RV64I encodings only. C/M/A/F/D, CSR and privileged instructions trap. */
-class ApeDecode(inst: Bits) extends Area {
-  val op = ApeOp()
-  val valid, writes, use1, use2, immediate, word = Bool()
-  val imm = UInt(64 bits)
-  val rd = inst(11 downto 7).asUInt
-  val rs1 = inst(19 downto 15).asUInt
-  val rs2 = inst(24 downto 20).asUInt
-  val f3 = inst(14 downto 12).asUInt
-  val f7 = inst(31 downto 25).asUInt
-  val opcode = inst(6 downto 0).asUInt
-  op := ApeOp.ILLEGAL
-  valid := False
-  writes := False
-  use1 := False
-  use2 := False
-  immediate := False
-  word := False
-  imm := inst(31 downto 20).asSInt.resize(64).asUInt
-  switch(opcode) {
-    is(0x37, 0x17) {
-      valid := True; writes := True
-      imm := (inst(31 downto 12) ## B(0, 12 bits)).asSInt.resize(64).asUInt
-      op := ApeOp.LUI
-      when(opcode === 0x17) { op := ApeOp.AUIPC }
-    }
-    is(0x13, 0x1b, 0x33, 0x3b) {
-      writes := True; use1 := True
-      immediate := !opcode(5)
-      use2 := opcode(5)
-      word := opcode(3)
-      switch(f3) {
-        is(0) {
-          when(!opcode(5) || f7 === 0) { valid := True; op := ApeOp.ADD }
-          when(opcode(5) && f7 === 0x20) { valid := True; op := ApeOp.SUB }
-        }
-        is(1) {
-          op := ApeOp.SLL
-          when(opcode(5)) { valid := f7 === 0 }
-            .otherwise { valid := inst(31 downto 26) === 0 && (!opcode(3) || !inst(25)) }
-        }
-        is(5) {
-          op := ApeOp.SRL
-          when(inst(30)) { op := ApeOp.SRA }
-          when(opcode(5)) { valid := f7 === 0 || f7 === 0x20 }
-            .otherwise {
-              valid := (inst(31 downto 26) === 0 || inst(31 downto 26) === 0x10) &&
-                (!opcode(3) || !inst(25))
-            }
-        }
-        is(2, 3, 4, 6, 7) {
-          valid := !opcode(3) && (!opcode(5) || f7 === 0)
-          switch(f3) {
-            is(2) { op := ApeOp.SLT }
-            is(3) { op := ApeOp.SLTU }
-            is(4) { op := ApeOp.XOR }
-            is(6) { op := ApeOp.OR }
-            is(7) { op := ApeOp.AND }
-          }
-        }
-      }
-    }
-    is(0x63) {
-      op := ApeOp.BRANCH; use1 := True; use2 := True
-      valid := f3 === 0 || f3 === 1 || f3 >= 4
-      imm := (inst(31) ## inst(7) ## inst(30 downto 25) ## inst(11 downto 8) ## False)
-        .asSInt.resize(64).asUInt
-    }
-    is(0x6f) {
-      op := ApeOp.JAL; valid := True; writes := True
-      imm := (inst(31) ## inst(19 downto 12) ## inst(20) ## inst(30 downto 21) ## False)
-        .asSInt.resize(64).asUInt
-    }
-    is(0x67) { op := ApeOp.JALR; valid := f3 === 0; writes := True; use1 := True }
-    is(0x03) { op := ApeOp.LOAD; valid := f3 =/= 7; writes := True; use1 := True }
-    is(0x23) {
-      op := ApeOp.STORE; valid := f3 <= 3; use1 := True; use2 := True
-      imm := (inst(31 downto 25) ## inst(11 downto 7)).asSInt.resize(64).asUInt
-    }
-    is(0x0f) { op := ApeOp.FENCE; valid := f3 === 0 }
-    is(0x73) { when(inst === B(0x00100073L, 32 bits)) { op := ApeOp.BREAK; valid := True } }
-  }
-  // Unsupported encodings never allocate an architectural destination.
-  val destination = writes && valid && rd =/= 0
+case class ApeIssueEvent(c: ApeConfig) extends Bundle {
+  val pc = UInt(64 bits)
+  val identity = ApeExecutionIdentity(c)
 }
 
 class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
+  // Architectural wrapper: the reusable backend currently accepts exactly one
+  // complete semantic operation for each ROB/instruction identity.
+  require(ApeRv64Profile.operationsPerInstruction == 1)
   val io = new Bundle {
     val program = slave Flow(new Bundle {
       val index = UInt(c.codeBits bits)
@@ -137,16 +64,45 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
       val writes = Bool()
       val value = UInt(64 bits)
     })
-    val issued = master Flow(new Bundle { val pc = UInt(64 bits) })
+    // Compatibility port observes lane zero only; all-lane consumers use issues.
+    val issued = master Flow(ApeIssueEvent(c))
+    val issues = out Vec(Flow(ApeIssueEvent(c)), c.issueWidth)
+    val issueCount = out UInt(log2Up(c.issueWidth + 1) bits)
+    val readyCount = out UInt(log2Up(c.robEntries + 1) bits)
+    val completionBlocked, robBlocked = out Bool()
     val finished = master Flow(new Bundle { val pc = UInt(64 bits) })
     val redirect = master Flow(new Bundle { val from, to = UInt(64 bits) })
-    val predicted = master Flow(new Bundle { val pc, next = UInt(64 bits) })
+    val predicted = master Flow(new Bundle {
+      val pc, next = UInt(64 bits)
+      val slot = UInt(c.tagBits bits)
+      val generation = UInt(c.generationBits bits)
+      val destination = UInt(c.physicalTagBits bits)
+      val writes = Bool()
+    })
+    val resolved = master Flow(new Bundle {
+      val pc, predictedNext, actualNext = UInt(64 bits)
+      val slot = UInt(c.tagBits bits)
+      val fault, olderMemory = Bool()
+      val olderInstructions = UInt(c.tagBits bits)
+    })
+    val squashed = out Bits(c.robEntries bits)
     val controlRetired = master Flow(new Bundle {
       val pc, predictedNext, actualNext = UInt(64 bits)
       val conditional, taken = Bool()
+      val slot = UInt(c.tagBits bits)
     })
     val busy = out Bool()
     val occupancy = out UInt(log2Up(c.robEntries + 1) bits)
+    val physicalFree = out UInt(log2Up(c.physicalRegisters + 1) bits)
+    val renameBlocked = out Bool()
+    val checkpointBlocked = out Bool()
+    val checkpointsUsed = out UInt(log2Up(c.robEntries + 1) bits)
+    val executionBlocked, generationBlocked = out Bool()
+    val completion = master Flow(new Bundle {
+      val slot = UInt(c.tagBits bits)
+      val generation = UInt(c.generationBits bits)
+      val accepted = Bool()
+    })
   }
 
   val code = Mem(Bits(32 bits), c.programWords)
@@ -158,21 +114,25 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
   val canWrite = RegInit(False)
   val head, tail = Reg(UInt(c.tagBits bits)) init 0
   val count = Reg(UInt(log2Up(c.robEntries + 1) bits)) init 0
-  val arf = Vec.fill(32)(Reg(UInt(64 bits)) init 0)
-  val mapped = Vec.fill(32)(RegInit(False))
-  val mapping = Vec.fill(32)(Reg(UInt(c.tagBits bits)) init 0)
+  val rename = new ApeRename(ApeRv64Profile.registers, c.physicalRegisters, c.robEntries, c.branchCheckpoints)
+  val checkpointed, recovered = Vec.fill(c.robEntries)(RegInit(False))
+  val destinationTag = Vec.fill(c.robEntries)(Reg(UInt(c.physicalTagBits bits)) init 0)
+  val generation = Vec.fill(c.robEntries)(Reg(UInt(c.generationBits bits)) init 0)
   val live, issued, done, prepared, sent, fault, writes, src1Ready, src2Ready =
     Vec.fill(c.robEntries)(RegInit(False))
-  val cause = Vec.fill(c.robEntries)(Reg(UInt(4 bits)) init 0)
-  val pc, value, address, src1, src2, immediate, actualNext, predictedNext =
+  val cause = Vec.fill(c.robEntries)(Reg(ApeFaultKind()) init ApeFaultKind.NONE)
+  val pc, value, address, src1, src2, immediate, actualNext, predictedNext, sequentialNext =
     Vec.fill(c.robEntries)(Reg(UInt(64 bits)) init 0)
   val taken = Vec.fill(c.robEntries)(RegInit(False))
   val instruction = Vec.fill(c.robEntries)(Reg(Bits(32 bits)) init 0)
   val rd = Vec.fill(c.robEntries)(Reg(UInt(5 bits)) init 0)
-  val tag1, tag2 = Vec.fill(c.robEntries)(Reg(UInt(c.tagBits bits)) init 0)
+  val tag1, tag2 = Vec.fill(c.robEntries)(Reg(UInt(c.physicalTagBits bits)) init 0)
   val op = Vec.fill(c.robEntries)(Reg(ApeOp()) init ApeOp.ILLEGAL)
-  val f3 = Vec.fill(c.robEntries)(Reg(UInt(3 bits)) init 0)
-  val useImmediate, word = Vec.fill(c.robEntries)(RegInit(False))
+  val branchCondition = Vec.fill(c.robEntries)(Reg(ApeBranchCondition()) init ApeBranchCondition.EQ)
+  val memorySize = Vec.fill(c.robEntries)(Reg(UInt(2 bits)) init 0)
+  val loadSigned = Vec.fill(c.robEntries)(RegInit(False))
+  val useImmediate, narrow32 = Vec.fill(c.robEntries)(RegInit(False))
+  val resultExtension = Vec.fill(c.robEntries)(Reg(ApeResultExtension()) init ApeResultExtension.FULL)
 
   val requestValid, waiting = RegInit(False)
   val requestAddress, requestData = Reg(UInt(64 bits)) init 0
@@ -197,7 +157,7 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
   when(io.halt.fire) { halted := False }
 
   val retiring = active && count =/= 0 && done(head)
-  val redirecting = retiring && !fault(head) && actualNext(head) =/= predictedNext(head)
+  val redirecting = retiring && !fault(head) && actualNext(head) =/= predictedNext(head) && !Bool(c.earlyRecovery)
   val stopping = retiring && fault(head)
   val flushing = redirecting || stopping
   io.retired.valid := retiring && !fault(head)
@@ -206,115 +166,148 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
   io.retired.rd := rd(head)
   io.retired.writes := writes(head)
   io.retired.value := value(head)
-  io.redirect.valid := redirecting
-  io.redirect.from := pc(head)
-  io.redirect.to := actualNext(head)
   io.controlRetired.valid := io.retired.valid &&
-    (op(head) === ApeOp.BRANCH || op(head) === ApeOp.JAL || op(head) === ApeOp.JALR)
+    (op(head) === ApeOp.BRANCH || op(head) === ApeOp.JUMP_RELATIVE || op(head) === ApeOp.JUMP_REGISTER)
   io.controlRetired.pc := pc(head)
   io.controlRetired.predictedNext := predictedNext(head)
   io.controlRetired.actualNext := actualNext(head)
   io.controlRetired.conditional := op(head) === ApeOp.BRANCH
   io.controlRetired.taken := taken(head)
+  io.controlRetired.slot := head
 
-  // Oldest-ready selection. Unready older instructions do not block ready ALUs.
+  // Reservation rows are shared with ROB storage; arbitration sees only owner
+  // readiness/age, not instruction encoding or RISC-V architectural registers.
   val ready = Bits(c.robEntries bits)
-  for (offset <- 0 until c.robEntries) {
-    val slot = (head + offset).resize(c.tagBits)
-    ready(offset) := live(slot) && !issued(slot) && src1Ready(slot) && src2Ready(slot)
+  for (slot <- 0 until c.robEntries) {
+    ready(slot) := live(slot) && !issued(slot) && src1Ready(slot) && src2Ready(slot)
   }
-  val selectedOffset = OHToUInt(OHMasking.first(ready))
-  val selected = (head + selectedOffset).resize(c.tagBits)
-  val issue = active && ready.orR && !flushing && !io.response.fire
-  val a = src1(selected)
-  val b = Mux(useImmediate(selected), immediate(selected), src2(selected))
-  val shift = Mux(word(selected), b(4 downto 0).resize(6), b(5 downto 0))
-  val rightValue = Mux(word(selected), a(31 downto 0).resize(64), a)
-  val signedValue = Mux(word(selected), a(31 downto 0).asSInt.resize(64), a.asSInt)
-  val rawResult = UInt(64 bits)
-  rawResult := 0
-  switch(op(selected)) {
-    is(ApeOp.ADD) { rawResult := a + b }
-    is(ApeOp.SUB) { rawResult := a - b }
-    is(ApeOp.SLL) { rawResult := (a |<< shift).resize(64) }
-    is(ApeOp.SLT) { rawResult := (a.asSInt < b.asSInt).asUInt.resize(64) }
-    is(ApeOp.SLTU) { rawResult := (a < b).asUInt.resize(64) }
-    is(ApeOp.XOR) { rawResult := a ^ b }
-    is(ApeOp.SRL) { rawResult := rightValue |>> shift }
-    is(ApeOp.SRA) { rawResult := (signedValue >> shift).asUInt }
-    is(ApeOp.OR) { rawResult := a | b }
-    is(ApeOp.AND) { rawResult := a & b }
-    is(ApeOp.LUI) { rawResult := immediate(selected) }
-    is(ApeOp.AUIPC) { rawResult := pc(selected) + immediate(selected) }
-    is(ApeOp.JAL, ApeOp.JALR) { rawResult := pc(selected) + 4 }
+  val executions = Seq.fill(c.issueWidth)(new ApeExecute(c))
+  executions.foreach(_.io.clear := flushing || io.launch.fire)
+  val result = Stream(ApeExecutionResult(c))
+  if (c.issueWidth == 1) {
+    result << executions.head.io.result
+  } else {
+    val preferSecond = RegInit(False)
+    val held = RegInit(False)
+    val heldSecond = RegInit(False)
+    val second = Mux(held, heldSecond, executions(1).io.result.valid &&
+      (!executions(0).io.result.valid || preferSecond))
+    result.valid := Mux(second, executions(1).io.result.valid, executions(0).io.result.valid)
+    result.payload := Mux(second, executions(1).io.result.payload, executions(0).io.result.payload)
+    executions(0).io.result.ready := result.ready && !second
+    executions(1).io.result.ready := result.ready && second
+    when(result.valid && !result.ready) { held := True; heldSecond := second }
+    when(result.fire) { held := False; preferSecond := !second }
+    when(flushing || io.launch.fire) { held := False; preferSecond := False }
   }
-  val result = Mux(word(selected), rawResult(31 downto 0).asSInt.resize(64).asUInt, rawResult)
-  val branchTaken = Bool()
-  branchTaken := False
-  switch(f3(selected)) {
-    is(0) { branchTaken := a === src2(selected) }
-    is(1) { branchTaken := a =/= src2(selected) }
-    is(4) { branchTaken := a.asSInt < src2(selected).asSInt }
-    is(5) { branchTaken := a.asSInt >= src2(selected).asSInt }
-    is(6) { branchTaken := a < src2(selected) }
-    is(7) { branchTaken := a >= src2(selected) }
+  result.ready := !io.response.fire
+  val completed = result.payload
+  val completedSlot = completed.identity.slot
+  val completedOffset = (completedSlot - head).resize(c.tagBits)
+  val ownership = new ApeCompletionGuard(c)
+  ownership.io.candidate := completed.identity
+  ownership.io.ownerLive := live(completedSlot)
+  ownership.io.ownerIssued := issued(completedSlot)
+  ownership.io.ownerComplete := done(completedSlot) || prepared(completedSlot)
+  ownership.io.ownerGeneration := generation(completedSlot)
+  ownership.io.ownerDestination := destinationTag(completedSlot)
+  for (lane <- 0 until c.issueWidth; stage <- 0 until c.executionStages) {
+    ownership.io.pending(lane * c.executionStages + stage) := executions(lane).io.pending(stage)
   }
-  val next = UInt(64 bits)
-  next := pc(selected) + 4
-  when(op(selected) === ApeOp.JAL || (op(selected) === ApeOp.BRANCH && branchTaken)) {
-    next := pc(selected) + immediate(selected)
-  }
-  when(op(selected) === ApeOp.JALR) { next := (a + immediate(selected)) & U(BigInt("fffffffffffffffe", 16), 64 bits) }
-  val isMemory = op(selected) === ApeOp.LOAD || op(selected) === ApeOp.STORE
-  val effectiveAddress = a + immediate(selected)
-  val bytes = (U(1, 65 bits) |<< f3(selected)(1 downto 0)).resize(65)
-  val misaligned = (effectiveAddress.resize(65) & (bytes - 1)) =/= 0
-  val illegalAccess = effectiveAddress < dataBase || effectiveAddress.resize(65) + bytes > dataLimit.resize(65) ||
-    (op(selected) === ApeOp.STORE && !canWrite)
-  val issueFault = fault(selected) || op(selected) === ApeOp.ILLEGAL || op(selected) === ApeOp.BREAK ||
-    next(1 downto 0) =/= 0 || (isMemory && (misaligned || illegalAccess))
-  val issueCause = UInt(4 bits)
-  issueCause := cause(selected)
-  when(!fault(selected)) {
-    issueCause := 2
-    when(op(selected) === ApeOp.BREAK) { issueCause := 3 }
-    when(next(1 downto 0) =/= 0) { issueCause := 0 }
-    when(isMemory) {
-      issueCause := Mux(op(selected) === ApeOp.LOAD, U(5, 4 bits), U(7, 4 bits))
-      when(misaligned) { issueCause := Mux(op(selected) === ApeOp.LOAD, U(4, 4 bits), U(6, 4 bits)) }
+  val ownsCompletion = ownership.io.qualified
+  val complete = active && result.fire && ownsCompletion && !flushing
+  io.completion.valid := result.fire
+  io.completion.slot := completedSlot
+  io.completion.generation := completed.identity.generation
+  io.completion.accepted := complete
+  val earlyRedirect = Bool(c.earlyRecovery) && complete && completed.control && !completed.fault &&
+    completed.next =/= predictedNext(completedSlot)
+  val scheduler = new ApeIssueScheduler(c.robEntries, c.issueWidth)
+  scheduler.io.enable := active && !flushing && !earlyRedirect
+  scheduler.io.head := head
+  scheduler.io.ready := ready
+  for (lane <- 0 until c.issueWidth) {
+    val execution = executions(lane)
+    val selected = scheduler.io.grant(lane).payload
+    scheduler.io.laneReady(lane) := execution.io.request.ready
+    execution.io.request.valid := scheduler.io.grant(lane).valid
+    execution.io.request.identity.slot := selected
+    execution.io.request.identity.generation := generation(selected)
+    execution.io.request.identity.destination := destinationTag(selected)
+    execution.io.request.op := op(selected)
+    execution.io.request.branch := branchCondition(selected)
+    execution.io.request.a := src1(selected)
+    execution.io.request.b := src2(selected)
+    execution.io.request.immediate := immediate(selected)
+    execution.io.request.pc := pc(selected)
+    execution.io.request.sequentialNext := sequentialNext(selected)
+    execution.io.request.indirectTargetMask := U(ApeRv64Profile.indirectTargetMask, 64 bits)
+    execution.io.request.alignmentMask := U(ApeRv64Profile.alignmentMask, 64 bits)
+    execution.io.request.base := dataBase
+    execution.io.request.limit := dataLimit
+    execution.io.request.useImmediate := useImmediate(selected)
+    execution.io.request.narrow32 := narrow32(selected)
+    execution.io.request.resultExtension := resultExtension(selected)
+    execution.io.request.writable := canWrite
+    execution.io.request.fault := fault(selected)
+    execution.io.request.faultKind := cause(selected)
+    execution.io.request.memorySize := memorySize(selected)
+    io.issues(lane).valid := execution.io.request.fire
+    io.issues(lane).pc := pc(selected)
+    io.issues(lane).identity := execution.io.request.identity
+    when(execution.io.request.fire) {
+      assert(live(selected) && !issued(selected), "issue without a live unissued owner")
+      issued(selected) := True
     }
+  }
+  io.issued := io.issues(0)
+  io.issueCount := scheduler.io.issueCount
+  io.readyCount := scheduler.io.readyCount
+  io.executionBlocked := scheduler.io.enable && ready.orR && scheduler.io.issueCount === 0
+  io.completionBlocked := executions.map(e => e.io.result.valid && !e.io.result.ready).reduce(_ || _)
+  io.robBlocked := active && count === c.robEntries && !flushing && !earlyRedirect
+  io.redirect.valid := redirecting || earlyRedirect
+  io.redirect.from := Mux(earlyRedirect, pc(completedSlot), pc(head))
+  io.redirect.to := Mux(earlyRedirect, completed.next, actualNext(head))
+  io.resolved.valid := complete && completed.control && !fault(completedSlot)
+  io.resolved.pc := pc(completedSlot)
+  io.resolved.predictedNext := predictedNext(completedSlot)
+  io.resolved.actualNext := completed.next
+  io.resolved.slot := completedSlot
+  io.resolved.fault := completed.fault
+  io.resolved.olderInstructions := completedOffset
+  io.resolved.olderMemory := (waiting || requestValid) && completedSlot =/= head
+  for (i <- 0 until c.robEntries) {
+    val age = (U(i, c.tagBits bits) - head).resize(c.tagBits)
+    io.squashed(i) := earlyRedirect && live(i) && age > completedOffset
   }
 
   val loadValue = UInt(64 bits)
   loadValue := io.response.data
-  switch(f3(memoryTag)) {
-    is(0) { loadValue := io.response.data(7 downto 0).asSInt.resize(64).asUInt }
-    is(1) { loadValue := io.response.data(15 downto 0).asSInt.resize(64).asUInt }
-    is(2) { loadValue := io.response.data(31 downto 0).asSInt.resize(64).asUInt }
-    is(4) { loadValue := io.response.data(7 downto 0).resize(64) }
-    is(5) { loadValue := io.response.data(15 downto 0).resize(64) }
-    is(6) { loadValue := io.response.data(31 downto 0).resize(64) }
+  switch(memorySize(memoryTag)) {
+    is(0) { loadValue := Mux(loadSigned(memoryTag), io.response.data(7 downto 0).asSInt.resize(64).asUInt, io.response.data(7 downto 0).resize(64)) }
+    is(1) { loadValue := Mux(loadSigned(memoryTag), io.response.data(15 downto 0).asSInt.resize(64).asUInt, io.response.data(15 downto 0).resize(64)) }
+    is(2) { loadValue := Mux(loadSigned(memoryTag), io.response.data(31 downto 0).asSInt.resize(64).asUInt, io.response.data(31 downto 0).resize(64)) }
   }
-  // One broadcast port. Memory responses take priority over new ALU issue.
-  val cdbValid = (issue && !isMemory && !issueFault && writes(selected)) ||
+  // One broadcast port. A memory response backpressures execution completion.
+  val cdbValid = (complete && !completed.memory && !completed.fault && writes(completedSlot)) ||
     (io.response.fire && !io.response.error && !requestWrite && writes(memoryTag))
-  val cdbTag = Mux(io.response.fire, memoryTag, selected)
-  val cdbValue = Mux(io.response.fire, loadValue, result)
-  io.issued.valid := issue
-  io.issued.pc := pc(selected)
-  io.finished.valid := (issue && (!isMemory || issueFault)) || io.response.fire
-  io.finished.pc := Mux(io.response.fire, pc(memoryTag), pc(selected))
+  val cdbTag = destinationTag(Mux(io.response.fire, memoryTag, completedSlot))
+  val cdbValue = Mux(io.response.fire, loadValue, completed.value)
+  io.finished.valid := (complete && (!completed.memory || completed.fault)) || io.response.fire
+  io.finished.pc := Mux(io.response.fire, pc(memoryTag), pc(completedSlot))
 
-  when(issue) {
-    issued(selected) := True
-    actualNext(selected) := next
-    taken(selected) := branchTaken
-    address(selected) := effectiveAddress
-    value(selected) := result
-    fault(selected) := issueFault
-    cause(selected) := issueCause
-    when(isMemory && !issueFault) { prepared(selected) := True }
-      .otherwise { done(selected) := True }
+  when(complete) {
+    actualNext(completedSlot) := completed.next
+    taken(completedSlot) := completed.taken
+    address(completedSlot) := completed.address
+    value(completedSlot) := completed.value
+    fault(completedSlot) := completed.fault
+    cause(completedSlot) := completed.faultKind
+    checkpointed(completedSlot) := False
+    recovered(completedSlot) := earlyRedirect
+    when(completed.memory && !completed.fault) { prepared(completedSlot) := True }
+      .otherwise { done(completedSlot) := True }
   }
   for (i <- 0 until c.robEntries) {
     when(cdbValid && live(i)) {
@@ -327,7 +320,7 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
     requestValid := True
     requestAddress := address(head)
     requestData := src2(head)
-    requestSize := f3(head)(1 downto 0)
+    requestSize := memorySize(head)
     requestWrite := op(head) === ApeOp.STORE
     memoryTag := head
     sent(head) := True
@@ -338,65 +331,91 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
     done(memoryTag) := True
     value(memoryTag) := loadValue
     fault(memoryTag) := io.response.error
-    cause(memoryTag) := Mux(requestWrite, U(7, 4 bits), U(5, 4 bits))
+    cause(memoryTag) := ApeFaultKind.NONE
+    when(io.response.error) { cause(memoryTag) := Mux(requestWrite, ApeFaultKind.STORE_ACCESS, ApeFaultKind.LOAD_ACCESS) }
   }
 
-  val fetched = code.readAsync(fetchPc(c.codeBits + 1 downto 2))
-  val decode = new ApeDecode(fetched)
-  val fetchFault = fetchPc(1 downto 0) =/= 0 || fetchPc >= c.programWords * 4
-  val dispatch = active && count < c.robEntries && !flushing
-  val predictor = new ApeBranchPredictor(c.prediction, c.predictorEntries)
+  val fetched = code.readAsync(fetchPc(c.codeBits + ApeRv64Profile.instructionShift - 1 downto ApeRv64Profile.instructionShift))
+  val frontend = new ApeRv64Frontend(fetched, fetchPc, c.programWords)
+  val decode = frontend.decoded
+  val fetchFault = frontend.fetchFault
+  val dispatchNeedsRegister = decode.destination && !fetchFault
+  val dispatchNeedsCheckpoint = Bool(c.earlyRecovery) && decode.valid && !fetchFault &&
+    (decode.op === ApeOp.BRANCH || decode.op === ApeOp.JUMP_RELATIVE || decode.op === ApeOp.JUMP_REGISTER)
+  val checkpointReady = !dispatchNeedsCheckpoint || rename.io.checkpointAvailable
+  // Finite generation counters are safe even under unbounded backpressure:
+  // never allocate a (slot, generation) still carried by any pipeline token.
+  val nextGeneration = (generation(tail) + 1).resize(c.generationBits)
+  ownership.io.allocationSlot := tail
+  ownership.io.allocationGeneration := nextGeneration
+  val generationCollision = !ownership.io.allocationSafe
+  val dispatchCandidate = active && count < c.robEntries && !flushing && !earlyRedirect
+  io.generationBlocked := dispatchCandidate && generationCollision
+  val dispatchEligible = dispatchCandidate && !generationCollision
+  io.physicalFree := rename.io.freeCount
+  io.checkpointsUsed := rename.io.checkpointsUsed
+  io.checkpointBlocked := dispatchEligible && !checkpointReady
+  io.renameBlocked := dispatchEligible && checkpointReady && dispatchNeedsRegister && !rename.io.allocate.ready
+  val dispatch = dispatchEligible && checkpointReady &&
+    (!dispatchNeedsRegister || rename.io.allocate.ready)
+  rename.io.clear := io.launch.fire
+  rename.io.argument := io.launch.argument
+  rename.io.source(0) := decode.rs1; rename.io.source(1) := decode.rs2
+  rename.io.sourceUsed(0) := decode.use1 && decode.valid && !fetchFault
+  rename.io.sourceUsed(1) := decode.use2 && decode.valid && !fetchFault
+  rename.io.allocate.valid := dispatchEligible && checkpointReady && dispatchNeedsRegister
+  rename.io.allocate.payload := decode.rd
+  rename.io.writeback.valid := cdbValid
+  rename.io.writeback.tag := cdbTag; rename.io.writeback.value := cdbValue
+  rename.io.commit.valid := retiring && !fault(head) && writes(head)
+  rename.io.commit.architectural := rd(head); rename.io.commit.physical := destinationTag(head)
+  rename.io.recover := flushing
+  rename.io.checkpoint.valid := dispatch && dispatchNeedsCheckpoint
+  rename.io.checkpoint.payload := tail
+  rename.io.resolve.valid := complete && checkpointed(completedSlot)
+  rename.io.resolve.slot := completedSlot
+  rename.io.resolve.redirect := earlyRedirect
+  rename.io.squash := io.squashed
+  val predictor = new ApeBranchPredictor(c.prediction, c.predictorEntries, ApeRv64Profile.instructionShift)
   predictor.io.clear := io.launch.fire
   predictor.io.pc := fetchPc
+  predictor.io.sequentialNext := frontend.sequentialNext
   predictor.io.target := fetchPc + decode.imm
   predictor.io.conditional := decode.valid && !fetchFault && decode.op === ApeOp.BRANCH
-  predictor.io.directJump := decode.valid && !fetchFault && decode.op === ApeOp.JAL
+  predictor.io.directJump := decode.valid && !fetchFault && decode.op === ApeOp.JUMP_RELATIVE
   predictor.io.update.valid := io.controlRetired.valid && io.controlRetired.conditional
   predictor.io.update.pc := pc(head)
   predictor.io.update.taken := taken(head)
   io.predicted.valid := dispatch
   io.predicted.pc := fetchPc
   io.predicted.next := predictor.io.next
-  def operand(reg: UInt, used: Bool): (Bool, UInt) = {
-    val rdy = Bool()
-    val data = UInt(64 bits)
-    rdy := True
-    data := 0
-    when(used && reg =/= 0) {
-      data := arf(reg)
-      when(mapped(reg)) {
-        rdy := done(mapping(reg)) && !fault(mapping(reg))
-        data := value(mapping(reg))
-        when(cdbValid && mapping(reg) === cdbTag) { rdy := True; data := cdbValue }
-      }
-    }
-    (rdy, data)
-  }
-  val operand1 = operand(decode.rs1, decode.use1 && decode.valid && !fetchFault)
-  val operand2 = operand(decode.rs2, decode.use2 && decode.valid && !fetchFault)
-
+  io.predicted.slot := tail
+  io.predicted.generation := nextGeneration
+  io.predicted.destination := rename.io.allocatedTag
+  io.predicted.writes := dispatchNeedsRegister
   when(retiring) {
     live(head) := False
     head := head + 1
-    when(!fault(head) && writes(head)) {
-      arf(rd(head)) := value(head)
-      when(mapped(rd(head)) && mapping(rd(head)) === head) { mapped(rd(head)) := False }
-    }
   }
   when(dispatch) {
+    generation(tail) := nextGeneration
     live(tail) := True; issued(tail) := False; done(tail) := False
     prepared(tail) := False; sent(tail) := False
+    checkpointed(tail) := dispatchNeedsCheckpoint; recovered(tail) := False
     pc(tail) := fetchPc; instruction(tail) := fetched
     rd(tail) := decode.rd; writes(tail) := decode.destination && !fetchFault
     op(tail) := decode.op
     when(!decode.valid) { op(tail) := ApeOp.ILLEGAL }
     immediate(tail) := decode.imm; useImmediate(tail) := decode.immediate
-    word(tail) := decode.word; f3(tail) := decode.f3
-    src1Ready(tail) := operand1._1; src1(tail) := operand1._2; tag1(tail) := mapping(decode.rs1)
-    src2Ready(tail) := operand2._1; src2(tail) := operand2._2; tag2(tail) := mapping(decode.rs2)
+    narrow32(tail) := decode.narrow32; resultExtension(tail) := frontend.resultExtension
+    sequentialNext(tail) := frontend.sequentialNext
+    branchCondition(tail) := decode.branch
+    memorySize(tail) := decode.memorySize; loadSigned(tail) := decode.loadSigned
+    destinationTag(tail) := rename.io.allocatedTag
+    src1Ready(tail) := rename.io.sourceReady(0); src1(tail) := rename.io.sourceValue(0); tag1(tail) := rename.io.sourceTag(0)
+    src2Ready(tail) := rename.io.sourceReady(1); src2(tail) := rename.io.sourceValue(1); tag2(tail) := rename.io.sourceTag(1)
     fault(tail) := fetchFault
-    cause(tail) := Mux(fetchPc(1 downto 0) =/= 0, U(0, 4 bits), U(1, 4 bits))
-    when(decode.destination && !fetchFault) { mapped(decode.rd) := True; mapping(decode.rd) := tail }
+    cause(tail) := Mux(fetchFault, frontend.fetchFaultKind, ApeFaultKind.NONE)
     tail := tail + 1
     predictedNext(tail) := predictor.io.next
     fetchPc := predictor.io.next
@@ -404,15 +423,27 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
   when(dispatch =/= retiring) {
     when(dispatch) { count := count + 1 }.otherwise { count := count - 1 }
   }
-  // All older instructions have retired here, so the ARF is the recovery map.
+  // Keep the resolving branch and all older work, including pending head memory.
+  when(earlyRedirect) {
+    assert(checkpointed(completedSlot), "early redirect without checkpoint ownership")
+    for (i <- 0 until c.robEntries) {
+      when(io.squashed(i)) {
+        live(i) := False; done(i) := False; issued(i) := False
+        prepared(i) := False; sent(i) := False; checkpointed(i) := False
+      }
+    }
+    tail := completedSlot + 1
+    count := completedOffset.resize(count.getWidth) + 1 - retiring.asUInt.resize(count.getWidth)
+    fetchPc := completed.next
+  }
+  // All older instructions have retired; restore the committed physical map.
   when(flushing) {
-    for (i <- 0 until c.robEntries) { live(i) := False; done(i) := False }
-    for (i <- 0 until 32) { mapped(i) := False }
+    for (i <- 0 until c.robEntries) { live(i) := False; done(i) := False; checkpointed(i) := False }
     head := 0; tail := 0; count := 0
     fetchPc := actualNext(head)
     when(stopping) {
       active := False; halted := True
-      haltPc := pc(head); haltCause := cause(head); haltValue := arf(10)
+      haltPc := pc(head); haltCause := ApeRv64Profile.encodeFault(cause(head)); haltValue := rename.io.committedArgument
     }
   }
   when(io.launch.fire) {
@@ -423,22 +454,18 @@ class ApeCore(c: ApeConfig = ApeConfig()) extends Component {
     for (i <- 0 until c.robEntries) {
       live(i) := False; done(i) := False; issued(i) := False
       prepared(i) := False; sent(i) := False
-    }
-    for (i <- 0 until 32) {
-      if (i == 10) arf(i) := io.launch.argument else arf(i) := 0
-      mapped(i) := False
+      checkpointed(i) := False; recovered(i) := False
     }
   }
 
   // Structural invariants are checked by the RTL simulator, not just the oracle.
-  assert(arf(0) === 0 && !mapped(0), "x0 must never be renamed or modified")
   assert(CountOne(live.asBits).resize(count.getWidth) === count, "ROB occupancy mismatch")
   assert(!(requestValid && waiting), "request and response phases overlap")
-  for (i <- 1 until 32) {
-    when(mapped(i)) {
-      assert(live(mapping(i)) && writes(mapping(i)) && rd(mapping(i)) === i,
-        "rename map points outside its live producer")
-    }
+  assert(CountOne(checkpointed.asBits) === rename.io.checkpointsUsed, "checkpoint ownership differs from ROB")
+  when(dispatch) { assert(!generationCollision, "generation reused while a completion lease survives") }
+  when(complete) { assert(!done(completedSlot) && !prepared(completedSlot), "duplicate execution completion") }
+  when(io.retired.valid && Bool(c.earlyRecovery) && actualNext(head) =/= predictedNext(head)) {
+    assert(recovered(head), "mispredicted branch reached retirement without early recovery")
   }
   when(requestValid || waiting) {
     assert(active && live(head) && memoryTag === head && !fault(head),

@@ -5,7 +5,18 @@ develops speculative out-of-order execution in SpinalHDL. Its architecture,
 verification path, supported instructions and limitations are in [APE.md](APE.md).
 Run `python3 tools/verify_ape.py` for that core's RTL tests. Out-of-order execution
 is a mandatory APE requirement. See the [development guide](DEVELOPMENT.md) and
-[APE-0.2 specification](spec/APE-0.2.md) for the primary `ApeCore` implementation.
+[APE-0.6 specification](spec/APE-0.6.md) for the primary `ApeCore` implementation.
+Physical renaming, checkpointed recovery, registered execution and optional dual-lane issue are implemented;
+[S03 acceptance](../../workloads/S03-COMPLETION.md) includes complete workload,
+formal and early technology evidence. Run `python3 tools/verify_ape_rename.py` for the ownership/pressure
+gate and `python3 tools/verify_ape_recovery.py` for checkpoint and early-timing tests.
+Run `python3 tools/verify_ape_execution.py` for execution transport, completion
+ownership, small-generation wrap and independent pipeline-profile comparisons.
+Run `python3 tools/verify_ape_multi.py` for simultaneous issue, completion
+arbitration, wider pressure/recovery and independent Spike comparisons. From the
+repo root, `python3 workloads/s03/compare.py --smoke` runs the controlled real-tool
+width comparison; omit `--smoke` for the full design-point study. Simulated cycles
+do not establish a clock-frequency or energy result.
 Legacy commands are described in [HSE compatibility](HSE.md).
 
 The existing A64 task tile below remains a separate regression anchor. APE is

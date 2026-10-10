@@ -6,18 +6,18 @@ memory, software and physical implementation through stage issues and closure ga
 
 The target is an application-processing engine that executes substantial agent
 and tool code within HATS, alongside vector/tensor engines and an independent
-command processor. Speculative out-of-order execution is mandatory. APE-0.2
-establishes a working integer OoO mechanism with basic dynamic prediction;
+command processor. Speculative out-of-order execution is mandatory. APE-0.6
+adds optional dual-lane issue to registered, ownership-qualified completion and checkpointed physical renaming;
 it does not yet meet the application-processor target below.
 
 ## Execution roles
 
 | Role | Responsibility | Current state |
 | --- | --- | --- |
-| APE | RISC-V application execution, dependencies, branching and eventual OS/runtime support | RV64 integer subset, OoO, prediction and bounded LP64 diff application implemented |
+| APE | RISC-V application execution, dependencies, branching and eventual OS/runtime support | RV64 integer subset, physical renaming, OoO, prediction, bounded diff and pinned Tree-sitter tool port |
 | Command processor | Consume queues, validate dispatch, track completion and route work | Separate embedded-RISC-V controller proposed; not implemented |
-| CU scalar path | Scalar control associated with vector/tensor work | ISA and datapath design pending; not interchangeable with APE |
-| Vector and tensor engines | Model inference and suitable data-parallel tool kernels | Future implementation |
+| PPE scalar path | Scalar control associated with vector work | First single-wave PPE integer ISA/RTL; not interchangeable with APE |
+| Vector and tensor engines | Model inference and suitable data-parallel tool kernels | First eight-lane integer PPE implemented; numeric/tensor execution remains future work |
 | Memory and service fabric | Local/remote access, ordering, protection and service requests | APE has one head-ordered data port; full fabric pending |
 
 The names identify responsibilities. Merely moving CPU instructions into a package
@@ -29,6 +29,10 @@ execution, locality and reduced host interaction at comparable correctness.
 | Gate | Implementation work | Evidence required before closure |
 | --- | --- | --- |
 | APE-0.2 | Named APE source, RV64 subset OoO, configurable bimodal prediction, specified interfaces | Six-configuration RTL matrix, predictor tests and legacy regression |
+| APE-0.3 increment | Physical register file/maps/free list, typed branch/memory decode | Ownership/pressure RTL gate, preserved independent ISA/application and real-tool regressions; not full performance-core closure |
+| APE-0.4 increment | Checkpointed maps and execution-time selective recovery | Replay-oracle tests, early timing witnesses, exact Spike comparisons, selected bounded component proof and fresh full compatibility; no delayed-completion/unbounded-proof/PPA claim |
+| APE-0.5 increment | Elastic execution pipeline, qualified late completion and finite-generation lease exclusion | Actual transport/guard/core tests, independent Spike comparison and fresh integration regressions; no multi-issue or PPA claim |
+| APE-0.6 / S03 | Actual one/two-lane issue candidate, explicit frontend policy and controlled real-tool comparison | Focused RTL/Spike, full P64 compatibility, 108-run workload study, nine technology points and selected P48 profile passed; bounded scope in the S03 completion review |
 | Architectural confidence | External ISA oracle and architectural tests, larger randomized programs, formal invariants | No divergence on the declared subset; versioned supported/unsupported instruction map |
 | Application ISA and ABI | Multiply/divide, required atomic/CSR support, traps, fuller executable loading and runtime startup | Linked application tests plus corner cases and precise fault tests on RTL |
 | Performance core | Earlier branch recovery, pipelined execution units, separate PRF, wider dispatch/issue where justified | Preserved correctness plus measured IPC and synthesis/timing tradeoffs on the same workloads |
@@ -66,8 +70,13 @@ instruction coverage, adversarial recovery tests and formal invariants.
 The [first bounded application](APE-APPLICATION-ABI.md) now establishes static ELF
 loading, LP64 startup and an original source-diff tool with 144 RTL invocations.
 This partially addresses application enablement, not the full ISA/OS/tool gate.
-Next select a larger real tool port and profile its executable, runtime and
-memory requirements before choosing issue width, ROB size or cache capacities.
+The [S02 gate](../../../workloads/S02-COMPLETION.md) adds pinned Tree-sitter/JSON
+execution and first PPE RTL. The current [S03 increment](S03-PROGRESS.md) establishes
+physical renaming, checkpointed recovery, pipelined completion ownership and actual
+dual-lane issue. Current P64 integration and controlled workload comparison have
+passed, together with all nine physical points and full PRF48 profile acceptance.
+The measured S03 configuration is ROB8/P48/one lane/bimodal16. Cache-capacity choices belong to the separate S04
+memory hierarchy and cannot be inferred from the abstract current memory service.
 The [shared ISA substrate proposal](APE-SHARED-SUBSTRATE.md) separates possible
 RISC-V/AArch64 reuse from current RISC-V-only execution.
 Keep the existing OoO and publication checks as regression

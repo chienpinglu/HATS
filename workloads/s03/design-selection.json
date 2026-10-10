@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "status": "reviewed",
+  "selected_point": ["prf48", 8, 48, 1, "bimodal", 16],
+  "selection_scope": "Selected explicit S03 application profile, verified through all 42 tool executions and 112 standard/recovery invocations. The generic ApeConfig fallback remains P64 as a separate regression anchor.",
+  "study_sha256": "0b62fb263bddd82000e068e1415355abfbf975a91f94940a8ae966bcfea49b8a",
+  "technology_report_sha256": ["57831b4fce921e40da71b81d520a6b3705c42d7d6c4e3c87e944608045173564"],
+  "profile_sha256": "0a83fa678001a25fb7a0f224acee7916fb0d0188016a7bfbd12aeccffaf554bf",
+  "fixed": {
+    "checkpoints": 4,
+    "execution_stages": 2,
+    "generation_bits": 2,
+    "dispatch_width": 1,
+    "writeback_width": 1,
+    "retire_width": 1,
+    "outstanding_memory": 1,
+    "real_tool_program_words": 65536,
+    "technology_program_words": 1024
+  },
+  "issue_width_rationale": "Keep one issue lane. The actual two-lane candidate issues simultaneous work but increases cycles in all twelve matched case/service pairs (0.040%-8.013%, equal-case geometric mean +1.685%). Its mapped area is about 2.89% larger and its combinational boundary estimate about 4.13% longer than the narrow P64 reference. It remains an implemented, verified experimental configuration, not the selected performance profile.",
+  "rob_queue_rationale": "Keep eight ROB/fused-reservation rows. Four rows save about 8.85% mapped area but increase mean cycles by 4.846%; sixteen rows reduce mean cycles by only 0.608% while increasing mapped area about 17.26%. These single-variable comparisons use P64. Eight rows are a measured cost/performance balance for the current single-dispatch, single-writeback, single-retirement and head-only memory system. No independently sized issue queue or untested P48/ROB16 combination is claimed.",
+  "prf_rationale": "Select P48 as the explicit application profile. It matches every P64 baseline cycle count under both service profiles, has no observed rename stalls and retains at least eight free physical entries. Its mapped area is 387003.666 versus 398345.906 library units (-2.85%), and its combinational boundary delay is 2844.33 versus 2869.98 ps. P36 reaches exhaustion and increases mean cycles by 3.226%. Separate full candidate acceptance passed: 42 actual tool executions, 108 exact ISA/recovery comparisons and four unchanged standard-profile differences. ROB8-sized recovery programs satisfy the unchanged harness assertions; the original ROB16 recovery suite remains intact.",
+  "predictor_rationale": "Keep the sixteen-entry bimodal predictor. Prediction off increases mean cycles by 1.650%; four entries increase them by 0.153%; sixty-four entries reduce them by only 0.145%. The sixty-four-entry P64 point has slightly larger mapped area and a longer combinational estimate (2929.07 versus 2869.98 ps); four entries have 3032.90 ps. This is a bounded tradeoff on the measured programs, not proof that sixteen entries are globally optimal or a substitute for future workload-driven prediction work.",
+  "limitations": [
+    "One-variable design-point comparisons, not exhaustive joint parameter optimization or a representative agent workload distribution.",
+    "Actual tool parsing, runtime and arithmetic execution; no target-hosted compiler, Python, OS or end-to-end agent acceleration measurement.",
+    "All nine configurations miss the 1000 ps mapping target. Combinational estimates are not achievable clock frequency or full setup/hold timing closure.",
+    "Mapped FF/mux storage, retained observation ports and a 1024-word physical-study code store; not SRAM-based die area for the 65536-word application image.",
+    "No physical power or energy evidence, production PDK, placed/routed implementation or full-core unbounded formal proof."
+  ]
+}

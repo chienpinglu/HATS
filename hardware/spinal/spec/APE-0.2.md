@@ -1,10 +1,14 @@
 # APE architecture and interface specification
 
-Revision **APE-0.2** defines the current Application Processing Engine RTL, not
+Revision **APE-0.2** records the pre-physical-renaming Application Processing Engine baseline, not
 the eventual full HATS processor. APE is an original single-hart RV64 integer
 engine with mandatory speculative out-of-order execution and in-order retirement.
 It targets application work; CP queue management and CU scalar execution are
 separate roles. The implementation is [ApeCore](../src/main/scala/hats/ApeCore.scala).
+
+[APE-0.3](APE-0.3.md) supersedes the rename implementation below while retaining
+this revision's instruction and external memory/launch contracts.
+[APE-0.4](APE-0.4.md) further supersedes recovery and the diagnostic redirect timing.
 
 ## Configuration
 

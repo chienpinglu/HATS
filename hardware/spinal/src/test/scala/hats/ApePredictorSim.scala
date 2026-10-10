@@ -21,7 +21,7 @@ object ApePredictorSim extends App {
         val rng = new Random(713)
         dut.clockDomain.clockSim #= false
         dut.clockDomain.assertReset()
-        dut.io.clear #= false; dut.io.pc #= 0; dut.io.target #= 256
+        dut.io.clear #= false; dut.io.pc #= 0; dut.io.target #= 256; dut.io.sequentialNext #= 4
         dut.io.conditional #= true; dut.io.directJump #= false
         dut.io.update.valid #= false; dut.io.update.pc #= 0; dut.io.update.taken #= false
         def edge(): Unit = {
@@ -39,7 +39,7 @@ object ApePredictorSim extends App {
           val update = cycle < 32 || rng.nextBoolean()
           val take = if (cycle < 32) cycle % 16 < 8 else rng.nextBoolean()
           val clear = cycle == 16 || (cycle >= 32 && cycle % 31 == 0)
-          dut.io.pc #= pc; dut.io.target #= target
+          dut.io.pc #= pc; dut.io.target #= target; dut.io.sequentialNext #= pc + 4
           dut.io.conditional #= cond; dut.io.directJump #= jump
           dut.io.update.valid #= update; dut.io.update.pc #= trainPc; dut.io.update.taken #= take
           dut.io.clear #= clear

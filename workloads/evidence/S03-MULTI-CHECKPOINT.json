@@ -1,0 +1,441 @@
+{
+  "schema": 1,
+  "status": "verified_increment",
+  "issue": 4,
+  "S03_complete": false,
+  "spec_revision": "APE-0.6",
+  "claim_class": "source_bound_multi_issue_and_controlled_smoke_summary",
+  "created_utc": "2026-10-09T23:57:46.156999+00:00",
+  "source_sha256": {
+    "hardware/spinal/src/main/scala/hats/ApeCheckpoints.scala": "848437e385f2844718f4c980d22baf5d1be7b3509c915b71d2bd43b2947e8c03",
+    "hardware/spinal/src/main/scala/hats/ApeToolGenerate.scala": "a7e910587901892541969d3e665021d90269fcf8dd0b82db4e40de4c64f0ccc2",
+    "hardware/spinal/src/main/scala/hats/ApeRename.scala": "d69e05bb886d5e242edbb75ce92cc00479c49b24e47ec0c0b01b17844c07ba24",
+    "hardware/spinal/src/main/scala/hats/ApeCompletionGuard.scala": "1c0a3f5c485f1cfc54ab62310310ac61a1b24c9b3872fc66615b644aee228b18",
+    "hardware/spinal/src/main/scala/hats/ApeDecode.scala": "1ea2986eea91baec027315d9f2d53e8a9247ebe271407cc1db5103a2705dcb71",
+    "hardware/spinal/src/main/scala/hats/ApeCore.scala": "1acd10811c83933a5290131bafa7d2e9b3d0b2ae03a6cbdf6d985d19e14ad175",
+    "hardware/spinal/src/main/scala/hats/ApeIssueScheduler.scala": "a060c97fd3c1f48c34f22f9d1205ab306d04baa6c5f8cd78fc028cad3a2305fc",
+    "hardware/spinal/src/main/scala/hats/ApeDesignPointGenerate.scala": "82a3f094805b717c14935d39fe4204430deb64bf622283b348bdb01be5d61612",
+    "hardware/spinal/src/main/scala/hats/ApeExecute.scala": "84dfc082aa8da8662386e779bac009943292dde5734c3b5658df1ff3816a4108",
+    "hardware/spinal/src/main/scala/hats/ApeBranchPredictor.scala": "8b24ad864369a8c49467c1986e540356754b8142306a0d6c4ac4d918d136cb43",
+    "hardware/spinal/src/test/scala/hats/ApeIssueSchedulerSim.scala": "aa17814a95b1137a7ffae94f59f6727018bc73b6c811668fc96faabc14d0ab0a",
+    "hardware/spinal/src/test/scala/hats/ApeReference.scala": "f96d4c2d6933f73665b7a0ecd5e2a25531f41d7d9e6ccc23b09ab6488010d61a",
+    "hardware/spinal/src/test/scala/hats/ApeCoreSim.scala": "973df9fecd0b2e73bd18b2f19ef4888e1cdd63875d0e0a409887d27f6bee1dcf",
+    "hardware/spinal/src/test/scala/hats/ApePredictorSim.scala": "807e150e36dc9a4b26e81b6ae55d083077500510b94f3347652351808db26e77",
+    "hardware/spinal/src/test/scala/hats/ApeCheckpointSim.scala": "5fe8f62a8d80f8b30db35eda03c497613e370f22d6eb7ef88a5b130d4deedc59",
+    "hardware/spinal/src/test/scala/hats/ApeExecuteSim.scala": "246df15f190a717a3848e0f3031da7aa6ba34c4874c7e4e8ebebd756a746231e",
+    "hardware/spinal/src/test/scala/hats/ApeToolSim.scala": "ab6588b17335e11dff72eac26ba0d12bbc4ac2c76f05ac3994be06962cc2fde1",
+    "hardware/spinal/src/test/scala/hats/ApeApplicationSim.scala": "f2db3510581c0114be242f258b1afa13e4ef2bd1f34f63a87a52b5fa892b6300",
+    "hardware/spinal/src/test/scala/hats/ApeRenameSim.scala": "1907756a43ba29033f49450e05a14be7c22e591e4664d9bd77d4223ba8b6d489",
+    "workloads/target/treesitter/bulk/verify.py": "3f11c5f8fa080b1a1d8a0fcdd7389d27a4b9983778e9f7f4226f15936264a240",
+    "workloads/target/treesitter/bulk/rtl_runner.cc": "b019c7adb882b380ebd47cf72a09b6ae0a3ce5d96760e531760fa048d48141ba",
+    "workloads/target/treesitter/bulk/digest.h": "98d90c07a400a57228d4f1afdc7f1e07f0453122cc07e4252de08ea89e7dc9db",
+    "workloads/s03/compare.py": "f68cd58ac30d488f7832f67feb3c9f21049e7fc9c91de38fe0cd7fd7376cd4cd",
+    "workloads/s03/service_schedule.h": "95a73f203713f52854b42da38633f042015b6bea9da579d4fcb734f51b7a41a4",
+    "hardware/spinal/build.sbt": "0bb5d5bce4b58f0a78fdcab0016e5b102cd5ab3ccefc6c0331a084357a3c4564",
+    "hardware/spinal/project/build.properties": "84d1a08240c782d6691e9829ec54530a45d10809b0e5200db4035723d852928c",
+    "hardware/spinal/project/repositories": "e5b455eae2debe0d031194347c324649c2ab215485ad67dfc487c69102325c8e",
+    "hardware/spinal/tools/sbtw": "0fbfc2c691eefae15630057d5d02a8ffa27ea88e07730e71c6650cc7bc29bba3",
+    "hardware/spinal/tools/toolchain.py": "a39229236a5ca8ee15bfb1a710f5615f0c5fb5e208906392a55116762913fc96",
+    "hardware/spinal/examples/ape/kernel.c": "84c889fafa97d8611a97119822e5949f1e1bb7891690a9fdd09bab1fbbfc9b6f",
+    "hardware/spinal/examples/ape/link.ld": "44f96f9434e855f0250f2247a4a8c437782ce786f9c063b99bb7a8df6823ba8e",
+    "hardware/spinal/examples/ape/programs.S": "2a5397ae05c59547b4ccfc9d9c8f59b16b099d11fe4fd07d3247560a470b72ff",
+    "hardware/spinal/examples/ape_recovery/programs.S": "dc63bdddfad86839733bd7c0e29c5aae5d060b58aab8710c6f745cabda467e5b",
+    "hardware/spinal/tools/assemble_ape.py": "4f64a6aff7de418b56a1c113594c2fa81b04eddd61822015557dba0920b137cf",
+    "hardware/spinal/tools/assemble_ape_recovery.py": "81a7312c396c6bf2d2281dc6c5f636e0d727a26922d12d316ae5c3a37495428a",
+    "hardware/spinal/tools/assemble_hse.py": "144f7a53b70251966d47637ba013503d21e98e7e906caa72a789aa31ae007882",
+    "hardware/spinal/tools/bootstrap_spike.py": "afb670b4d1bb7aa557c0d7e8d803486273ded7000f1223365f7ac049a8c594b9",
+    "hardware/spinal/tools/compare_ape_spike.py": "1810c75f7dbb050411199dcaf84f369f26b1cc30d39857104c7ef15f53fade87",
+    "hardware/spinal/tools/spike.lock.json": "fa9d6b046f1f6d191e949d4e533c4bb77114f068428a63d13c93f27227651614",
+    "hardware/spinal/tools/spike_adapter.cc": "fd1469dc0beff9e60c1f5f655a36187e223453130e3d9abb1d9927c1837cde25",
+    "hardware/spinal/tools/verify_ape.py": "7bb27537f85ce249e4208797114645ae29cb2d900214ebeba33915818a89d6f1",
+    "hardware/spinal/tools/verify_ape_multi.py": "c67cc446b777391765f4483d92708d044b606257238ee053326804e22928e50e",
+    "hardware/spinal/tools/verify_ape_spike.py": "34a8188f3cf4a73a4fd1a09581b2d45884b83cb6a251f6787dc0b4f9c720cf7c",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/sources.lock.json": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "workloads/target/treesitter/audit.py": "9c14318c7f35972ca386e603ecf9408a7e252b9af4bde3cf1b898bbc16170601",
+    "workloads/target/treesitter/execute/application.c": "cc1585894943b6f6d6829a9e72c074a3d6497d02f3adbc7891e2c3c15f58bb36",
+    "workloads/target/treesitter/execute/compiler_rt.c": "fbeb2b91f1622e606318d507edabdf25b9c3eb15a4e35cc3976084134f3bb2e4",
+    "workloads/target/treesitter/execute/helper_test.c": "9d0b09c02180be7bb6d1ddadd85c47aaf9caf92a845ab9735d13cf126ba2eb06",
+    "workloads/target/treesitter/execute/image.py": "bc0f4feeb0765f2fbd4f31ccea0cb8b624560b8553ad4c4f4e10266213905781",
+    "workloads/target/treesitter/execute/link.ld": "91d2dc62e32820577d34a705f953d931ccababf762b7c0c759a09388d5a1f04f",
+    "workloads/target/treesitter/execute/platform.h": "3c9a0ab6706b049baf536e25bcfd4b1a08a85edc22b07f8470b51a94c3e9551f",
+    "workloads/target/treesitter/execute/run.py": "d58e0037bd466684603d5119d68c30344000773704b6d862713880e515d73ed6",
+    "workloads/target/treesitter/execute/runtime.c": "de7a05df2045a6e2172bbbd1f0c304f65c58444208da5c6a068127b00e69d96e",
+    "workloads/target/treesitter/execute/runtime_test.c": "edc5c5a0bdca686bdca7612c343bff58993d6fb939110ff3fea0a17ac08437d8",
+    "workloads/target/treesitter/execute/spike_runner.cc": "f5eb26a93c561b3fb40ed0a619633467e2a1e0b50e5dc8baecdef9cc0e17db11",
+    "workloads/target/treesitter/execute/start.S": "25464c475fa3a1f48a4735a24ce3531089457f699941bceaf662678cbd50033f",
+    "workloads/target/treesitter/execute/test_execution.py": "967b05f3f0e90714923153a2b0e97ea8822894a69acefdf2c88627b62aa65b62",
+    "workloads/target/treesitter/execute/verify_rtl.py": "2e363ddca25326e1e76995d8a86350a048089c727d3f3837283065d2f402a810",
+    "workloads/target/treesitter/newlib.lock.json": "655f4c03b0254c0d86c232e3e14caf2c78841435d6df14a245a910c1abfb2134",
+    "workloads/target/treesitter/newlib.py": "3cc9b55335a1bb7b383d9942e88c223ec4bacf3660c7098ef5b408fb7b111a6e",
+    "workloads/s03/multi_evidence.py": "810fe5c106ccdd1a79e959d3cf9e7d11d480f59e5a531facc46fcad6002c03c2",
+    "workloads/s03/test_multi_evidence.py": "f3e5a6561e47f73838cdbf05fac9ff46109f06d3323d88684867c17e0d10012e"
+  },
+  "documentation_sha256": {
+    "hardware/spinal/spec/APE-0.6.md": "bf3e13197bc07bbfe00b9298e93d576a8f31837dd908e2e4b7504095cb99cc07",
+    "hardware/spinal/spec/S03-PROGRESS.md": "8b7b6ee3e8eb01fcc5f4a6428e3bca4f4d867bb2855e02e61431c34d784a84a1",
+    "hardware/spinal/spec/S03-CLOSURE-PLAN.md": "1ab6741810a2cffa18d8c5d00086a96866bf26b69db0c5d89859d69502c3a1a3"
+  },
+  "reports_sha256": {
+    "multi": "0a137ccf4f761ec7b0c6ebc961ddb22fbf7f864b7bfbaba8197dce6e14858b66",
+    "controlled_smoke": "963c4ebd389ed96c6cf6bc31ff6199fe10e6176a3e4790386529d6e87d9bfa64"
+  },
+  "scheduler": {
+    "status": "passed",
+    "claim": "Scheduler selection RTL, not integrated dual-issue execution",
+    "configurations": [
+      {
+        "rob_entries": 4,
+        "issue_width": 1,
+        "checks": 256,
+        "dual_grants": 0,
+        "blocked_lane_bypasses": 0
+      },
+      {
+        "rob_entries": 4,
+        "issue_width": 2,
+        "checks": 512,
+        "dual_grants": 44,
+        "blocked_lane_bypasses": 60
+      },
+      {
+        "rob_entries": 8,
+        "issue_width": 1,
+        "checks": 8192,
+        "dual_grants": 0,
+        "blocked_lane_bypasses": 0
+      },
+      {
+        "rob_entries": 8,
+        "issue_width": 2,
+        "checks": 16384,
+        "dual_grants": 1976,
+        "blocked_lane_bypasses": 2040
+      },
+      {
+        "rob_entries": 16,
+        "issue_width": 1,
+        "checks": 131072,
+        "dual_grants": 0,
+        "blocked_lane_bypasses": 0
+      },
+      {
+        "rob_entries": 16,
+        "issue_width": 2,
+        "checks": 262144,
+        "dual_grants": 32755,
+        "blocked_lane_bypasses": 32767
+      }
+    ]
+  },
+  "core_suites": [
+    {
+      "configuration": [
+        8,
+        "bimodal",
+        64,
+        4,
+        2,
+        2,
+        1,
+        "standard"
+      ],
+      "counters": {
+        "dual_issue_cycles": 0,
+        "issued_operations": 18566,
+        "completion_stall_cycles": 0,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 0,
+        "generation_stall_cycles": 0,
+        "late_rejected": 70,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 16,
+        "commit_and_redirect": 4,
+        "resolved_younger_squashes": 462
+      }
+    },
+    {
+      "configuration": [
+        8,
+        "bimodal",
+        64,
+        4,
+        2,
+        2,
+        2,
+        "standard"
+      ],
+      "counters": {
+        "dual_issue_cycles": 2170,
+        "issued_operations": 18718,
+        "completion_stall_cycles": 3188,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 0,
+        "generation_stall_cycles": 0,
+        "late_rejected": 110,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 34,
+        "commit_and_redirect": 4,
+        "resolved_younger_squashes": 466
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "bimodal",
+        36,
+        4,
+        2,
+        1,
+        2,
+        "standard"
+      ],
+      "counters": {
+        "dual_issue_cycles": 1736,
+        "issued_operations": 17750,
+        "completion_stall_cycles": 2351,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 72269,
+        "checkpoint_stall_cycles": 0,
+        "generation_stall_cycles": 0,
+        "late_rejected": 110,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 32,
+        "commit_and_redirect": 10,
+        "resolved_younger_squashes": 438
+      }
+    },
+    {
+      "configuration": [
+        8,
+        "bimodal",
+        64,
+        4,
+        8,
+        1,
+        2,
+        "standard"
+      ],
+      "counters": {
+        "dual_issue_cycles": 1706,
+        "issued_operations": 19836,
+        "completion_stall_cycles": 1830,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 46,
+        "generation_stall_cycles": 0,
+        "late_rejected": 980,
+        "rejected_after_slot_reuse": 28,
+        "physical_reuse_while_pending": 332,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 466
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "off",
+        64,
+        1,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 18,
+        "issued_operations": 256,
+        "completion_stall_cycles": 54,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 131,
+        "generation_stall_cycles": 0,
+        "late_rejected": 10,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 2,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 0
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "off",
+        64,
+        4,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 26,
+        "issued_operations": 280,
+        "completion_stall_cycles": 64,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 52,
+        "generation_stall_cycles": 0,
+        "late_rejected": 16,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 8,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "off",
+        36,
+        4,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 20,
+        "issued_operations": 232,
+        "completion_stall_cycles": 44,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 113,
+        "checkpoint_stall_cycles": 52,
+        "generation_stall_cycles": 0,
+        "late_rejected": 10,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 6,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "bimodal",
+        64,
+        1,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 18,
+        "issued_operations": 256,
+        "completion_stall_cycles": 54,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 131,
+        "generation_stall_cycles": 0,
+        "late_rejected": 10,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 2,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 0
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "bimodal",
+        64,
+        4,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 26,
+        "issued_operations": 280,
+        "completion_stall_cycles": 64,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 0,
+        "checkpoint_stall_cycles": 52,
+        "generation_stall_cycles": 0,
+        "late_rejected": 16,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 8,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4
+      }
+    },
+    {
+      "configuration": [
+        16,
+        "bimodal",
+        36,
+        4,
+        2,
+        1,
+        2,
+        "recovery"
+      ],
+      "counters": {
+        "dual_issue_cycles": 20,
+        "issued_operations": 232,
+        "completion_stall_cycles": 44,
+        "execution_stall_cycles": 0,
+        "rename_stall_cycles": 113,
+        "checkpoint_stall_cycles": 52,
+        "generation_stall_cycles": 0,
+        "late_rejected": 10,
+        "rejected_after_slot_reuse": 0,
+        "physical_reuse_while_pending": 6,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4
+      }
+    }
+  ],
+  "spike_matches": 456,
+  "unchanged_profile_differences": 16,
+  "controlled_smoke": [
+    {
+      "workload": "helpers",
+      "case": "integer-vectors",
+      "narrow_cycles": 1159169,
+      "dual_cycles": 1252055,
+      "retired": 825412,
+      "dual_issue_cycles": 166791,
+      "baseline_over_candidate_cycles": 0.9258131631597654
+    },
+    {
+      "workload": "runtime",
+      "case": "runtime-tests",
+      "narrow_cycles": 127220,
+      "dual_cycles": 127341,
+      "retired": 31265,
+      "dual_issue_cycles": 250,
+      "baseline_over_candidate_cycles": 0.9990497954311651
+    },
+    {
+      "workload": "parser",
+      "case": "empty-incremental",
+      "narrow_cycles": 269601,
+      "dual_cycles": 271790,
+      "retired": 54326,
+      "dual_issue_cycles": 5113,
+      "baseline_over_candidate_cycles": 0.9919459877111004
+    },
+    {
+      "workload": "parser",
+      "case": "scalars-incremental",
+      "narrow_cycles": 835876,
+      "dual_cycles": 842781,
+      "retired": 165355,
+      "dual_issue_cycles": 15684,
+      "baseline_over_candidate_cycles": 0.9918068869611442
+    }
+  ],
+  "limits": [
+    "Focused correctness plus eight real-tool runs, not full current-source compatibility",
+    "Only a smoke comparison; full PRF/ROB/predictor/service design matrix remains required",
+    "Dual issue did not improve simulated cycles in this smoke; no clock or energy claim",
+    "Remaining semantic policy, synthesis/timing/design-point and final integration requirements keep #4 open"
+  ]
+}

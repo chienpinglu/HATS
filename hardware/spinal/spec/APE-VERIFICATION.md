@@ -1,13 +1,19 @@
 # APE verification coverage
 
-APE-0.2 is verified by executing linked RV64 programs in generated RTL through
+APE is verified by executing linked RV64 programs in generated RTL through
 SpinalSim and Verilator. Each successful retirement is checked against a local,
 separately authored sequential interpreter. External memory requests are checked
 at acceptance, before side effects, and final memory is compared at halt.
 An additional [independent Spike gate](APE-SPIKE-VALIDATION.md) compares actual
 RTL event streams with pinned upstream instruction semantics. These are bounded
 regressions, not full ISA certification or a formal proof. The requirement
-definitions are in [APE-0.2](APE-0.2.md).
+definitions are in [APE-0.2](APE-0.2.md), with physical renaming superseded by
+[APE-0.3](APE-0.3.md), early recovery specified by [APE-0.4](APE-0.4.md),
+registered execution specified by [APE-0.5](APE-0.5.md), optional dual-lane issue
+by [APE-0.6](APE-0.6.md), and frontend policy by the
+[semantic contract](APE-SEMANTIC-BOUNDARY.md).
+Historical dated results below remain APE-0.2 evidence;
+current increment evidence is recorded in [S03 progress](S03-PROGRESS.md).
 
 ## Required matrix
 
@@ -28,10 +34,13 @@ lookup/training, disabled training inputs and clear priority over training.
 
 | Requirement | Test or assertion | Boundary of coverage |
 | --- | --- | --- |
-| APE-OOO-01 rename | `rename_raw_waw_war`, `random_0` through `random_7`; live-producer map assertion | Bounded streams, not exhaustive interleavings |
+| APE-OOO-01 / APE-PRF-01..05 rename | `rename_raw_waw_war`, `random_0` through `random_7`; physical ownership assertions; `ApeRenameSim` port scoreboard | Bounded streams, not exhaustive interleavings or formal proof |
 | APE-OOO-02 actual OoO | `rename_raw_waw_war` requires PC12 to issue before PC8 and finish before PC4 | Observed in RTL in every matrix configuration |
 | APE-OOO-03 retirement | Every retirement checked for PC, instruction, destination enable/register and value; separate Spike gate also checks next PC | External gate fully matches 48 scenarios; two exact profile differences remain |
-| APE-REC-01 recovery | `wrong_path_effects`, `nested_redirect`, `predicted_taken_exit`, `illegal_precise`, fault cases | Retirement-time recovery only |
+| APE-REC-01 / APE-ER-01..05 recovery | Standard wrong-path/fault cases; `ApeCheckpointSim`; six dedicated early-recovery witnesses in narrow and dual-lane gates | One shared completion port; not a multi-writeback or speculative-memory proof |
+| Qualified pipelined completion | `ApeExecuteSim`, `ApeCompletionGuardSim`, core identity/squash ledger and Spike | Unit transport and guard checks plus observed late-result rejection; not whole-core formal lease proof |
+| Simultaneous issue and arbitration | `ApeIssueSchedulerSim`, `verify_ape_multi.py`, observed dual-issue and completion-backpressure counters | Actual one/two-lane RTL; single dispatch/writeback/retirement |
+| Explicit semantic policy | `ApeSemanticSim`, `ApeRegisterLayoutSim`, `verify_ape_semantics.py` | Alternate component policies/layouts; only RISC-V is an implemented processor frontend |
 | APE-BP-01 counters | `ApePredictorSim`; `loop_rob_wrap` requires learned taken predictions and fewer than 10 misses | Tests use 2/16 predictor entries; not all possible sizes |
 | APE-BP-02 training | Predictor unit update/clear tests; core update wired only to successful conditional retirement; `taken_fallthrough_target` | Retirement qualification is structural; no full speculative-history formal proof |
 | APE-BP-03 targets | `direct_jump_prediction`, `call_return`, `jalr_clear_bit0`, `jump_alignment`, `untaken_misaligned_target` | No indirect-target or return-address prediction |
@@ -41,12 +50,75 @@ lookup/training, disabled training inputs and clear priority over training.
 | APE-MEM-03 accesses | `memory_sizes`, alignment/bounds/readonly tests, `zero_load_fault`, bus-fault cases | Invocation bounds, not virtual-memory isolation |
 | APE-MEM-04 precise service fault | `load_bus_fault`, `store_bus_fault`; no memory modification on error in test service | No rollback of backend partial writes |
 
-All core tests include x0, ROB occupancy and live rename-owner RTL assertions.
+All core tests include x0, ROB occupancy and physical-register ownership RTL assertions.
 The command sink checks zero wrong-path writes, one live write in `command_store`,
 and exactly two live writes in `predicted_taken_exit`, with no third write on the
 predicted but unexecuted loop body. It does not execute a HATS task.
+APE-0.4 adds 16 NOPs before that fixture's loop-back jump so ROB16 cannot
+fetch all three conditional branches ahead of retirement-only predictor training.
+The old short fixture preserved architectural results but failed to exercise
+a predicted-taken final exit under early recovery. The predicted-exit assertion
+and exactly-two-command-writes check remain mandatory; neither was weakened.
 
 ## Evidence and failure behavior
+
+The focused `verify_ape_rename.py` gate additionally tests 18,000 rename-unit
+cycles and 200 ROB16/P36 core invocations, preserving the existing actual-OoO
+checks. Its independent Spike comparison expects 192 full matches and eight
+exact profile differences. Each pressure configuration must exhibit nonzero
+rename exhaustion stalls. Source-bound results are in `build/ape_rename/gate.json`.
+
+The focused `verify_ape_recovery.py` gate adds 32,000 actual rename/checkpoint RTL
+cycles and 108 exact Spike comparisons across nine configurations. Required
+witnesses include correct-target issue before an older memory response, nested
+resolved-branch squash, concurrent older commit, checkpoint exhaustion and precise
+older faults after an early redirect. The port-only oracle replays surviving
+instructions rather than duplicating the RTL snapshot algorithm. Source-bound
+results are in `build/ape_recovery/gate.json`; this is not formal proof or a
+pipeline stale-completion test.
+
+The execution gate `verify_ape_execution.py` separately runs 16,800 elastic
+pipeline test cycles, 16,000 guard checks, and 300 core invocations across shallow
+and deep pipelines, 1-/2-bit generation widths and P36 pressure. It requires
+288 exact Spike matches and the same 12 checked profile differences. The core
+oracle follows public issue identities and squash events, checking accepted and
+rejected completions without reading internal ownership signals. Reports contain
+explicit counters for late rejection, physical reuse, slot reuse and pipeline
+clear; zero counts do not constitute exercised coverage. Unit output-backpressure
+and generation-conflict tests do not imply those stalls occurred in the core matrix.
+
+The current focused recovery images use eight non-allocating instructions before
+the independent branch in the older-memory witnesses and three older completed
+instructions before the load-dependent outer branch. These provide the registered
+pipeline with explicit pending-memory and concurrent-retirement timing witnesses
+without exhausting P36 before the branch. All original timing assertions remain.
+
+The multi-issue gate separately verifies six scheduler configurations, four
+standard core configurations and six dual-lane recovery configurations. All 472
+invocations comprise 456 exact Spike matches and 16 unchanged standard-profile
+differences. Every wide suite must exhibit simultaneous issue and completion
+backpressure; pressure and deep-latency suites must reach their corresponding
+rename/late-reuse witnesses. No wide recovery case may use a profile exclusion.
+
+The semantic gate runs 4,953 execution vectors, 135 RV profile checks, 12,000
+alternate-layout rename cycles and 1,024 predictor policy checks. It verifies
+different sign/zero-extension results, nonzero zero-register indices, writable
+architectural index zero, target policy and explicit predictor successors/indexing.
+It does not implement or certify a second ISA.
+
+The separate [checkpoint formal gate](APE-CHECKPOINT-FORMAL.md) proves eight
+selected assertions per P36/C1 and P36/C4 configuration through 12 global
+transitions, reaches all nine covers and rejects two false-assertion controls.
+It checks one snapshot field and arbitrary watched slot/tag under documented
+legal-input assumptions. It is not an unbounded proof or full-core closure.
+
+The [rename lifecycle gate](APE-RENAME-FORMAL.md) separately checks selected
+allocation/map/free-count, readiness, retirement and full-recovery properties on
+actual P36 renamer RTL through 16 global transitions. All six covers and the
+false-assertion control must pass. The environment permits four overlapping x10
+writers and out-of-order writeback but restricts values to one bit and disables
+selective checkpoints. Those restrictions are not whole-core assumptions proven
+by this component gate.
 
 The aggregate report is `build/ape/validation.json`; detailed output is in
 `build/ape/verification.log`. Each `build/ape/rN-MODE/` contains a report and
@@ -97,10 +169,13 @@ These 12 inputs repeated across the matrix are not 144 distinct applications.
 
 - Broader independent architectural-test coverage beyond the bounded Spike matrix.
 - Fault, reset, malformed-response and protection adversarial tests as interfaces expand.
-- Formal rename, retirement, recovery and publication invariants.
-- Additional code-memory configurations, workload-driven branch traces and predictor sizes.
+- Broader/unbounded rename, retirement, recovery and publication invariants beyond
+  the selected restricted component proofs described above.
+- Additional code-memory and predictor configurations beyond the standard and
+  controlled S03 matrices; whole-program worst-case bounds remain unproven.
 - Real cache/MMU/coherence tests when those components exist.
-- Compiler, interpreter and broader agent workloads beyond the bounded diff tool,
+- Compiler, interpreter and broader agent workloads beyond bounded diff and the
+  pinned Tree-sitter port,
   executing on APE with no host fallback.
 
 The legacy TaskTile suite uses `python3 tools/verify.py`. It is a separate task

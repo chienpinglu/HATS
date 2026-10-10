@@ -24,7 +24,7 @@ The project starts as a compiler/runtime investigation inspired by HSA:
 
 The scalar architecture direction is now **RISC-V**, using SpinalHDL and
 SpinalSim. [HATS Application Processing Engine (APE)](hardware/spinal/APE.md) is an original
-speculative out-of-order integer-core prototype: ROB-tag renaming, oldest-ready
+speculative out-of-order integer-core prototype: physical-register renaming, oldest-ready
 issue, in-order retirement and head-only publication of memory effects. Its
 verification entry point is `hardware/spinal/tools/verify_ape.py`; generated
 reports distinguish tested mechanisms from full-ISA support and performance.
@@ -32,7 +32,11 @@ Speculative out-of-order execution is mandatory for APE. `ApeCore` now includes
 configurable bimodal branch and direct-jump prediction; HSE names remain adapters.
 It is not yet a complete high-performance big core or HATS task runtime.
 
-- [APE specification](hardware/spinal/spec/APE-0.2.md): instruction subset, OoO rules and interfaces.
+- [S03 completion](workloads/S03-COMPLETION.md): original Issue #4 acceptance review, complete real-tool/ISA and selected formal evidence, nine-point synthesis study and selected ROB8/P48/one-lane profile.
+- [Measured design study](workloads/S03-DESIGN-STUDY.md): 108 controlled RTL runs and nine mapped/equivalent configurations; dual issue did not improve cycles, and no achieved clock or physical energy is claimed.
+- [APE-0.6 specification](hardware/spinal/spec/APE-0.6.md): optional dual-lane issue with qualified completion and explicit semantic frontend/backend boundaries.
+- [Issue #4 closure plan](hardware/spinal/spec/S03-CLOSURE-PLAN.md): full acceptance path through workload, formal and synthesis evidence.
+- [S03 progress](hardware/spinal/spec/S03-PROGRESS.md): completed acceptance and preserved intermediate regression anchors.
 - [Verification map](hardware/spinal/spec/APE-VERIFICATION.md): requirements, tests and limits.
 - [Independent Spike validation](hardware/spinal/spec/APE-SPIKE-VALIDATION.md): pinned external oracle, exact event comparison and explicit profile differences.
 - [Application ABI and source diff](hardware/spinal/spec/APE-APPLICATION-ABI.md): static ELF loading, LP64 startup and a bounded tool executing on APE RTL.

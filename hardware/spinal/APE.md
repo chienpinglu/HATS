@@ -4,8 +4,15 @@ APE replaces the earlier HATS Scalar Engine name. The primary implementation is
 `ApeCore`; `verify_ape.py` is the verification entry point. Legacy HSE entry points
 remain compatibility adapters, not a second implementation.
 
-The current specification revision is **APE-0.2**. Start with the
-[architecture and interface specification](spec/APE-0.2.md),
+The current implementation revision is **APE-0.6**, with focused correctness,
+complete controlled workload comparisons and full P64 compatibility verified.
+The nine-point technology study and selected ROB8/P48/one-lane profile also pass
+their declared gates; see the [S03 acceptance review](../../workloads/S03-COMPLETION.md).
+Start with the [dual-lane issue contract](spec/APE-0.6.md), the retained
+[registered execution contract](spec/APE-0.5.md), the retained
+[early-recovery specification](spec/APE-0.4.md), the underlying
+[physical-renaming contract](spec/APE-0.3.md), the retained
+[instruction and interface contracts](spec/APE-0.2.md),
 [verification coverage](spec/APE-VERIFICATION.md), and
 [development guide](DEVELOPMENT.md). The [roadmap](spec/APE-ROADMAP.md) separates
 the application-processor target from this executable subset.
@@ -38,13 +45,19 @@ Idle-loadable instruction memory
               |
      bimodal branch / direct-jump prediction
               |
-     RV64 decode + ROB-tag rename
+     RV64 semantic decode + physical rename
               |
-     ROB / operand waiting slots ------ committed register file
+     ROB / operand waiting slots ------ physical register file
               |                                ^
-       oldest-ready selection                   |
-              |                         in-order retirement
-       integer / branch / AGU ------------------+
+       oldest-ready issue (1/2 lanes)            |
+              |                         committed map / free list
+       per-lane operand register                |
+              |                                 |
+       per-lane integer / branch / AGU          |
+              |                                 |
+       result registers -> arbiter -> ownership guard
+              |                                 |
+              +---------------------------------+
               |                                |
          operand broadcast               head-only memory
                                                |
@@ -53,22 +66,31 @@ Idle-loadable instruction memory
 
 - One hart, 32 architectural integer registers, x0 fixed at zero.
 - Configurable power-of-two ROB; validation configurations have 4, 8 and 16 slots.
-- One instruction can be dispatched, issued and retired per cycle. This is not
-  a multi-issue/superscalar implementation.
-- Register renaming maps an architectural destination to a ROB producer tag.
-  Operands either capture a ready value or wait on that producer. WAW/WAR do not
-  require serial execution. The ROB also supplies reservation-station storage;
-  this version does not have a separate physical register file/free list.
+- One instruction can be dispatched and retired per cycle. Issue width is one
+  or two, selecting actual registered execution lanes; writeback remains single-
+  port. The dual-lane candidate is not a two-wide frontend or retirement path.
+- Register renaming allocates a physical destination independent of the ROB slot.
+  Speculative and committed maps, a physical register file and a free list track
+  ownership. Operands capture ready values or wait on physical tags. WAW/WAR do
+  not require serial execution. The ROB still supplies reservation-station storage.
+- Generic fallback physical-register capacity is 64. The focused renamer gate
+  also tests 33 and 36 entries, including integrated ROB16/P36 resource-pressure
+  cases. The controlled workload study includes P36/P48/P64; P48's complete
+  candidate-profile regression is separate from the generic P64 baseline.
 - The oldest ready entry issues even when an older entry is unready. Integer
   work can issue and finish while the oldest load waits for memory.
-- ALU/address-generation execution is combinational within one issue cycle;
-  memory responses have priority over ALU issue on the single broadcast port.
+- ALU/address-generation execution has an operand register and a result register;
+  accepted issue completes no earlier than two cycles later. Memory responses
+  backpressure completion on the single broadcast port. Squashed late results
+  cannot write back: ROB generation and physical ownership must still match.
+  Allocation also excludes finite-generation aliases with any resident token.
 - A configurable two-bit bimodal predictor selects conditional-branch targets;
   JAL uses its decoded target and JALR predicts fall-through. Prediction can be
-  disabled. Branches resolve during execution, but recovery waits until retirement
-  and compares the recorded prediction with the actual next PC. All younger
-  entries are discarded on a mismatch and renaming restarts from committed state.
-  JAL/JALR link writes retire before recovery. No early checkpoint recovery yet.
+  disabled. Branches now recover during execution: checkpointed maps restore
+  the resolving branch's state, only younger entries are discarded, and older
+  instructions/memory remain live. JAL/JALR retains its own link destination.
+  Four live checkpoints are admitted by default; exhaustion stalls dispatch.
+  A retirement-recovery configuration is retained for comparison, not as the default.
 - Synchronous faults are recorded in the ROB and reported only at its head.
   Faulting instructions never retire or update architectural registers. Younger
   faults on a mispredicted path are discarded.
@@ -112,7 +134,8 @@ load speculation, store forwarding, disambiguation or replay.
 - FENCE is satisfied by head-only ordering on this single-hart port. This is not
   a multi-agent coherence or complete RVWMO verification claim.
 
-Instruction storage is a 4-KiB idle-loadable memory. Every reachable word must be
+Instruction storage is an idle-loadable memory: 4 KiB in the standard profile,
+256 KiB in the real-tool profile. Every reachable word must be
 initialized before launch. Writing it while the engine is active or holding a
 halt is ignored. A halt remains stable until consumed; only then can another
 launch be accepted. Launch resets architectural/rename state; argument arrives
@@ -153,9 +176,21 @@ Generated status, tool versions, input/RTL hashes and logs are in
 retirement/issue traces and reports are in `build/ape/r*-*/`; waveforms are under
 `build/ape/sim/`. A Scala compile or Verilog generation does not establish that
 these tests passed. Synthetic memory latency and simulator cycles do not establish
-performance, energy efficiency, memory-system performance or PPA.
+achieved hardware performance, energy efficiency or physical PPA.
 
-### Current APE result
+For the full enlarged-backend evidence path, use the
+[S03 guide](../../workloads/s03/README.md). Separate gates cover semantic policy,
+physical rename, checkpoint recovery, registered completion, simultaneous issue,
+selected bounded formal properties and the complete upstream tool. Controlled
+workload cycles and research-library mapped area/delay are measured separately;
+neither is a silicon clock or physical energy measurement.
+
+### Current S03 progress and historical APE-0.2 result
+
+The S03 increments implement physical renaming, typed branch/memory decode fields
+checkpointed early branch recovery, registered completion and optional dual-lane
+issue. See the [S03 progress and evidence record](spec/S03-PROGRESS.md)
+for current tests, completed S03 acceptance and explicit later-stage limits.
 
 On 2026-10-07, APE-0.2 passed 600 core invocations across 4/8/16-entry ROBs and
 both prediction modes, plus 4,096 predictor lookup checks. The legacy TaskTile
@@ -189,8 +224,9 @@ results, not an exhaustive correctness proof or evidence of agent acceleration.
 1. Broaden the existing external ISA differential tests and application coverage;
    stronger randomized control-flow/memory tests,
    assertions and formal checks for rename/ROB/fault invariants.
-2. Earlier branch recovery, stronger prediction, pipelined/multiple execution
-   units, physical-register allocation and measured performance design points.
+2. Preserve the measured ROB8/P48/one-lane/bimodal16 profile and its complete
+   regression chain. Future wider frontend/writeback or stronger prediction requires
+   new same-workload evidence; existing dual issue did not improve cycles.
 3. LSU store buffering/forwarding, nonblocking L1 caches, translation, atomics,
    privilege, interrupts and explicit memory-model validation.
 4. An independent embedded-RISC-V command controller and HATS task ABI. Integrate
@@ -198,8 +234,8 @@ results, not an exhaustive correctness proof or evidence of agent acceleration.
    No compiler/runtime capability is inferred merely from core ISA support.
 5. Reproduce actual tool workloads on this execution path; include all scalar
    execution and controller overhead in comparison with the CPU baseline.
-6. Synthesis/timing/area studies with explicit SRAM/library assumptions before
-   describing any configuration as a high-performance big core.
+6. Replace early FF/mux research-library assumptions with SRAM and physical
+   implementation evidence before claiming achieved big-core frequency or energy.
 
 ## Public semantic sources
 

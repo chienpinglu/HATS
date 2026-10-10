@@ -2,14 +2,25 @@
 
 APE is the primary RISC-V application-processing core in this repository.
 Develop the SpinalHDL source, run generated hardware in SpinalSim, and keep the
-[specification](spec/APE-0.2.md) and [coverage map](spec/APE-VERIFICATION.md) aligned.
+[specification](spec/APE-0.6.md) and [coverage map](spec/APE-VERIFICATION.md) aligned.
 The A64 TaskTile remains a separate legacy task-mechanism regression.
 
 ## Source layout
 
 | Location | Purpose |
 | --- | --- |
-| `src/main/scala/hats/ApeCore.scala` | Configuration, RV64 subset decoder, rename/ROB, scheduling, execution, retirement and memory publication |
+| `src/main/scala/hats/ApeCore.scala` | Configuration, ROB, scheduling, execution, retirement and memory publication |
+| `src/main/scala/hats/ApeDecode.scala` | RV64 subset decode into typed branch/memory semantics |
+| `src/main/scala/hats/ApeSemantics.scala`, `ApeRv64Profile.scala` | Semantic operations/register layout and RISC-V frontend policy |
+| `src/main/scala/hats/ApeIssueScheduler.scala`, `ApeDesignPointGenerate.scala` | One/two-lane oldest-ready issue and explicitly parameterized RTL generation |
+| `src/main/scala/hats/ApeExecute.scala`, `ApeCompletionGuard.scala` | Registered integer/branch/AGU execution, completion identity and generation-wrap exclusion |
+| `src/test/scala/hats/ApeExecuteSim.scala`, `tools/verify_ape_execution.py` | Elastic transport/guard tests and independent pipeline-profile Spike gate |
+| `src/main/scala/hats/ApeRename.scala` | Physical integer file, speculative/committed maps, allocation and recovery |
+| `src/main/scala/hats/ApeCheckpoints.scala` | ROB-owned map snapshots and younger-allocation reclaim sets |
+| `src/test/scala/hats/ApeCheckpointSim.scala`, `tools/verify_ape_recovery.py` | Replay-oracle checkpoint test, actual early timing witnesses and exact Spike comparisons |
+| `src/test/scala/hats/ApeRenameSim.scala`, `tools/verify_ape_rename.py` | Physical ownership/value scoreboard and independently checked core pressure matrix |
+| `tools/verify_ape_semantics.py`, `tools/verify_ape_multi.py` | Semantic-policy and actual dual-lane/recovery gates |
+| `formal/`, `tools/probe_ape_technology.py` | Selected bounded RTL properties and early mapped-area/combinational-delay study |
 | `src/main/scala/hats/ApeBranchPredictor.scala` | Bimodal counters and direct-target selection |
 | `src/test/scala/hats/ApeCoreSim.scala` | Generated-RTL instruction and memory scoreboard, matrix scenarios |
 | `src/test/scala/hats/ApeReference.scala` | Independent local sequential interpreter; do not reuse RTL decode logic here |
@@ -107,6 +118,23 @@ It generates `build/ppe/rtl/PpeCore.v` and compares actual instruction, memory,
 register and fault traces with an independent Python oracle; see
 [PPE-RTL-0.1](spec/PPE-RTL-0.1.md) for tested scope and direct-adapter obligations.
 
+For physical-renaming changes, first run `python3 tools/verify_ape_rename.py`.
+This freshly runs the 33/36/64-register unit matrix and ROB16/P36 core pressure
+cases with independent Spike comparisons. It supplements, not replaces, the
+normal matrix and real-tool gates. See [S03 progress](spec/S03-PROGRESS.md).
+
+For checkpoint/recovery changes, run `python3 tools/verify_ape_recovery.py` as
+well. It builds six separate recovery images, runs 32,000 unit cycles and 108
+core invocations including the retirement-recovery baseline. The usual 50-scenario
+matrix is unchanged. Run the full S02 gate after both focused gates; current
+increment summaries use `workloads/s03/evidence.py` from the repository root;
+that script never closes S03. The complete path, including `closure_evidence.py`,
+is documented in [the S03 gate guide](../../workloads/s03/README.md).
+After recovery evidence is frozen, `python3 formal/verify_checkpoints.py` checks
+selected component properties on that exact generated RTL. See the
+[bounded formal contract](spec/APE-CHECKPOINT-FORMAL.md) for isolated tool setup,
+assumptions, proof depth, covers and explicit remaining gaps.
+
 These commands are diagnostic subsets, not the complete matrix gate:
 
 ```sh
@@ -120,7 +148,13 @@ bash tools/sbtw 'Test / runMain hats.ApeCoreSim 8 off'
 `GenerateApe` emits six configurations under `build/ape/rtl/rN-MODE/`.
 Core simulations use the same configuration settings but generate their own
 simulation RTL. `ApeCoreSim` accepts ROB entries and `off` or `bimodal` as arguments.
+An optional third argument selects physical-register count and writes separate
+pressure evidence, for example `ApeCoreSim 16 off 36`. The default is 64.
 The standard tests assume 1,024 instruction words and a 16-entry predictor.
+Additional arguments select checkpoint capacity, `early` or `retire`, then an
+optional `recovery` witness suite, for example `ApeCoreSim 16 off 64 4 early recovery`.
+Assemble those fixtures first with `python3 tools/assemble_ape_recovery.py`.
+Those configurations write separately under `build/ape_recovery/`.
 
 ## Adding behavior
 

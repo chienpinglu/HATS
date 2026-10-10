@@ -175,26 +175,34 @@ This is a functional first-engine gate, not a high-performance or physical resul
 
 **Goal:** Evolve APE into a workload-evaluated speculative out-of-order application core while preserving architectural correctness.
 
+**Progress:** Accepted against the original S03 criteria on 2026-10-10. The
+[completion review](workloads/S03-COMPLETION.md) and [closure evidence](workloads/evidence/S03-CLOSURE.json)
+bind full compatibility, selected formal gates, 108 controlled workload runs and
+nine mapped/equivalent configurations. The selected explicit profile is
+ROB8/P48/one issue lane/bimodal16. Dual issue is implemented but did not improve
+cycles; all nine points miss the 1,000 ps mapping target. These are early physical
+estimates, not achieved clock/energy or production-CPU completion.
+
 **Dependencies:** S01, S02
 
 **Start and overlap:** Specification and synthesis experiments can start during S02; closure requires the real-application regression anchor.
 
 **Work packages**
 
-- [ ] Separate semantic decoded operations and ISA-specific architectural state from reusable scheduling/execution interfaces; retain RISC-V as the implemented frontend.
-- [ ] Implement physical-register allocation, rename maps, free-list management, issue queues, wakeup/select and precise retirement.
-- [ ] Implement branch checkpoints, earlier misprediction recovery and squash rules for younger operations and external effects.
-- [ ] Pipeline execution units and evaluate a multi-issue candidate against the narrower baseline using the same workloads and memory assumptions.
-- [ ] Define precise faults, instruction boundaries, reset/relaunch behavior and resource-exhaustion handling throughout the enlarged backend.
-- [ ] Add randomized control/data hazards and recovery tests, formal properties for allocation/rename/retire/recovery, performance counters and early synthesis/timing feedback.
+- [x] Separate semantic decoded operations and ISA-specific architectural state from reusable scheduling/execution interfaces; retain RISC-V as the implemented frontend.
+- [x] Implement physical-register allocation, rename maps, free-list management, issue queues, wakeup/select and precise retirement.
+- [x] Implement branch checkpoints, earlier misprediction recovery and squash rules for younger operations and external effects.
+- [x] Pipeline execution units and evaluate a multi-issue candidate against the narrower baseline using the same workloads and memory assumptions.
+- [x] Define precise faults, instruction boundaries, reset/relaunch behavior and resource-exhaustion handling throughout the enlarged backend.
+- [x] Add randomized control/data hazards and recovery tests, formal properties for allocation/rename/retire/recovery, performance counters and early synthesis/timing feedback.
 
 **Acceptance criteria**
 
-- [ ] Real application and independent ISA regressions preserve supported architectural behavior, including exceptions and wrong-path effect suppression.
-- [ ] Tests demonstrate actual out-of-order issue/completion and correct recovery under overlapping dependencies and resource pressure.
-- [ ] Selected formal invariants pass under documented assumptions; remaining proof coverage is enumerated.
-- [ ] Issue width, register/ROB/queue sizes and predictor choices have workload and synthesis evidence rather than an unsupported big-core label.
-- [ ] The performance report separates simulated cycles/IPC from achievable clock frequency and physical energy.
+- [x] Real application and independent ISA regressions preserve supported architectural behavior, including exceptions and wrong-path effect suppression.
+- [x] Tests demonstrate actual out-of-order issue/completion and correct recovery under overlapping dependencies and resource pressure.
+- [x] Selected formal invariants pass under documented assumptions; remaining proof coverage is enumerated.
+- [x] Issue width, register/ROB/queue sizes and predictor choices have workload and synthesis evidence rather than an unsupported big-core label.
+- [x] The performance report separates simulated cycles/IPC from achievable clock frequency and physical energy.
 
 **Required evidence:** Microarchitecture specification, frontend/backend contracts, RTL, adversarial and formal results, design-point comparisons, synthesis constraints and QoR reports.
 

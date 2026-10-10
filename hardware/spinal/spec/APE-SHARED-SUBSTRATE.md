@@ -3,10 +3,13 @@
 A common speculative out-of-order backend can serve different ISA frontends.
 For HATS, the recommended direction is a RISC-V implementation first, with
 explicit boundaries that allow a future AArch64 frontend to reuse execution
-machinery. This is a design proposal, not implemented dual-ISA support. APE-0.2
-still contains RISC-V-specific behavior inside its backend.
+machinery. RISC-V remains the only implemented instruction frontend. The current
+S03 RTL implements explicit semantic execution, register-layout, predictor and
+fault-presentation boundaries, with port-level tests of alternate policies.
+It does not implement dual-ISA support; the current `ApeCore` is the RISC-V
+architectural wrapper around these reusable mechanisms.
 
-## Proposed boundaries
+## Layer responsibilities and longer-term boundaries
 
 | Layer | Reusable mechanism | ISA-specific responsibility |
 | --- | --- | --- |
@@ -34,9 +37,25 @@ contract, not a new software-visible ISA.
 
 Do not carry raw RISC-V `funct3` fields into the shared scheduler/LSU. Convert
 them into semantic fields such as load width and signedness or a branch-condition
-enum. In APE-0.2, `f3`, the sign-extending `word` result path, x0 assumptions,
-RISC-V exception numbers, and JALR target masking are examples of coupling that
-must be removed or placed behind an explicit RISC-V policy boundary.
+enum. `ApeDecode.scala` performs that conversion; `ApeRv64Frontend` and
+`ApeRv64Profile` now own sequential instruction size, fetch alignment, encoded
+register conventions, RV64 word-result extension, indirect-target masking and
+exception-number presentation. `ApeExecute` consumes explicit `sequentialNext`,
+target/alignment masks, `narrow32`, result-extension policy and semantic fault
+classes. No RISC-V exception number is generated inside that execution component.
+
+`ApeRename` consumes an `ApeRegisterLayout` rather than hard-coding x0 or x10.
+It supports one power-of-two integer namespace, one immutable zero slot and one
+argument/result slot. Tests exercise 16- and 32-entry layouts, nonzero zero-slot
+indices and writable architectural index zero. This is reuse of a component,
+not a second implemented CPU ISA. Flags and multiple destinations remain absent.
+
+The predictor consumes the frontend's sequential successor and a configured
+instruction-index shift. Its component tests exercise shifts one and three and
+varying successor distances; the RISC-V wrapper uses shift two and PC+4.
+
+See [the executable semantic boundary](APE-SEMANTIC-BOUNDARY.md) for exact fields,
+fault ordering, instruction ownership and current verification limits.
 
 The initial shared interface can represent one micro-operation per instruction.
 It must reject unsupported forms explicitly. Adding a second frontend requires
@@ -74,9 +93,9 @@ contract with evidence from a concrete ISA profile and workload.
 2. Extract a typed RISC-V decoded-operation boundary, replacing raw encoding
    fields with semantics. Prove unchanged architectural traces before widening
    the backend.
-3. Separate architectural state and fault presentation from shared scheduling
-   and execution; add explicit result extension, flags and instruction grouping
-   only with executable tests.
+3. Preserve the implemented register-layout, result-extension and fault-policy
+   boundary with executable tests. Add flags, multiple destinations and expanded
+   instruction groups only alongside an actual frontend that needs them.
 4. Prototype a separately selected AArch64 subset frontend after defining its
    supported profile and completing the relevant rights review. Use an independent
    AArch64 reference and fault tests; the legacy A64 TaskTile is not that evidence.

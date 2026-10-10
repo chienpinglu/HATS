@@ -1,0 +1,6 @@
+# Isolated tooling only; do not install into system Python.
+yowasp-yosys==0.69.0.0.post1233
+yowasp-runtime==1.96
+wasmtime==47.0.1
+platformdirs==4.12.4
+click==8.5.0

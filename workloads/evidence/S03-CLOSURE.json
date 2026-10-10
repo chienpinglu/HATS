@@ -1,0 +1,2088 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "issue": 4,
+  "stage": "S03",
+  "S03_complete": true,
+  "claim_class": "source_bound_original_S03_acceptance_evidence",
+  "created_utc": "2026-10-10T02:37:23.411990+00:00",
+  "source_sha256": {
+    "hardware/spinal/build.sbt": "0bb5d5bce4b58f0a78fdcab0016e5b102cd5ab3ccefc6c0331a084357a3c4564",
+    "hardware/spinal/project/build.properties": "84d1a08240c782d6691e9829ec54530a45d10809b0e5200db4035723d852928c",
+    "hardware/spinal/project/repositories": "e5b455eae2debe0d031194347c324649c2ab215485ad67dfc487c69102325c8e",
+    "hardware/spinal/src/main/scala/hats/ApeBranchPredictor.scala": "729fc8e72729911e27136b64c65c039493fdaa67386fd2fb2c192ba22aa0874b",
+    "hardware/spinal/src/main/scala/hats/ApeCheckpoints.scala": "6a899aefaf1efc982316826c95ae315a610c18c3f0bfd13982059115ef59f9a0",
+    "hardware/spinal/src/main/scala/hats/ApeCompletionGuard.scala": "1c0a3f5c485f1cfc54ab62310310ac61a1b24c9b3872fc66615b644aee228b18",
+    "hardware/spinal/src/main/scala/hats/ApeCore.scala": "15cc5bd40bd53eb4344a70bccc6be32e63cc4e7d0bbcc54bb4fb41e45a0259d7",
+    "hardware/spinal/src/main/scala/hats/ApeDecode.scala": "f5c44bcae135105e75b57b741fd9ec801411f1b9b0514e392090c1402e76f401",
+    "hardware/spinal/src/main/scala/hats/ApeDesignPointGenerate.scala": "82a3f094805b717c14935d39fe4204430deb64bf622283b348bdb01be5d61612",
+    "hardware/spinal/src/main/scala/hats/ApeExecute.scala": "5a5ce0c7154360689cc3cb78e0810562dd39dd28dc5aa950e3d40ddfcba7f606",
+    "hardware/spinal/src/main/scala/hats/ApeIssueScheduler.scala": "a060c97fd3c1f48c34f22f9d1205ab306d04baa6c5f8cd78fc028cad3a2305fc",
+    "hardware/spinal/src/main/scala/hats/ApeRename.scala": "1c5bcb7e65506e168e3c221fdacc9079d0a8da1483130c8dabb575c2b0053c05",
+    "hardware/spinal/src/main/scala/hats/ApeRv64Profile.scala": "074d85d1583257d90798234ba5d50b0fe9e972e3e14985ba6d32e5a0241ef2e3",
+    "hardware/spinal/src/main/scala/hats/ApeSemantics.scala": "48755cb2884d89c9138341322d43db5379c98a56be2845095123a59ce07f6946",
+    "hardware/spinal/src/main/scala/hats/ApeToolGenerate.scala": "a7e910587901892541969d3e665021d90269fcf8dd0b82db4e40de4c64f0ccc2",
+    "hardware/spinal/src/test/scala/hats/ApeApplicationSim.scala": "f2db3510581c0114be242f258b1afa13e4ef2bd1f34f63a87a52b5fa892b6300",
+    "hardware/spinal/src/test/scala/hats/ApeCheckpointSim.scala": "075ca6863ac43007fa823d763855d4fbe0b6c655eb0c19bcd723b41a5421302d",
+    "hardware/spinal/src/test/scala/hats/ApeCoreSim.scala": "973df9fecd0b2e73bd18b2f19ef4888e1cdd63875d0e0a409887d27f6bee1dcf",
+    "hardware/spinal/src/test/scala/hats/ApeExecuteSim.scala": "7ed5e0cf632bffc29f136dd09794aa54009c75a0120ad61cc5f4a4b898d8a2ad",
+    "hardware/spinal/src/test/scala/hats/ApeIssueSchedulerSim.scala": "aa17814a95b1137a7ffae94f59f6727018bc73b6c811668fc96faabc14d0ab0a",
+    "hardware/spinal/src/test/scala/hats/ApePredictorSim.scala": "ac3792452024f2dc3df48278d40dea10afc20f7be0db71d870477a2329d2bdb6",
+    "hardware/spinal/src/test/scala/hats/ApeReference.scala": "f96d4c2d6933f73665b7a0ecd5e2a25531f41d7d9e6ccc23b09ab6488010d61a",
+    "hardware/spinal/src/test/scala/hats/ApeRegisterLayoutSim.scala": "0588c887f2cb290cf171ab3e0b354b7690a5985e34f5cd94d91394d2bac99805",
+    "hardware/spinal/src/test/scala/hats/ApeRenameSim.scala": "ddd46a7376259b18513ef275f6e1c676a988141b0b494994edc1cf208dc89899",
+    "hardware/spinal/src/test/scala/hats/ApeSemanticSim.scala": "46ca9f68a84fe8eda5d9c936ce08eae52bdcecc692ae17739a93d45313eba857",
+    "hardware/spinal/src/test/scala/hats/ApeToolSim.scala": "ab6588b17335e11dff72eac26ba0d12bbc4ac2c76f05ac3994be06962cc2fde1",
+    "hardware/spinal/tools/sbtw": "0fbfc2c691eefae15630057d5d02a8ffa27ea88e07730e71c6650cc7bc29bba3",
+    "hardware/spinal/tools/toolchain.py": "a39229236a5ca8ee15bfb1a710f5615f0c5fb5e208906392a55116762913fc96",
+    "hardware/spinal/tools/verify_ape.py": "7bb27537f85ce249e4208797114645ae29cb2d900214ebeba33915818a89d6f1",
+    "hardware/spinal/tools/verify_ape_semantics.py": "435d835fa610b1d5478f902af76e87ca3366efd34299c3ecafe9bd7f6a7a8d7b",
+    "hardware/spinal/examples/ape/kernel.c": "84c889fafa97d8611a97119822e5949f1e1bb7891690a9fdd09bab1fbbfc9b6f",
+    "hardware/spinal/examples/ape/link.ld": "44f96f9434e855f0250f2247a4a8c437782ce786f9c063b99bb7a8df6823ba8e",
+    "hardware/spinal/examples/ape/programs.S": "2a5397ae05c59547b4ccfc9d9c8f59b16b099d11fe4fd07d3247560a470b72ff",
+    "hardware/spinal/examples/ape_recovery/programs.S": "dc63bdddfad86839733bd7c0e29c5aae5d060b58aab8710c6f745cabda467e5b",
+    "hardware/spinal/tools/assemble_ape.py": "4f64a6aff7de418b56a1c113594c2fa81b04eddd61822015557dba0920b137cf",
+    "hardware/spinal/tools/assemble_ape_recovery.py": "81a7312c396c6bf2d2281dc6c5f636e0d727a26922d12d316ae5c3a37495428a",
+    "hardware/spinal/tools/assemble_hse.py": "144f7a53b70251966d47637ba013503d21e98e7e906caa72a789aa31ae007882",
+    "hardware/spinal/tools/bootstrap_spike.py": "afb670b4d1bb7aa557c0d7e8d803486273ded7000f1223365f7ac049a8c594b9",
+    "hardware/spinal/tools/compare_ape_spike.py": "1810c75f7dbb050411199dcaf84f369f26b1cc30d39857104c7ef15f53fade87",
+    "hardware/spinal/tools/spike.lock.json": "fa9d6b046f1f6d191e949d4e533c4bb77114f068428a63d13c93f27227651614",
+    "hardware/spinal/tools/spike_adapter.cc": "fd1469dc0beff9e60c1f5f655a36187e223453130e3d9abb1d9927c1837cde25",
+    "hardware/spinal/tools/verify_ape_multi.py": "c67cc446b777391765f4483d92708d044b606257238ee053326804e22928e50e",
+    "hardware/spinal/tools/verify_ape_spike.py": "34a8188f3cf4a73a4fd1a09581b2d45884b83cb6a251f6787dc0b4f9c720cf7c",
+    "hardware/spinal/tools/verify_ape_recovery.py": "5bec3308d8f00be10c10bbf0b2d8276a538f28e1ff83ac46ffe0f8cc63156107",
+    "hardware/spinal/tools/verify_ape_execution.py": "56b5e3dbe6df3fc989c4c73aad908aa6571183e854622722c4de1c95bd2ff1db",
+    "hardware/spinal/tools/verify_ape_rename.py": "e0265d1d48d528a4950c932ba098b0d22b85efb0dcf75456b3d18abc6d58d8bd",
+    "hardware/spinal/formal/CheckpointFormal.sv": "8a78ea661b17c86f7c67b0bc2561ea3476127445a59914feb8791e9ad66c71fc",
+    "hardware/spinal/formal/RenameLifecycleFormal.sv": "df1484dc07f2eb5a4776b4e4b79abeb215f37c23c0daac2d17e1f85761a9df51",
+    "hardware/spinal/formal/requirements.txt": "311f5968668053a738c427830928df4f91f5160a4828dcd63074350c1c08ab89",
+    "hardware/spinal/formal/verify_rename_lifecycle.py": "cfa12363ef55c638703eb9d14b2b360c48d8d814bb2bb481553a37650c3e77f5",
+    "hardware/spinal/formal/verify_checkpoints.py": "85447766c996f5164c448f34994506bb79123557fc15a74976027aed587107b8",
+    "workloads/target/treesitter/bulk/verify.py": "3f11c5f8fa080b1a1d8a0fcdd7389d27a4b9983778e9f7f4226f15936264a240",
+    "workloads/target/treesitter/bulk/rtl_runner.cc": "b019c7adb882b380ebd47cf72a09b6ae0a3ce5d96760e531760fa048d48141ba",
+    "workloads/target/treesitter/bulk/digest.h": "98d90c07a400a57228d4f1afdc7f1e07f0453122cc07e4252de08ea89e7dc9db",
+    "workloads/s03/compare.py": "e516e0d323ae2563058cc272cc4711c0b43a66fa241c915f21b308b9b0b356c2",
+    "workloads/s03/service_schedule.h": "95a73f203713f52854b42da38633f042015b6bea9da579d4fcb734f51b7a41a4",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/sources.lock.json": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "workloads/target/treesitter/audit.py": "9c14318c7f35972ca386e603ecf9408a7e252b9af4bde3cf1b898bbc16170601",
+    "workloads/target/treesitter/execute/application.c": "cc1585894943b6f6d6829a9e72c074a3d6497d02f3adbc7891e2c3c15f58bb36",
+    "workloads/target/treesitter/execute/compiler_rt.c": "fbeb2b91f1622e606318d507edabdf25b9c3eb15a4e35cc3976084134f3bb2e4",
+    "workloads/target/treesitter/execute/helper_test.c": "9d0b09c02180be7bb6d1ddadd85c47aaf9caf92a845ab9735d13cf126ba2eb06",
+    "workloads/target/treesitter/execute/image.py": "bc0f4feeb0765f2fbd4f31ccea0cb8b624560b8553ad4c4f4e10266213905781",
+    "workloads/target/treesitter/execute/link.ld": "91d2dc62e32820577d34a705f953d931ccababf762b7c0c759a09388d5a1f04f",
+    "workloads/target/treesitter/execute/platform.h": "3c9a0ab6706b049baf536e25bcfd4b1a08a85edc22b07f8470b51a94c3e9551f",
+    "workloads/target/treesitter/execute/run.py": "d58e0037bd466684603d5119d68c30344000773704b6d862713880e515d73ed6",
+    "workloads/target/treesitter/execute/runtime.c": "de7a05df2045a6e2172bbbd1f0c304f65c58444208da5c6a068127b00e69d96e",
+    "workloads/target/treesitter/execute/runtime_test.c": "edc5c5a0bdca686bdca7612c343bff58993d6fb939110ff3fea0a17ac08437d8",
+    "workloads/target/treesitter/execute/spike_runner.cc": "f5eb26a93c561b3fb40ed0a619633467e2a1e0b50e5dc8baecdef9cc0e17db11",
+    "workloads/target/treesitter/execute/start.S": "25464c475fa3a1f48a4735a24ce3531089457f699941bceaf662678cbd50033f",
+    "workloads/target/treesitter/execute/test_execution.py": "967b05f3f0e90714923153a2b0e97ea8822894a69acefdf2c88627b62aa65b62",
+    "workloads/target/treesitter/execute/verify_rtl.py": "2e363ddca25326e1e76995d8a86350a048089c727d3f3837283065d2f402a810",
+    "workloads/target/treesitter/newlib.lock.json": "655f4c03b0254c0d86c232e3e14caf2c78841435d6df14a245a910c1abfb2134",
+    "workloads/target/treesitter/newlib.py": "3cc9b55335a1bb7b383d9942e88c223ec4bacf3660c7098ef5b408fb7b111a6e",
+    "hardware/spinal/tools/probe_ape_technology.py": "702f00b63084c710e59f03bc44440caeb4fae524d31729dd48dbed07b5f737f4",
+    "hardware/spinal/tools/bootstrap_ape_timing.py": "7f8fa1f7da95e02b9b0129ef832e22b6151560f2bf4f306072c3557aaf5c4c1a",
+    "hardware/spinal/tools/test_ape_technology.py": "feceb1234b8b6f1a1c586a59c03b0d2a4525658fc517f4de435980e98d2c1951",
+    "hardware/spinal/tools/verify_ppe.py": "ab42883319e9b15a5067c31511f843d48d774df59240e96dac2c9134163c4f07",
+    "hardware/spinal/tools/build_ppe_cases.py": "078591355e33a7a8baa56a4b33a6770c47df1f0c73d7ab327cedd24364b5037e",
+    "hardware/spinal/tools/ppe_programs.py": "67c939b746dfdb7940aa29a147747c1ae958aa1991324ae8454a141d28e7a664",
+    "hardware/spinal/tools/test_ppe_isa.py": "5214ce57a073a99b3a29ff44b7647d36567ed13c227b0ab2a254a28efc6bbb39",
+    "hardware/spinal/tools/ppe_isa.py": "6496bb6867a7b7f622e3b4826c0638764847e9a89270355e2ac3eaee4c639230",
+    "hardware/spinal/src/main/scala/hats/PpeCore.scala": "f194e959d62d43c86f088e4a7a86fd24273c862d9ac0971fb6200ed0b14b64c7",
+    "hardware/spinal/src/test/scala/hats/PpeCoreSim.scala": "305055962ef43594ccc706c0460b7679c444f621abd6214dab0a1d40f613b357",
+    "workloads/native/treesitter/README.md": "966cf11fdfbdbb8ff2edd910392fb2569a6a4b29f7e303c4ad664af4eed8d6bc",
+    "workloads/native/treesitter/baseline.c": "aa10c8c4df62989bbfaf36542e07bb962ed1001fa9fe88451f94ee35bdf7d10e",
+    "workloads/native/treesitter/profile.c": "e2ba608e8e609240aedc5407b1534ff60ee0dea55c54da95c0b0e1157b16fc13",
+    "workloads/native/treesitter/profile.h": "eb19e80fc468e7a5a2964c296581767e18133e07195049b8a0df9c5b4fbdaf45",
+    "workloads/native/treesitter/test_baseline.py": "c14826d8e66041766d1dd683ec23b83a64e40708a1471ae7cbab1cfa3303265e",
+    "hardware/spinal/src/test/scala/hats/TaskTileSim.scala": "5a7f8137e78bcf40b187a94f466304c3c21706cd79f493fd409b4454482ec273",
+    "hardware/spinal/examples/workloads.s": "ea8488e5510cc19290462f02370abbe6a02ae3684c83c9a931f0f75a59c4063d",
+    "hardware/spinal/tools/assemble.py": "1506229953c7db8110934badfce726fcb3556089660f38eaddc429914fa2b216",
+    "workloads/s02/verify_legacy.py": "8e3d1a7094d381accbdab87435d788b572e6b661ae27669075cab87e198fd92a",
+    "workloads/s02/checkpoint.py": "4dca42365f9b017fb4aeb365e9655bac165d5ef46ccc714cf738abec0a3fb107",
+    "hardware/spinal/src/main/scala/hats/HseCore.scala": "58f6f07547a94ae56e8e5b3c22ab9b6fc6ed38a567a697fa7a0d3cd1f45fa647",
+    "hardware/spinal/src/test/scala/hats/HseCoreSim.scala": "3bd37de6a2723e1b082a7075606408f671cabf0019c771aa9c95635008c81686",
+    "hardware/spinal/tools/verify_hse.py": "4379c2f8602fca6c92f51d7f01e74178c3af0cb74f5636c656dd37b0aa55882b",
+    "hardware/spinal/tools/test_ape_spike.py": "ca40147129eb5c985d1af6cb32878677ca051ad75ec801cfd0842a6e3efc1797",
+    "hardware/spinal/examples/ape_app/diff.c": "76e68a85f983b52100f4d5f6d5392b4d0965dbe913e2c00a3aff9cda794f564a",
+    "hardware/spinal/examples/ape_app/link.ld": "d335bd920c575f516aa3e3e6590b2eb671a4c488021db7e4fe0266b60ecd9cd5",
+    "hardware/spinal/examples/ape_app/start.S": "a368353f11cb36f310ca8569ee77caa792eda60595110e77191104b84ef9dd5c",
+    "hardware/spinal/tools/ape_app_image.py": "19994cf5378c7832b5fabe431ca6681c2e28b574f14b2eed4c05e3655b58986a",
+    "hardware/spinal/tools/build_ape_app.py": "bcd00b97e18093036c8641feea900081a15f4c8856df3af9af56bfeaeacce880",
+    "hardware/spinal/tools/check_ape_diff.py": "edaa63ac95ceddf81e3fbf81a96704cdd150591802c5d598a9d3368828634ece",
+    "hardware/spinal/tools/test_ape_app.py": "bbd9ac635810ccde2f2bdc52978db6d82bbbb092474048152aef499e042408a3",
+    "hardware/spinal/tools/verify_ape_app.py": "485124f5713af55a405cd9d33fdb4ef8708c772f1d2ccd2b666a778438f29b65",
+    "workloads/s02/test_gate.py": "bd5cbf76a1438437ccd53ae680e09ef8769f78e6ca09a5201290064bc903ba6d",
+    "workloads/s02/gate.py": "877a41efb0e51258f284ba4edc99921f054b39852ef25721f9621b4e8ef7fc0d",
+    "workloads/s02/run_all.py": "62abf62b962a188d8ae427a81bc83521e4e5090e3a77ad14da56b77670a722c1",
+    "workloads/s02/test_checkpoint.py": "8462a33acb2ff12b22d2de4a406847c499d58e5c6c049f67aa5019e63a502619",
+    "workloads/s02/port-manifest.json": "ca6bd79bb0d9c1ddc79a13d113a759915f8e77c347d34d73cd2d848203681722",
+    "workloads/s03/verify_profile.py": "aa0323d6343e48a0a1dea35fc32cb224eb1b718c57c58b5d6509d8e52ba49447",
+    "workloads/s03/design_evidence.py": "26d6ae32c4131564b80605d4fe2b09338e773df95f8d9f3d49a15f9397e254ac",
+    "workloads/s03/profile_recovery.S": "4e7935a9ec7a1703c9f74fc3cf31242e9441530b701a1e7983afab7e98edca49",
+    "workloads/s03/test_report_designs.py": "eb9df74d2588a0790dc77698124f618b1b5966ab020bfb4b10d2f7cc3b0a3bab",
+    "workloads/s03/closure_evidence.py": "f4912bc2156cce34a15a7d58b76f56acbe81a01bbb6b76e6fc56f25167fab41b",
+    "workloads/s03/profile_evidence.py": "fcf509852aac05633d08c56458defddadab763eb0ba36c24d0c51bf3ce67588e",
+    "workloads/s03/test_multi_evidence.py": "f3e5a6561e47f73838cdbf05fac9ff46109f06d3323d88684867c17e0d10012e",
+    "workloads/s03/test_closure_evidence.py": "f8e79d886ee368c9d7067d0743dc35954217bf84102f300ddb11d3424bb80fac",
+    "workloads/s03/test_design_evidence.py": "6441639b980bd8b8f9605b9ed58f5923da24641c3faaf35a8e8b849e4b8fded0",
+    "workloads/s03/multi_evidence.py": "3ed7bd82e99d22fc5b68b75bd70236a6b9722e93bc7962405e38a2fac8a937a0",
+    "workloads/s03/test_evidence.py": "2591efbe1652fde345fe2ce7343c9a36ec8fa816bf96f2d5f8fffd0eb576c1c0",
+    "workloads/s03/test_profile_evidence.py": "3a84c15b6649c06bcdb1e403ebef648897415857de68cd9b288cd6f5007b26ca",
+    "workloads/s03/report_designs.py": "909b9b0eed277ec2f525b6cb69bc002a0da5d9472383e5b91e36fdba7ab92417",
+    "workloads/s03/evidence.py": "4be03b95a1903590c4e65dd8ed6ba95154915d60a64a37191458d2dbf28fe682"
+  },
+  "documentation_sha256": {
+    "workloads/S03-COMPLETION.md": "ea29a5ab08027bd64ec0247caebd67911e7b3e19d6f9fd2a2cef03aaeda6b325",
+    "workloads/s03/design-selection.json": "ab5585bf9a752f590e283f9f670923cadb172596a792b44f727b24b5087ac31a",
+    "workloads/S03-DESIGN-STUDY.md": "37f4280ef93f7c6624bc391b9516a464d06177c9f5dd9bf2ef7033f2b954d066",
+    "ROADMAP.md": "5e0942db3180675de8db2338f8fcc1e84dcb898662c57d808a183edbb4ab2037",
+    "README.md": "242cda587ae87a85f72f2e2bb2a685fac406559795d3decd716073ba926d0ad0",
+    "hardware/spinal/APE.md": "d865404cfb53c3344dc12b1702ed1f90464c678adc1225c8ee3ce2f9a38e0efd",
+    "hardware/spinal/DEVELOPMENT.md": "18b52459ff325daf41d5616cf1da80f4221e63cd8bfd4046183377c665524709",
+    "hardware/spinal/spec/APE-SPIKE-VALIDATION.md": "d25ee26884ea7853a54c3067a1d04b58eca6b05e0ade48ef8baf9d25e56d737d",
+    "hardware/spinal/spec/APE-VERIFICATION.md": "cf40fabd9e7a6561c8102ba0061b5464e1a68abc99fc356292547071bd5a060c",
+    "hardware/spinal/spec/APE-SEMANTIC-BOUNDARY.md": "e4d9cab11be97cde7aabdaff103ab5369e322152226be7b9eaa04da0c726c95b",
+    "hardware/spinal/spec/APE-ROADMAP.md": "14b3cb6123061ba3e2a1cf8417d5cf79801c9e089cb01d180cfa93fea791e064",
+    "hardware/spinal/spec/APE-0.6.md": "e1d3266e83f14d8797602a868f7a4a85086f4dc60e6ba3e58bb1c0a5dda7b86e",
+    "hardware/spinal/spec/APE-RENAME-FORMAL.md": "5032cfe7e736f815b12d7ff5d1a2d005bed76bc784e3ebd3468e45583cce6bd3",
+    "hardware/spinal/spec/APE-EARLY-RECOVERY-PLAN.md": "6b6a190c01398c704cfe9831563b4a47fcf8c75a91b9017eb0be0b6dadb48856",
+    "hardware/spinal/spec/APE-0.2.md": "2aa1e346dfc422b837bc9e98349bbc89c73a448855aec471c8ca87775a0c4296",
+    "hardware/spinal/spec/APE-SHARED-SUBSTRATE.md": "67c4eff3e4490bdbc16d5846a3a3af3430455d7cb1fa8f9b3e194100183139bf",
+    "hardware/spinal/spec/APE-0.3.md": "485a5f4051cb8d0217107ca5d37069665d84bd44732405147e7480db877953ac",
+    "hardware/spinal/spec/APE-TECHNOLOGY-STUDY.md": "651ec386e8a6beb4c057154bdf80df43d4b50c2d827191bb1649b48999164d4f",
+    "hardware/spinal/spec/APE-0.4.md": "37cddc84d9b00993d4c34b8687927df0f8bcc6aba8ca8304cdfe24d8043d8096",
+    "hardware/spinal/spec/APE-0.5.md": "91c0aa86c9f9a3c1e29f2b9c85823eeed902d17f87c79d5a9519ff4b1c131ba4",
+    "hardware/spinal/spec/APE-APPLICATION-ABI.md": "33cc5a6513917b2d62e7f6b0045ddb51b3c3140ba0dab302c00d55de8c0983f9",
+    "hardware/spinal/spec/APE-SYNTHESIS-PROBE.md": "71a6df0937ba87c8fd05a23813f7e77ad54efe4e28e5a95f77db0fbf77d51926",
+    "hardware/spinal/spec/APE-CHECKPOINT-FORMAL.md": "f64d110d6cc8b6b1ccf964dc1ebcc1d6697b3277da575d50bc4065ef882a5849",
+    "hardware/spinal/spec/S03-CLOSURE-PLAN.md": "7b6b9edc6b81e0a8812b2c1995c29cd48dc844ec9fad8a8229e509983fd3be51",
+    "hardware/spinal/spec/S03-PROGRESS.md": "eaeadca5d5d0a6e30db56e8a95196277de7223d3d584e0f5cb7eaf86ab6d79ad"
+  },
+  "reports_sha256": {
+    "semantics": "65632c3306afea134b097cbdfab959398bacdef66b21c73afb87d991c3ffedc6",
+    "multi": "e713129bb9531b8c6a0182441c9fb1d3392db5b4c5250d0ac4733bb72bcb909e",
+    "recovery": "d145babb215a7fc3e7df2e8db802cfcbd0b335dba3d0ee21f51826fe42629ea3",
+    "execution": "493306793ef20d8b66af16febb644239d38d43d198161739fa2e48079cc8937b",
+    "rename": "6f68b004b2ae852fcbfb41024009ff4a61c6cf270937da6fb57f67bc1a1ae6d1",
+    "formal": "9ef98531f692242d58c5442038330501a64ac5962adbb22823a2bed2bff2ca7d",
+    "lifecycle": "03f5a8cfb1f59b416a34d192df2ae28cc04c51f8efb052e6ac3a60f826f94e69",
+    "compatibility": "f955ab6c8b292591e4a66f734190f1ced33cbb5c3761e92c9a2e84df1760826a",
+    "controlled_study": "0b62fb263bddd82000e068e1415355abfbf975a91f94940a8ae966bcfea49b8a",
+    "technology": [
+      "57831b4fce921e40da71b81d520a6b3705c42d7d6c4e3c87e944608045173564"
+    ],
+    "selected_profile": "0a83fa678001a25fb7a0f224acee7916fb0d0188016a7bfbd12aeccffaf554bf"
+  },
+  "focused": {
+    "semantics": {
+      "execution": {
+        "status": "passed",
+        "semantic_vectors": 4953,
+        "different_sign_zero_results": 544,
+        "alternate_target_vectors": 72,
+        "fault_vectors": 127,
+        "claim": "Shared execution RTL with explicit semantics; not another ISA frontend"
+      },
+      "profile": {
+        "status": "passed",
+        "checks": 135,
+        "claim": "RV64 frontend policy and public exception presentation RTL; not full ISA conformance"
+      },
+      "layouts": {
+        "status": "passed",
+        "claim": "actual rename RTL port scoreboard, not formal proof",
+        "runs": [
+          {
+            "architectural_registers": 16,
+            "zero_slot": 7,
+            "argument_slot": 3,
+            "writable_zero_allocations": 257,
+            "physical_registers": 24,
+            "cycles": 6000,
+            "allocations": 3758,
+            "resource_stalls": 929,
+            "recoveries": 211,
+            "retirements": 2412,
+            "relaunches": 7,
+            "out_of_order_writebacks": 1070,
+            "commit_and_recovery": 197
+          },
+          {
+            "architectural_registers": 32,
+            "zero_slot": 31,
+            "argument_slot": 2,
+            "writable_zero_allocations": 123,
+            "physical_registers": 40,
+            "cycles": 6000,
+            "allocations": 3806,
+            "resource_stalls": 817,
+            "recoveries": 211,
+            "retirements": 2453,
+            "relaunches": 7,
+            "out_of_order_writebacks": 1020,
+            "commit_and_recovery": 194
+          }
+        ]
+      },
+      "predictor": {
+        "status": "passed",
+        "checks": 1024,
+        "index_shifts": [
+          1,
+          3
+        ],
+        "claim": "Actual predictor with independently supplied fallthrough and indexing policy"
+      },
+      "limits": [
+        "RISC-V is the only implemented ISA frontend; alternate component policies do not constitute ARM support",
+        "One integer namespace, immutable zero slot and one operation/destination per instruction",
+        "Full core/Spike, real-tool, recovery/formal and physical evidence are separate gates"
+      ]
+    },
+    "multi": {
+      "scheduler": {
+        "status": "passed",
+        "claim": "Scheduler selection RTL, not integrated dual-issue execution",
+        "configurations": [
+          {
+            "rob_entries": 4,
+            "issue_width": 1,
+            "checks": 256,
+            "dual_grants": 0,
+            "blocked_lane_bypasses": 0
+          },
+          {
+            "rob_entries": 4,
+            "issue_width": 2,
+            "checks": 512,
+            "dual_grants": 44,
+            "blocked_lane_bypasses": 60
+          },
+          {
+            "rob_entries": 8,
+            "issue_width": 1,
+            "checks": 8192,
+            "dual_grants": 0,
+            "blocked_lane_bypasses": 0
+          },
+          {
+            "rob_entries": 8,
+            "issue_width": 2,
+            "checks": 16384,
+            "dual_grants": 1976,
+            "blocked_lane_bypasses": 2040
+          },
+          {
+            "rob_entries": 16,
+            "issue_width": 1,
+            "checks": 131072,
+            "dual_grants": 0,
+            "blocked_lane_bypasses": 0
+          },
+          {
+            "rob_entries": 16,
+            "issue_width": 2,
+            "checks": 262144,
+            "dual_grants": 32755,
+            "blocked_lane_bypasses": 32767
+          }
+        ]
+      },
+      "core_suites": [
+        {
+          "configuration": [
+            8,
+            "bimodal",
+            64,
+            4,
+            2,
+            2,
+            1,
+            "standard"
+          ],
+          "counters": {
+            "dual_issue_cycles": 0,
+            "issued_operations": 18566,
+            "completion_stall_cycles": 0,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "late_rejected": 70,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 16,
+            "commit_and_redirect": 4,
+            "resolved_younger_squashes": 462
+          }
+        },
+        {
+          "configuration": [
+            8,
+            "bimodal",
+            64,
+            4,
+            2,
+            2,
+            2,
+            "standard"
+          ],
+          "counters": {
+            "dual_issue_cycles": 2170,
+            "issued_operations": 18718,
+            "completion_stall_cycles": 3188,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "late_rejected": 110,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 34,
+            "commit_and_redirect": 4,
+            "resolved_younger_squashes": 466
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "bimodal",
+            36,
+            4,
+            2,
+            1,
+            2,
+            "standard"
+          ],
+          "counters": {
+            "dual_issue_cycles": 1736,
+            "issued_operations": 17750,
+            "completion_stall_cycles": 2351,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 72269,
+            "checkpoint_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "late_rejected": 110,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 32,
+            "commit_and_redirect": 10,
+            "resolved_younger_squashes": 438
+          }
+        },
+        {
+          "configuration": [
+            8,
+            "bimodal",
+            64,
+            4,
+            8,
+            1,
+            2,
+            "standard"
+          ],
+          "counters": {
+            "dual_issue_cycles": 1706,
+            "issued_operations": 19836,
+            "completion_stall_cycles": 1830,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 46,
+            "generation_stall_cycles": 0,
+            "late_rejected": 980,
+            "rejected_after_slot_reuse": 28,
+            "physical_reuse_while_pending": 332,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 466
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "off",
+            64,
+            1,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 18,
+            "issued_operations": 256,
+            "completion_stall_cycles": 54,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 131,
+            "generation_stall_cycles": 0,
+            "late_rejected": 10,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 2,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 0
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "off",
+            64,
+            4,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 26,
+            "issued_operations": 280,
+            "completion_stall_cycles": 64,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 52,
+            "generation_stall_cycles": 0,
+            "late_rejected": 16,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 8,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 4
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "off",
+            36,
+            4,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 20,
+            "issued_operations": 232,
+            "completion_stall_cycles": 44,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 113,
+            "checkpoint_stall_cycles": 52,
+            "generation_stall_cycles": 0,
+            "late_rejected": 10,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 6,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 4
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "bimodal",
+            64,
+            1,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 18,
+            "issued_operations": 256,
+            "completion_stall_cycles": 54,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 131,
+            "generation_stall_cycles": 0,
+            "late_rejected": 10,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 2,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 0
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "bimodal",
+            64,
+            4,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 26,
+            "issued_operations": 280,
+            "completion_stall_cycles": 64,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "checkpoint_stall_cycles": 52,
+            "generation_stall_cycles": 0,
+            "late_rejected": 16,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 8,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 4
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "bimodal",
+            36,
+            4,
+            2,
+            1,
+            2,
+            "recovery"
+          ],
+          "counters": {
+            "dual_issue_cycles": 20,
+            "issued_operations": 232,
+            "completion_stall_cycles": 44,
+            "execution_stall_cycles": 0,
+            "rename_stall_cycles": 113,
+            "checkpoint_stall_cycles": 52,
+            "generation_stall_cycles": 0,
+            "late_rejected": 10,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 6,
+            "commit_and_redirect": 2,
+            "resolved_younger_squashes": 4
+          }
+        }
+      ],
+      "spike_matches": 456,
+      "unchanged_profile_differences": 16
+    },
+    "recovery": {
+      "checkpoint_unit_runs": [
+        {
+          "physical_registers": 36,
+          "capacity": 1,
+          "cycles": 8000,
+          "captures": 1093,
+          "redirects": 546,
+          "nested_redirects": 0,
+          "commit_and_redirect": 369,
+          "checkpoint_stalls": 726,
+          "register_stalls": 1190,
+          "retirements": 3409,
+          "squashed_instructions": 412
+        },
+        {
+          "physical_registers": 36,
+          "capacity": 4,
+          "cycles": 8000,
+          "captures": 1616,
+          "redirects": 663,
+          "nested_redirects": 137,
+          "commit_and_redirect": 387,
+          "checkpoint_stalls": 49,
+          "register_stalls": 1607,
+          "retirements": 3020,
+          "squashed_instructions": 870
+        },
+        {
+          "physical_registers": 64,
+          "capacity": 2,
+          "cycles": 8000,
+          "captures": 1579,
+          "redirects": 737,
+          "nested_redirects": 105,
+          "commit_and_redirect": 551,
+          "checkpoint_stalls": 319,
+          "register_stalls": 0,
+          "retirements": 3551,
+          "squashed_instructions": 1200
+        },
+        {
+          "physical_registers": 64,
+          "capacity": 4,
+          "cycles": 8000,
+          "captures": 1798,
+          "redirects": 768,
+          "nested_redirects": 193,
+          "commit_and_redirect": 573,
+          "checkpoint_stalls": 50,
+          "register_stalls": 0,
+          "retirements": 3500,
+          "squashed_instructions": 1458
+        }
+      ],
+      "spike_matches": 108,
+      "timing_witnesses": {
+        "r16-off-p64-c1-early-witness": {
+          "early_memory_redirects": 6,
+          "target_issues_before_memory": 6,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 0,
+          "checkpoint_stall_cycles": 126
+        },
+        "r16-off-p64-c4-early-witness": {
+          "early_memory_redirects": 10,
+          "target_issues_before_memory": 10,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 4,
+          "checkpoint_stall_cycles": 53
+        },
+        "r16-off-p36-c4-early-witness": {
+          "early_memory_redirects": 10,
+          "target_issues_before_memory": 8,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 4,
+          "checkpoint_stall_cycles": 53
+        },
+        "r16-off-p64-c4-retire-witness": {
+          "early_memory_redirects": 0,
+          "target_issues_before_memory": 0,
+          "commit_and_redirect": 0,
+          "resolved_younger_squashes": 0,
+          "checkpoint_stall_cycles": 0
+        },
+        "r16-bimodal-p64-c1-early-witness": {
+          "early_memory_redirects": 6,
+          "target_issues_before_memory": 6,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 0,
+          "checkpoint_stall_cycles": 126
+        },
+        "r16-bimodal-p64-c4-early-witness": {
+          "early_memory_redirects": 10,
+          "target_issues_before_memory": 10,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 4,
+          "checkpoint_stall_cycles": 53
+        },
+        "r16-bimodal-p36-c4-early-witness": {
+          "early_memory_redirects": 10,
+          "target_issues_before_memory": 8,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 4,
+          "checkpoint_stall_cycles": 53
+        },
+        "r16-bimodal-p64-c4-retire-witness": {
+          "early_memory_redirects": 0,
+          "target_issues_before_memory": 0,
+          "commit_and_redirect": 0,
+          "resolved_younger_squashes": 0,
+          "checkpoint_stall_cycles": 0
+        },
+        "r16-off-p64-c2-early-witness": {
+          "early_memory_redirects": 10,
+          "target_issues_before_memory": 10,
+          "commit_and_redirect": 2,
+          "resolved_younger_squashes": 4,
+          "checkpoint_stall_cycles": 62
+        }
+      },
+      "cycle_diagnostics": [
+        {
+          "name": "older_load",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 47,
+          "retirement_cycles": 51
+        },
+        {
+          "name": "older_load",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 38,
+          "retirement_cycles": 45
+        },
+        {
+          "name": "nested_checkpoints",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 40,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "nested_checkpoints",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 36,
+          "retirement_cycles": 38
+        },
+        {
+          "name": "jalr_link",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 42,
+          "retirement_cycles": 46
+        },
+        {
+          "name": "jalr_link",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 36,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "older_bus_fault",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 32,
+          "retirement_cycles": 32
+        },
+        {
+          "name": "older_bus_fault",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 29,
+          "retirement_cycles": 29
+        },
+        {
+          "name": "faulting_link",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 36,
+          "retirement_cycles": 36
+        },
+        {
+          "name": "faulting_link",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 36,
+          "retirement_cycles": 36
+        },
+        {
+          "name": "checkpoint_exhaustion",
+          "invocation": 0,
+          "prediction": "off",
+          "early_cycles": 42,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "checkpoint_exhaustion",
+          "invocation": 1,
+          "prediction": "off",
+          "early_cycles": 41,
+          "retirement_cycles": 41
+        },
+        {
+          "name": "older_load",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 47,
+          "retirement_cycles": 51
+        },
+        {
+          "name": "older_load",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 38,
+          "retirement_cycles": 45
+        },
+        {
+          "name": "nested_checkpoints",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 40,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "nested_checkpoints",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 36,
+          "retirement_cycles": 38
+        },
+        {
+          "name": "jalr_link",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 42,
+          "retirement_cycles": 46
+        },
+        {
+          "name": "jalr_link",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 36,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "older_bus_fault",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 32,
+          "retirement_cycles": 32
+        },
+        {
+          "name": "older_bus_fault",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 29,
+          "retirement_cycles": 29
+        },
+        {
+          "name": "faulting_link",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 36,
+          "retirement_cycles": 36
+        },
+        {
+          "name": "faulting_link",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 36,
+          "retirement_cycles": 36
+        },
+        {
+          "name": "checkpoint_exhaustion",
+          "invocation": 0,
+          "prediction": "bimodal",
+          "early_cycles": 42,
+          "retirement_cycles": 42
+        },
+        {
+          "name": "checkpoint_exhaustion",
+          "invocation": 1,
+          "prediction": "bimodal",
+          "early_cycles": 41,
+          "retirement_cycles": 41
+        }
+      ],
+      "memory_comparison_scope": "same randomized service policy, not necessarily identical realized waits; not a controlled performance comparison"
+    },
+    "execution": {
+      "transport": {
+        "status": "passed",
+        "cycles": 16800,
+        "claim": "Actual elastic execution RTL transport, register latency, backpressure and clear; add/sub datapath only",
+        "configurations": [
+          {
+            "depth": 2,
+            "generation_bits": 1,
+            "cycles": 4200,
+            "accepted": 1510,
+            "completed": 1483,
+            "canceled": 27,
+            "input_stalls": 2077,
+            "full_cycles": 3662,
+            "clear_events": 15
+          },
+          {
+            "depth": 2,
+            "generation_bits": 2,
+            "cycles": 4200,
+            "accepted": 1499,
+            "completed": 1470,
+            "canceled": 29,
+            "input_stalls": 2075,
+            "full_cycles": 3619,
+            "clear_events": 15
+          },
+          {
+            "depth": 8,
+            "generation_bits": 1,
+            "cycles": 4200,
+            "accepted": 1720,
+            "completed": 1602,
+            "canceled": 118,
+            "input_stalls": 1855,
+            "full_cycles": 3290,
+            "clear_events": 15
+          },
+          {
+            "depth": 16,
+            "generation_bits": 2,
+            "cycles": 4200,
+            "accepted": 1740,
+            "completed": 1502,
+            "canceled": 238,
+            "input_stalls": 1825,
+            "full_cycles": 3176,
+            "clear_events": 15
+          }
+        ]
+      },
+      "ownership": {
+        "status": "passed",
+        "checks": 16000,
+        "claim": "Combinational completion guard and outstanding-token wrap exclusion; not a whole-core ownership proof",
+        "configurations": [
+          {
+            "generation_bits": 1,
+            "checks": 8000,
+            "qualified": 3067,
+            "rejected": 4933,
+            "wrap_conflicts": 1760
+          },
+          {
+            "generation_bits": 2,
+            "checks": 8000,
+            "qualified": 3067,
+            "rejected": 4933,
+            "wrap_conflicts": 907
+          }
+        ]
+      },
+      "core_suites": [
+        {
+          "configuration": [
+            8,
+            "off",
+            64,
+            2,
+            1
+          ],
+          "counters": {
+            "late_rejected": 306,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 48,
+            "canceled_at_stop": 156,
+            "execution_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "max_execution_tokens": 2
+          }
+        },
+        {
+          "configuration": [
+            8,
+            "bimodal",
+            64,
+            8,
+            1
+          ],
+          "counters": {
+            "late_rejected": 996,
+            "rejected_after_slot_reuse": 30,
+            "physical_reuse_while_pending": 332,
+            "canceled_at_stop": 317,
+            "execution_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "rename_stall_cycles": 0,
+            "max_execution_tokens": 8
+          }
+        },
+        {
+          "configuration": [
+            16,
+            "bimodal",
+            36,
+            2,
+            2
+          ],
+          "counters": {
+            "late_rejected": 70,
+            "rejected_after_slot_reuse": 0,
+            "physical_reuse_while_pending": 16,
+            "canceled_at_stop": 162,
+            "execution_stall_cycles": 0,
+            "generation_stall_cycles": 0,
+            "rename_stall_cycles": 70652,
+            "max_execution_tokens": 2
+          }
+        }
+      ],
+      "spike_matches": 288,
+      "explicit_profile_differences": 12,
+      "limits": [
+        "Not a whole-core formal proof; legal ownership state is supplied to guard unit tests",
+        "Core generation stalls and execution input stalls are reported, not assumed exercised",
+        "Extra result stages are delay stress, not arithmetic timing cuts",
+        "Real-tool, full standard, rename and checkpoint regressions are separate gates",
+        "Single issue/retire and head-only memory; no PPA or end-to-end speedup claim"
+      ]
+    },
+    "rename": {
+      "rename_unit": {
+        "status": "passed",
+        "claim": "actual rename RTL port scoreboard, not formal proof",
+        "runs": [
+          {
+            "physical_registers": 33,
+            "cycles": 6000,
+            "allocations": 1353,
+            "resource_stalls": 3315,
+            "recoveries": 212,
+            "retirements": 1284,
+            "relaunches": 7,
+            "out_of_order_writebacks": 0,
+            "commit_and_recovery": 89
+          },
+          {
+            "physical_registers": 36,
+            "cycles": 6000,
+            "allocations": 3024,
+            "resource_stalls": 1608,
+            "recoveries": 211,
+            "retirements": 2500,
+            "relaunches": 7,
+            "out_of_order_writebacks": 404,
+            "commit_and_recovery": 190
+          },
+          {
+            "physical_registers": 64,
+            "cycles": 6000,
+            "allocations": 4644,
+            "resource_stalls": 12,
+            "recoveries": 205,
+            "retirements": 2281,
+            "relaunches": 7,
+            "out_of_order_writebacks": 1494,
+            "commit_and_recovery": 174
+          }
+        ]
+      },
+      "pressure_counters": [
+        {
+          "rob_entries": 16,
+          "prediction": "off",
+          "physical_registers": 36,
+          "rename_stall_cycles": 67011
+        },
+        {
+          "rob_entries": 16,
+          "prediction": "bimodal",
+          "physical_registers": 36,
+          "rename_stall_cycles": 70652
+        }
+      ],
+      "fully_matched_invocations": 192,
+      "expected_profile_differences": 8,
+      "limits": [
+        "Simulation assertions and port scoreboard, not formal proof",
+        "Head-only memory; checkpoint correctness requires the separate early-recovery gate",
+        "Not a multi-issue, synthesis, timing, energy or speedup result",
+        "Two existing RISC-V profile differences remain explicitly checked"
+      ]
+    },
+    "formal": {
+      "claim_class": "bounded_selected_checkpoint_RTL_properties",
+      "runs": [
+        {
+          "physical_registers": 36,
+          "slots": 8,
+          "capacity": 1,
+          "snapshot_field": 10,
+          "bounded_global_steps": 12,
+          "assertions": 8,
+          "bounded_status": "passed",
+          "cover_status": "passed",
+          "covers_reached": 4,
+          "negative_control": "counterexample_found",
+          "rtl_sha256": "92889b723d558e5dc14c043adb0822ea3b091c04bd4e9c5fcaeff9cb88424b46"
+        },
+        {
+          "physical_registers": 36,
+          "slots": 8,
+          "capacity": 4,
+          "snapshot_field": 10,
+          "bounded_global_steps": 12,
+          "assertions": 8,
+          "bounded_status": "passed",
+          "cover_status": "passed",
+          "covers_reached": 5,
+          "negative_control": "counterexample_found",
+          "rtl_sha256": "674b5e9f612abce60f7c202e87aec061344f787e4b6ff8aa01a878977b1b2b9d"
+        }
+      ],
+      "assumptions": [
+        "Reset in the initial global state only; clear may occur later",
+        "Capture only a free slot below capacity; resolve only a live owner",
+        "No capture/allocation during redirect; no activity during reset/clear",
+        "Allocation tags 1..35; squash mask and snapshot values otherwise arbitrary",
+        "Single-clock sampled safety; no fairness or physical reset/metastability model"
+      ],
+      "limits": [
+        "Bounded global transitions only, not unbounded induction",
+        "P36/8 ROB slots, C1/C4, snapshot field x10; arbitrary watched slot and tag 1..35",
+        "Does not prove ROB age selection, committed/free exclusion, early timing or stale completion rejection",
+        "Negative control adds a false harness assertion; not a mutated-DUT coverage score",
+        "No full-core formal closure, synthesis timing, PPA or acceleration result"
+      ],
+      "tools": {
+        "packages": [
+          "click==8.5.0",
+          "platformdirs==4.12.4",
+          "wasmtime==47.0.1",
+          "yowasp-runtime==1.96",
+          "yowasp-yosys==0.69.0.0.post1233"
+        ],
+        "yosys_wasm_sha256": "77fe957bef892d75f74a0ce2165d7b328b6cda462a0e0051509df0c5a55ece49",
+        "yosys": "Yosys 0.69 (git sha1 9f75ca1f9, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+        "z3": "Z3 version 5.1.0 - 64 bit",
+        "z3_sha256": "c75b8e807d8b0fda30c392990520a0cd0cc00955a045f2c039453fed7fb8cb37"
+      }
+    },
+    "lifecycle": {
+      "claim_class": "bounded_restricted_rename_lifecycle_RTL_properties",
+      "bounded_global_steps": 16,
+      "assertions": 24,
+      "covers_reached": 6,
+      "negative_control": "counterexample_found",
+      "assumptions": [
+        "Reset only initially; relaunch clear may occur subsequently with no other activity",
+        "All allocations target architectural x10, with four outstanding writers maximum",
+        "Out-of-order writeback only to a live unwritten allocation; value is one arbitrary bit, other 63 bits zero",
+        "Retirement only at the oldest written allocation; may coincide with full recovery or new allocation",
+        "No writeback during full recovery; all checkpoint/resolve inputs disabled",
+        "No fairness or physical timing assumption; sampled single-clock safety"
+      ],
+      "limits": [
+        "Bounded proof under a restricted environment, not general multi-register rename or whole-core proof",
+        "Full recovery only; selective branch recovery and late-result qualification have separate gates",
+        "One-bit values validate selected data forwarding/commit cases, not all arithmetic values",
+        "False harness assertion control does not measure mutated-DUT coverage"
+      ],
+      "tools": {
+        "packages": [
+          "click==8.5.0",
+          "platformdirs==4.12.4",
+          "wasmtime==47.0.1",
+          "yowasp-runtime==1.96",
+          "yowasp-yosys==0.69.0.0.post1233"
+        ],
+        "yosys_wasm_sha256": "77fe957bef892d75f74a0ce2165d7b328b6cda462a0e0051509df0c5a55ece49",
+        "yosys": "Yosys 0.69 (git sha1 9f75ca1f9, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+        "z3": "Z3 version 5.1.0 - 64 bit",
+        "z3_sha256": "c75b8e807d8b0fda30c392990520a0cd0cc00955a045f2c039453fed7fb8cb37"
+      }
+    }
+  },
+  "controlled_workload_design_points": [
+    {
+      "point": [
+        "narrow",
+        8,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        1.0,
+        1.0
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 1.0,
+      "cycles": 683862005,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "dual",
+        8,
+        64,
+        2,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        0.9258131631597654,
+        0.9995972038624488
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 0.9834285380122575,
+      "cycles": 687524539,
+      "retired": 87252548,
+      "dual_issue_cycles": 8781022
+    },
+    {
+      "point": [
+        "rob4",
+        4,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        0.844859353977257,
+        0.9952567066012352
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 0.9537758675060124,
+      "cycles": 699972219,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "rob16",
+        16,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        1.0006231420287306,
+        1.0229589505071044
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 1.0061208984844485,
+      "cycles": 682036227,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "prf36",
+        8,
+        36,
+        1,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        0.8715051835344871,
+        0.9988839530748007
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 0.9687452397473086,
+      "cycles": 691713845,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "prf48",
+        8,
+        48,
+        1,
+        "bimodal",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        1.0,
+        1.0
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 1.0,
+      "cycles": 683862005,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "predict_off",
+        8,
+        64,
+        1,
+        "off",
+        16
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        0.9161262125640365,
+        1.0000078604610947
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 0.9837703370019523,
+      "cycles": 685950442,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "predict4",
+        8,
+        64,
+        1,
+        "bimodal",
+        4
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        0.9960042747383231,
+        1.0000786101721564
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 0.9984706695014635,
+      "cycles": 685389726,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    },
+    {
+      "point": [
+        "predict64",
+        8,
+        64,
+        1,
+        "bimodal",
+        64
+      ],
+      "runs": 12,
+      "baseline_over_candidate_cycles_range": [
+        1.0000439610358685,
+        1.0047850429658616
+      ],
+      "equal_case_geometric_mean_cycle_ratio": 1.0014522191927906,
+      "cycles": 682555674,
+      "retired": 87252548,
+      "dual_issue_cycles": 0
+    }
+  ],
+  "technology_design_points": [
+    {
+      "point": [
+        "narrow",
+        8,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 398345.906,
+      "sequential_area_library_units": 215963.804,
+      "mapped_cells": 189607,
+      "comb_boundary_delay_ps": 2869.98,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "dual",
+        8,
+        64,
+        2,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 409847.214,
+      "sequential_area_library_units": 218947.792,
+      "mapped_cells": 198051,
+      "comb_boundary_delay_ps": 2988.49,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "rob4",
+        4,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 363086.808,
+      "sequential_area_library_units": 197292.2,
+      "mapped_cells": 171677,
+      "comb_boundary_delay_ps": 2973.15,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "rob16",
+        16,
+        64,
+        1,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 467101.852,
+      "sequential_area_library_units": 253276.688,
+      "mapped_cells": 226776,
+      "comb_boundary_delay_ps": 2830.62,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "prf36",
+        8,
+        36,
+        1,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 374404.044,
+      "sequential_area_library_units": 204791.804,
+      "mapped_cells": 175529,
+      "comb_boundary_delay_ps": 3080.05,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "prf48",
+        8,
+        48,
+        1,
+        "bimodal",
+        16
+      ],
+      "mapped_area_library_units": 387003.666,
+      "sequential_area_library_units": 209579.804,
+      "mapped_cells": 181030,
+      "comb_boundary_delay_ps": 2844.33,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "predict_off",
+        8,
+        64,
+        1,
+        "off",
+        16
+      ],
+      "mapped_area_library_units": 398892.004,
+      "sequential_area_library_units": 213069.724,
+      "mapped_cells": 191345,
+      "comb_boundary_delay_ps": 2775.82,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "predict4",
+        8,
+        64,
+        1,
+        "bimodal",
+        4
+      ],
+      "mapped_area_library_units": 397024.418,
+      "sequential_area_library_units": 215836.124,
+      "mapped_cells": 187325,
+      "comb_boundary_delay_ps": 3032.9,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    },
+    {
+      "point": [
+        "predict64",
+        8,
+        64,
+        1,
+        "bimodal",
+        64
+      ],
+      "mapped_area_library_units": 398890.674,
+      "sequential_area_library_units": 216474.524,
+      "mapped_cells": 190150,
+      "comb_boundary_delay_ps": 2929.07,
+      "meets_comb_mapping_target": false,
+      "comb_equivalence": "passed"
+    }
+  ],
+  "design_selection": {
+    "schema": 1,
+    "status": "reviewed",
+    "selected_point": [
+      "prf48",
+      8,
+      48,
+      1,
+      "bimodal",
+      16
+    ],
+    "selection_scope": "Selected explicit S03 application profile, verified through all 42 tool executions and 112 standard/recovery invocations. The generic ApeConfig fallback remains P64 as a separate regression anchor.",
+    "study_sha256": "0b62fb263bddd82000e068e1415355abfbf975a91f94940a8ae966bcfea49b8a",
+    "technology_report_sha256": [
+      "57831b4fce921e40da71b81d520a6b3705c42d7d6c4e3c87e944608045173564"
+    ],
+    "profile_sha256": "0a83fa678001a25fb7a0f224acee7916fb0d0188016a7bfbd12aeccffaf554bf",
+    "fixed": {
+      "checkpoints": 4,
+      "execution_stages": 2,
+      "generation_bits": 2,
+      "dispatch_width": 1,
+      "writeback_width": 1,
+      "retire_width": 1,
+      "outstanding_memory": 1,
+      "real_tool_program_words": 65536,
+      "technology_program_words": 1024
+    },
+    "issue_width_rationale": "Keep one issue lane. The actual two-lane candidate issues simultaneous work but increases cycles in all twelve matched case/service pairs (0.040%-8.013%, equal-case geometric mean +1.685%). Its mapped area is about 2.89% larger and its combinational boundary estimate about 4.13% longer than the narrow P64 reference. It remains an implemented, verified experimental configuration, not the selected performance profile.",
+    "rob_queue_rationale": "Keep eight ROB/fused-reservation rows. Four rows save about 8.85% mapped area but increase mean cycles by 4.846%; sixteen rows reduce mean cycles by only 0.608% while increasing mapped area about 17.26%. These single-variable comparisons use P64. Eight rows are a measured cost/performance balance for the current single-dispatch, single-writeback, single-retirement and head-only memory system. No independently sized issue queue or untested P48/ROB16 combination is claimed.",
+    "prf_rationale": "Select P48 as the explicit application profile. It matches every P64 baseline cycle count under both service profiles, has no observed rename stalls and retains at least eight free physical entries. Its mapped area is 387003.666 versus 398345.906 library units (-2.85%), and its combinational boundary delay is 2844.33 versus 2869.98 ps. P36 reaches exhaustion and increases mean cycles by 3.226%. Separate full candidate acceptance passed: 42 actual tool executions, 108 exact ISA/recovery comparisons and four unchanged standard-profile differences. ROB8-sized recovery programs satisfy the unchanged harness assertions; the original ROB16 recovery suite remains intact.",
+    "predictor_rationale": "Keep the sixteen-entry bimodal predictor. Prediction off increases mean cycles by 1.650%; four entries increase them by 0.153%; sixty-four entries reduce them by only 0.145%. The sixty-four-entry P64 point has slightly larger mapped area and a longer combinational estimate (2929.07 versus 2869.98 ps); four entries have 3032.90 ps. This is a bounded tradeoff on the measured programs, not proof that sixteen entries are globally optimal or a substitute for future workload-driven prediction work.",
+    "limitations": [
+      "One-variable design-point comparisons, not exhaustive joint parameter optimization or a representative agent workload distribution.",
+      "Actual tool parsing, runtime and arithmetic execution; no target-hosted compiler, Python, OS or end-to-end agent acceleration measurement.",
+      "All nine configurations miss the 1000 ps mapping target. Combinational estimates are not achievable clock frequency or full setup/hold timing closure.",
+      "Mapped FF/mux storage, retained observation ports and a 1024-word physical-study code store; not SRAM-based die area for the 65536-word application image.",
+      "No physical power or energy evidence, production PDK, placed/routed implementation or full-core unbounded formal proof."
+    ]
+  },
+  "selected_profile": {
+    "point": [
+      "prf48",
+      8,
+      48,
+      1,
+      "bimodal",
+      16
+    ],
+    "full_tool_invocations": 42,
+    "exact_isa_matches": 108,
+    "unchanged_profile_differences": 4,
+    "matched_retirements": 860981474,
+    "matched_memory_events": 357201875,
+    "limits": [
+      "Selected explicit PRF48 profile, not a change to the generic ApeConfig P64 fallback",
+      "Same fixed supported RV64I subset and two documented profile differences",
+      "No cache, OS, clock, power, energy or whole-core formal claim"
+    ]
+  },
+  "compatibility": {
+    "native": {
+      "runs": 90,
+      "sanitizers": true,
+      "semantic_result_matches_to_RTL": 30,
+      "complete_valid_tree_matches": 28,
+      "invalid_syntax_error_matches": 2
+    },
+    "ape": {
+      "bulk_invocations": 42,
+      "parser_cases": 30,
+      "negative_cases": 10,
+      "helper_results": 1062,
+      "runtime_checks": 160,
+      "spinal_invocations": 18,
+      "spinal_bulk_stream_matches": 18,
+      "rob_entries": 8,
+      "prediction": "bimodal",
+      "program_words": 65536,
+      "parser_elf_sha256": "c2c74a82a17490c4a6dbf285a34715ddfdeaad5a4a0b787fd51c7ee4c6270965",
+      "parser_code_bytes": 94944,
+      "generated_rtl_sha256": {
+        "ApeCore.v": "96eca7409ff344041010d66b3212e0ef441ab19f9ed2388152da9e14c118dab2"
+      },
+      "matched_retirements": 860981474,
+      "matched_memory_events": 357201875,
+      "cases": [
+        {
+          "mode": "helpers",
+          "case": "integer-vectors",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 827407,
+            "retirements": 825412,
+            "memory_events": 1994,
+            "sha256": "7ec971aa7cd4008c98ebbb61b3dcbb1446a836177c3fca40b5c2fa2c4d6accc7"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "bad_magic",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3116,
+            "retirements": 2472,
+            "memory_events": 643,
+            "sha256": "5842ae426c0142edd34ec3463bbd58aada3258641e2a3c38ad6b68db8916e430"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "bad_mode",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3121,
+            "retirements": 2476,
+            "memory_events": 644,
+            "sha256": "08387ab0db1748ca3810e991d785223c880ab97369f5353cf25a4145baf0ce17"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "empty-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 53677,
+            "retirements": 38295,
+            "memory_events": 15381,
+            "sha256": "52381d719540acdadcfde1b87d4a9da09da3d8b39f821318473b115affaaf66e"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "empty-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 30367,
+            "retirements": 21796,
+            "memory_events": 8570,
+            "sha256": "e926cda3d8e78cc39062feff2cfc8a8c279a15b580e0d9b85933cfa1e5f1706f"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "empty-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 76132,
+            "retirements": 54326,
+            "memory_events": 21805,
+            "sha256": "a2cf65ab0f6296f7d2aebd9ee0a5b1971d2d42d1762230d88fdd1c65884cb635"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "heap_small",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3636,
+            "retirements": 2915,
+            "memory_events": 720,
+            "sha256": "ae8242d77d653203f11db893b5eff5544296d9a3740e0a919385124e5a9f26dd"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "heap_zero",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3636,
+            "retirements": 2915,
+            "memory_events": 720,
+            "sha256": "f1407b73f84b0aa11ce20a3e00a5b08b9ea6e1232a07a05e23050dd6630f0eb3"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "input_bound",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3125,
+            "retirements": 2479,
+            "memory_events": 645,
+            "sha256": "f43f760d98798f812abc4f3316c529dcc92f798cedd683d9bda3c8024a75826c"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "invalid_heap_bound",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3136,
+            "retirements": 2488,
+            "memory_events": 647,
+            "sha256": "ee1a32e03fc27c9b8903e2f2ec1ee46028ed334a6a4b4a4c914123c8581310e4"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "nested-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 554325,
+            "retirements": 391243,
+            "memory_events": 163081,
+            "sha256": "6320dc52921c28c9ba34047747d89be27b096410453f29a2a300ca910e26bacd"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "nested-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 553878,
+            "retirements": 390917,
+            "memory_events": 162960,
+            "sha256": "5c2b0636d9ff2346961d8f11c32f736b7e38e17ea0bef198524a68628783eeea"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "nested-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 1070606,
+            "retirements": 760569,
+            "memory_events": 310036,
+            "sha256": "9f0bbed5d25cd4869109b04442da499502aa1cc6b089b777f5b5b0cbf1fc81a6"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "output_bound",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3143,
+            "retirements": 2494,
+            "memory_events": 648,
+            "sha256": "d9a79ce8d7c43eaad346926208918309a11885e94e277bb7efb3e39e5fe87e8a"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "output_full",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 26507,
+            "retirements": 19013,
+            "memory_events": 7493,
+            "sha256": "71ad19014e2f65b912d8e9d237a336a2fcad62ecb6d6e6a8dc792e7de814eebc"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "output_short",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3143,
+            "retirements": 2494,
+            "memory_events": 648,
+            "sha256": "1b531372d0c2ff5704d2584cf8fd53c0d5ebef605bf6acfcc372758865aeabb0"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_16-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 2634202,
+            "retirements": 1859283,
+            "memory_events": 774918,
+            "sha256": "462f3f8a470a05336493169a6524175b6bdbc1af9969397cf90d3ac1e4945ef6"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_16-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 2632032,
+            "retirements": 1857723,
+            "memory_events": 774308,
+            "sha256": "6a2e64e6078030bcc281783ee508a9666c4d6a7a58709c145f381f15cdff1416"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_16-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 2827540,
+            "retirements": 2000466,
+            "memory_events": 827073,
+            "sha256": "41ba9430b3db6e940d1b6afb3498ff655acc3cd3fdb097c48b413fab5eafb61f"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_2048-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 343209257,
+            "retirements": 242286056,
+            "memory_events": 100923200,
+            "sha256": "1490b9f5cb5cecc2379250012edb81beac818e8abd530e7e35c59113bfd8cb63"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_2048-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 343207737,
+            "retirements": 242284963,
+            "memory_events": 100922773,
+            "sha256": "ab2267ecc7f00905ef4940bbf79e484beeda5c89bf25601febfdff2a08e4445b"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_2048-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 359904817,
+            "retirements": 254647791,
+            "memory_events": 105257025,
+            "sha256": "959b5445d09f11d2806b78b9f2ebbd3db7c59b2eab619c5136bb120c5cecd384"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_256-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 42499309,
+            "retirements": 29999762,
+            "memory_events": 12499546,
+            "sha256": "68ac7e2200227e9591f86971fb89a67a70c5eceb3bf63e148ea3caeac405cbf6"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_256-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 42497573,
+            "retirements": 29998514,
+            "memory_events": 12499058,
+            "sha256": "f88106992944bdaa48696d805a8fa6880f5f6ce0fe9012782b2430b8a656c660"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "records_256-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 44620632,
+            "retirements": 31566445,
+            "memory_events": 13054186,
+            "sha256": "c58107568adf4d22ad0d58aa3b7243a6cda3c30b01326e9a99cd099d9e15c4ed"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "repository_lock-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 6628912,
+            "retirements": 4688949,
+            "memory_events": 1939962,
+            "sha256": "cb266d62bf504a748419b00699f1baafddda2c0fad546e2eae8a50af689f964d"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "repository_lock-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 7113653,
+            "retirements": 5038500,
+            "memory_events": 2075152,
+            "sha256": "4fc0d5d6c7b6cf15e5e58b668a525ab4989b329def19b2b863b82bf0806d9857"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "repository_lock-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 15501914,
+            "retirements": 11027300,
+            "memory_events": 4474613,
+            "sha256": "37a9d38c89911bca51fa7b4e03ec5aee389b3fd42a07164cd32639e10f23405d"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "reserved",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 3146,
+            "retirements": 2496,
+            "memory_events": 649,
+            "sha256": "6a3ebce90cfa75317716936a8a4bb4838f31ea904a036969cb95cc8bf6531940"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "scalars-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 133631,
+            "retirements": 94696,
+            "memory_events": 38934,
+            "sha256": "11bcd7124518c4dfd37adbd1994b2510b7db395c75eb0f380e5c20991363eb52"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "scalars-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 133626,
+            "retirements": 94690,
+            "memory_events": 38935,
+            "sha256": "ef1016d14721260db7babe95b54715d18c6472296d028b19682460a3196f6079"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "scalars-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 232885,
+            "retirements": 165355,
+            "memory_events": 67529,
+            "sha256": "27af3aaadc53e6c46af3ba53a6241e82da665237e38d126c97a2fe2000e89d38"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "trailing_comma-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 75218,
+            "retirements": 53474,
+            "memory_events": 21743,
+            "sha256": "9931629fb2dca8ef2a3beda7ee92e19e4ba13955b81d0f6fcb20d316398d35bc"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "trailing_comma-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 143775,
+            "retirements": 102599,
+            "memory_events": 41175,
+            "sha256": "ef3de610732199573e202e0e87a93fcd9ea84fd6ac902aea7429046e164b6994"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "trailing_comma-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 208328,
+            "retirements": 148758,
+            "memory_events": 59569,
+            "sha256": "b1143ea142171875621f713f696abdc42f6a1023cad97c37697896ea4393b181"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "truncated-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 61172,
+            "retirements": 43587,
+            "memory_events": 17584,
+            "sha256": "09e2e69ecb0ea3d3fd780769b297de008ca6fbc48f039ff890963e03c5cacb07"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "truncated-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 92735,
+            "retirements": 66915,
+            "memory_events": 25819,
+            "sha256": "a207199d2d733784c3a29063a06e3f1b3b3c0569d50bfd484d97b2fc823026df"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "truncated-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 141400,
+            "retirements": 101631,
+            "memory_events": 39768,
+            "sha256": "6805388d84f41ab837f74dba96b324386340be4138f0c0bf0c807acd1619a861"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "unicode-cold_new",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 124311,
+            "retirements": 88213,
+            "memory_events": 36097,
+            "sha256": "7fe1e0150899e1417155ee9e94198e4d42e270fe2a68e9544f8ea41c427d827d"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "unicode-cold_old",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 124311,
+            "retirements": 88213,
+            "memory_events": 36097,
+            "sha256": "78c813f690fc1054d41b4463cec831ee1881126d32702b89756dfb19f0588cb9"
+          }
+        },
+        {
+          "mode": "parser",
+          "case": "unicode-incremental",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 170641,
+            "retirements": 121526,
+            "memory_events": 49114,
+            "sha256": "69517b2123d4710534cde09b177ce98b1c592e87ba4dd9cdff7394e439f2c124"
+          }
+        },
+        {
+          "mode": "runtime",
+          "case": "runtime-tests",
+          "digest": {
+            "schema": 1,
+            "encoding": "hats-architectural-state-le64-v1",
+            "events": 41679,
+            "retirements": 31265,
+            "memory_events": 10413,
+            "sha256": "8a893f1e1929ea94579da72cc0745a4ddd4745ad2b8d46650887d2cf86aa2018"
+          }
+        }
+      ]
+    },
+    "regressions": {
+      "ape_rtl_invocations": 600,
+      "predictor_checks": 4096,
+      "spike_matches": 576,
+      "explicit_profile_differences": 24,
+      "bounded_application_invocations": 144,
+      "committed_legacy_invocations": 123,
+      "legacy_source": {
+        "repository_path": "hardware/spinal/src/main/scala/hats/TaskTile.scala",
+        "commit": "5256b6df3379c03caa1be8c3f1f07fa615dc72d8",
+        "sha256": "cdf0e4b8a2d71cad50f5ba368c74812c5cbdd7e9804dd8fa434c0036d2e38fb6"
+      }
+    }
+  },
+  "collector_tests": {
+    "status": "passed",
+    "scope": "report checks and rejection behavior, not hardware execution"
+  },
+  "limits": [
+    "Workload-evaluated RV64I-subset prototype, not a privileged general-purpose production CPU",
+    "Selected bounded formal assumptions/gaps retained; no whole-core or unbounded proof claim",
+    "Optional dual issue, single dispatch/commit/writeback and one head-only memory request",
+    "Early research-library combinational timing and FF/mux area, not achievable silicon clock or physical energy",
+    "No target-hosted compiler/Python, full agent acceleration, HBM/LPDDR/OS/tensor or S10 physical-closure claim"
+  ]
+}

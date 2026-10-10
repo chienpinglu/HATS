@@ -231,6 +231,12 @@ _start:
 2:
   addi a0, a0, 1
   sd a0, 0(s1) /* exactly two live writes; no third write on predicted exit */
+  /* Occupy the largest tested ROB before fetching the next iteration. Early
+     recovery can otherwise fetch all three branches before retirement-only
+     predictor training; this fixture must actually predict the final exit taken. */
+  .rept 16
+  nop
+  .endr
   jal zero, 1b
 #elif APE_TEST == 31
   li t0, 4

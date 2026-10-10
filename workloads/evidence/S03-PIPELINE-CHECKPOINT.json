@@ -1,0 +1,888 @@
+{
+  "schema": 2,
+  "status": "verified_increment",
+  "issue": 4,
+  "stage": "S03",
+  "S03_complete": false,
+  "spec_revision": "APE-0.5",
+  "created_utc": "2026-10-09T23:52:06.826589+00:00",
+  "claim_class": "source_bound_gate_summary",
+  "source_sha256": {
+    "workloads/target/treesitter/bulk/verify.py": "3f11c5f8fa080b1a1d8a0fcdd7389d27a4b9983778e9f7f4226f15936264a240",
+    "workloads/target/treesitter/bulk/rtl_runner.cc": "5b15cd3c149c9cbe8f5e86cea761854bb0c38894aee7aea0aafa5396c7bb0e2e",
+    "workloads/target/treesitter/bulk/digest.h": "98d90c07a400a57228d4f1afdc7f1e07f0453122cc07e4252de08ea89e7dc9db",
+    "hardware/spinal/src/main/scala/hats/ApeCheckpoints.scala": "848437e385f2844718f4c980d22baf5d1be7b3509c915b71d2bd43b2947e8c03",
+    "hardware/spinal/src/main/scala/hats/ApeToolGenerate.scala": "a7e910587901892541969d3e665021d90269fcf8dd0b82db4e40de4c64f0ccc2",
+    "hardware/spinal/src/main/scala/hats/ApeRename.scala": "d69e05bb886d5e242edbb75ce92cc00479c49b24e47ec0c0b01b17844c07ba24",
+    "hardware/spinal/src/main/scala/hats/ApeCompletionGuard.scala": "1e5f9c8889592b1e4399dddb4d7a8af54fefeae94b18e823e89016b5526bb928",
+    "hardware/spinal/src/main/scala/hats/ApeDecode.scala": "1ea2986eea91baec027315d9f2d53e8a9247ebe271407cc1db5103a2705dcb71",
+    "hardware/spinal/src/main/scala/hats/ApeCore.scala": "84aec214d12466bdaaf648103c25d2db438a32de7e79e21ab36eb6ee4a05587b",
+    "hardware/spinal/src/main/scala/hats/ApeExecute.scala": "84dfc082aa8da8662386e779bac009943292dde5734c3b5658df1ff3816a4108",
+    "hardware/spinal/src/main/scala/hats/ApeBranchPredictor.scala": "8b24ad864369a8c49467c1986e540356754b8142306a0d6c4ac4d918d136cb43",
+    "hardware/spinal/src/test/scala/hats/ApeReference.scala": "f96d4c2d6933f73665b7a0ecd5e2a25531f41d7d9e6ccc23b09ab6488010d61a",
+    "hardware/spinal/src/test/scala/hats/ApeCoreSim.scala": "bef29c6bd1af436cd367bd46a4d6cf2c6996e4495cfe872581cf9d73847d8616",
+    "hardware/spinal/src/test/scala/hats/ApePredictorSim.scala": "807e150e36dc9a4b26e81b6ae55d083077500510b94f3347652351808db26e77",
+    "hardware/spinal/src/test/scala/hats/ApeCheckpointSim.scala": "5fe8f62a8d80f8b30db35eda03c497613e370f22d6eb7ef88a5b130d4deedc59",
+    "hardware/spinal/src/test/scala/hats/ApeExecuteSim.scala": "246df15f190a717a3848e0f3031da7aa6ba34c4874c7e4e8ebebd756a746231e",
+    "hardware/spinal/src/test/scala/hats/ApeToolSim.scala": "ab6588b17335e11dff72eac26ba0d12bbc4ac2c76f05ac3994be06962cc2fde1",
+    "hardware/spinal/src/test/scala/hats/ApeApplicationSim.scala": "f2db3510581c0114be242f258b1afa13e4ef2bd1f34f63a87a52b5fa892b6300",
+    "hardware/spinal/src/test/scala/hats/ApeRenameSim.scala": "1907756a43ba29033f49450e05a14be7c22e591e4664d9bd77d4223ba8b6d489",
+    "hardware/spinal/build.sbt": "0bb5d5bce4b58f0a78fdcab0016e5b102cd5ab3ccefc6c0331a084357a3c4564",
+    "hardware/spinal/project/build.properties": "84d1a08240c782d6691e9829ec54530a45d10809b0e5200db4035723d852928c",
+    "hardware/spinal/project/repositories": "e5b455eae2debe0d031194347c324649c2ab215485ad67dfc487c69102325c8e",
+    "hardware/spinal/tools/sbtw": "0fbfc2c691eefae15630057d5d02a8ffa27ea88e07730e71c6650cc7bc29bba3",
+    "hardware/spinal/tools/toolchain.py": "a39229236a5ca8ee15bfb1a710f5615f0c5fb5e208906392a55116762913fc96",
+    "hardware/spinal/tools/compare_ape_spike.py": "1810c75f7dbb050411199dcaf84f369f26b1cc30d39857104c7ef15f53fade87",
+    "hardware/spinal/tools/verify_ppe.py": "ab42883319e9b15a5067c31511f843d48d774df59240e96dac2c9134163c4f07",
+    "hardware/spinal/tools/build_ppe_cases.py": "078591355e33a7a8baa56a4b33a6770c47df1f0c73d7ab327cedd24364b5037e",
+    "hardware/spinal/tools/ppe_programs.py": "67c939b746dfdb7940aa29a147747c1ae958aa1991324ae8454a141d28e7a664",
+    "hardware/spinal/tools/test_ppe_isa.py": "5214ce57a073a99b3a29ff44b7647d36567ed13c227b0ab2a254a28efc6bbb39",
+    "hardware/spinal/tools/ppe_isa.py": "6496bb6867a7b7f622e3b4826c0638764847e9a89270355e2ac3eaee4c639230",
+    "hardware/spinal/src/main/scala/hats/PpeCore.scala": "f194e959d62d43c86f088e4a7a86fd24273c862d9ac0971fb6200ed0b14b64c7",
+    "hardware/spinal/src/test/scala/hats/PpeCoreSim.scala": "305055962ef43594ccc706c0460b7679c444f621abd6214dab0a1d40f613b357",
+    "workloads/native/treesitter/README.md": "966cf11fdfbdbb8ff2edd910392fb2569a6a4b29f7e303c4ad664af4eed8d6bc",
+    "workloads/native/treesitter/baseline.c": "aa10c8c4df62989bbfaf36542e07bb962ed1001fa9fe88451f94ee35bdf7d10e",
+    "workloads/native/treesitter/cases.lock.json": "517a78692d373bc252379de101e5016796e2b2c41c4e4bbe17f136526c6b8ca6",
+    "workloads/native/treesitter/profile.c": "e2ba608e8e609240aedc5407b1534ff60ee0dea55c54da95c0b0e1157b16fc13",
+    "workloads/native/treesitter/profile.h": "eb19e80fc468e7a5a2964c296581767e18133e07195049b8a0df9c5b4fbdaf45",
+    "workloads/native/treesitter/run.py": "a12420662b648dcc7fd60917f354f9189f126aee4ff007f45fef286cb7875b52",
+    "workloads/native/treesitter/sources.lock.json": "ceb6651f808e0ed3218305ca2760ac1ea4d5dad1b6ce10fa0f29a87d9aef57f5",
+    "workloads/native/treesitter/test_baseline.py": "c14826d8e66041766d1dd683ec23b83a64e40708a1471ae7cbab1cfa3303265e",
+    "hardware/spinal/src/test/scala/hats/TaskTileSim.scala": "5a7f8137e78bcf40b187a94f466304c3c21706cd79f493fd409b4454482ec273",
+    "hardware/spinal/examples/workloads.s": "ea8488e5510cc19290462f02370abbe6a02ae3684c83c9a931f0f75a59c4063d",
+    "hardware/spinal/tools/assemble.py": "1506229953c7db8110934badfce726fcb3556089660f38eaddc429914fa2b216",
+    "workloads/s02/verify_legacy.py": "8e3d1a7094d381accbdab87435d788b572e6b661ae27669075cab87e198fd92a",
+    "workloads/s02/checkpoint.py": "4dca42365f9b017fb4aeb365e9655bac165d5ef46ccc714cf738abec0a3fb107",
+    "hardware/spinal/tools/bootstrap_spike.py": "afb670b4d1bb7aa557c0d7e8d803486273ded7000f1223365f7ac049a8c594b9",
+    "hardware/spinal/tools/spike.lock.json": "fa9d6b046f1f6d191e949d4e533c4bb77114f068428a63d13c93f27227651614",
+    "workloads/sources.lock.json": "4c980e7e7545b6aabfb10fdb0d531ba11fedd0d2ed0afb6fb437b815af6761c9",
+    "workloads/target/treesitter/audit.py": "9c14318c7f35972ca386e603ecf9408a7e252b9af4bde3cf1b898bbc16170601",
+    "workloads/target/treesitter/execute/application.c": "cc1585894943b6f6d6829a9e72c074a3d6497d02f3adbc7891e2c3c15f58bb36",
+    "workloads/target/treesitter/execute/compiler_rt.c": "fbeb2b91f1622e606318d507edabdf25b9c3eb15a4e35cc3976084134f3bb2e4",
+    "workloads/target/treesitter/execute/helper_test.c": "9d0b09c02180be7bb6d1ddadd85c47aaf9caf92a845ab9735d13cf126ba2eb06",
+    "workloads/target/treesitter/execute/image.py": "bc0f4feeb0765f2fbd4f31ccea0cb8b624560b8553ad4c4f4e10266213905781",
+    "workloads/target/treesitter/execute/link.ld": "91d2dc62e32820577d34a705f953d931ccababf762b7c0c759a09388d5a1f04f",
+    "workloads/target/treesitter/execute/platform.h": "3c9a0ab6706b049baf536e25bcfd4b1a08a85edc22b07f8470b51a94c3e9551f",
+    "workloads/target/treesitter/execute/run.py": "d58e0037bd466684603d5119d68c30344000773704b6d862713880e515d73ed6",
+    "workloads/target/treesitter/execute/runtime.c": "de7a05df2045a6e2172bbbd1f0c304f65c58444208da5c6a068127b00e69d96e",
+    "workloads/target/treesitter/execute/runtime_test.c": "edc5c5a0bdca686bdca7612c343bff58993d6fb939110ff3fea0a17ac08437d8",
+    "workloads/target/treesitter/execute/spike_runner.cc": "f5eb26a93c561b3fb40ed0a619633467e2a1e0b50e5dc8baecdef9cc0e17db11",
+    "workloads/target/treesitter/execute/start.S": "25464c475fa3a1f48a4735a24ce3531089457f699941bceaf662678cbd50033f",
+    "workloads/target/treesitter/execute/test_execution.py": "967b05f3f0e90714923153a2b0e97ea8822894a69acefdf2c88627b62aa65b62",
+    "workloads/target/treesitter/execute/verify_rtl.py": "2e363ddca25326e1e76995d8a86350a048089c727d3f3837283065d2f402a810",
+    "workloads/target/treesitter/newlib.lock.json": "655f4c03b0254c0d86c232e3e14caf2c78841435d6df14a245a910c1abfb2134",
+    "workloads/target/treesitter/newlib.py": "3cc9b55335a1bb7b383d9942e88c223ec4bacf3660c7098ef5b408fb7b111a6e",
+    "hardware/spinal/examples/ape/kernel.c": "84c889fafa97d8611a97119822e5949f1e1bb7891690a9fdd09bab1fbbfc9b6f",
+    "hardware/spinal/examples/ape/link.ld": "44f96f9434e855f0250f2247a4a8c437782ce786f9c063b99bb7a8df6823ba8e",
+    "hardware/spinal/examples/ape/programs.S": "2a5397ae05c59547b4ccfc9d9c8f59b16b099d11fe4fd07d3247560a470b72ff",
+    "hardware/spinal/src/main/scala/hats/HseCore.scala": "58f6f07547a94ae56e8e5b3c22ab9b6fc6ed38a567a697fa7a0d3cd1f45fa647",
+    "hardware/spinal/src/test/scala/hats/HseCoreSim.scala": "3bd37de6a2723e1b082a7075606408f671cabf0019c771aa9c95635008c81686",
+    "hardware/spinal/tools/assemble_ape.py": "4f64a6aff7de418b56a1c113594c2fa81b04eddd61822015557dba0920b137cf",
+    "hardware/spinal/tools/assemble_hse.py": "144f7a53b70251966d47637ba013503d21e98e7e906caa72a789aa31ae007882",
+    "hardware/spinal/tools/verify_ape.py": "7bb27537f85ce249e4208797114645ae29cb2d900214ebeba33915818a89d6f1",
+    "hardware/spinal/tools/verify_hse.py": "4379c2f8602fca6c92f51d7f01e74178c3af0cb74f5636c656dd37b0aa55882b",
+    "hardware/spinal/tools/spike_adapter.cc": "fd1469dc0beff9e60c1f5f655a36187e223453130e3d9abb1d9927c1837cde25",
+    "hardware/spinal/tools/test_ape_spike.py": "ca40147129eb5c985d1af6cb32878677ca051ad75ec801cfd0842a6e3efc1797",
+    "hardware/spinal/tools/verify_ape_spike.py": "34a8188f3cf4a73a4fd1a09581b2d45884b83cb6a251f6787dc0b4f9c720cf7c",
+    "hardware/spinal/examples/ape_app/diff.c": "76e68a85f983b52100f4d5f6d5392b4d0965dbe913e2c00a3aff9cda794f564a",
+    "hardware/spinal/examples/ape_app/link.ld": "d335bd920c575f516aa3e3e6590b2eb671a4c488021db7e4fe0266b60ecd9cd5",
+    "hardware/spinal/examples/ape_app/start.S": "a368353f11cb36f310ca8569ee77caa792eda60595110e77191104b84ef9dd5c",
+    "hardware/spinal/tools/ape_app_image.py": "19994cf5378c7832b5fabe431ca6681c2e28b574f14b2eed4c05e3655b58986a",
+    "hardware/spinal/tools/build_ape_app.py": "bcd00b97e18093036c8641feea900081a15f4c8856df3af9af56bfeaeacce880",
+    "hardware/spinal/tools/check_ape_diff.py": "edaa63ac95ceddf81e3fbf81a96704cdd150591802c5d598a9d3368828634ece",
+    "hardware/spinal/tools/test_ape_app.py": "bbd9ac635810ccde2f2bdc52978db6d82bbbb092474048152aef499e042408a3",
+    "hardware/spinal/tools/verify_ape_app.py": "485124f5713af55a405cd9d33fdb4ef8708c772f1d2ccd2b666a778438f29b65",
+    "workloads/s02/test_gate.py": "bd5cbf76a1438437ccd53ae680e09ef8769f78e6ca09a5201290064bc903ba6d",
+    "workloads/s02/gate.py": "877a41efb0e51258f284ba4edc99921f054b39852ef25721f9621b4e8ef7fc0d",
+    "workloads/s02/run_all.py": "62abf62b962a188d8ae427a81bc83521e4e5090e3a77ad14da56b77670a722c1",
+    "workloads/s02/test_checkpoint.py": "8462a33acb2ff12b22d2de4a406847c499d58e5c6c049f67aa5019e63a502619",
+    "workloads/s02/port-manifest.json": "ca6bd79bb0d9c1ddc79a13d113a759915f8e77c347d34d73cd2d848203681722",
+    "hardware/spinal/tools/verify_ape_rename.py": "e0265d1d48d528a4950c932ba098b0d22b85efb0dcf75456b3d18abc6d58d8bd",
+    "hardware/spinal/examples/ape_recovery/programs.S": "1a30e661acede9b562872c5005d376ea0159eec0ae71b41ed32f87d08a6de891",
+    "hardware/spinal/tools/assemble_ape_recovery.py": "81a7312c396c6bf2d2281dc6c5f636e0d727a26922d12d316ae5c3a37495428a",
+    "hardware/spinal/tools/verify_ape_recovery.py": "5bec3308d8f00be10c10bbf0b2d8276a538f28e1ff83ac46ffe0f8cc63156107",
+    "hardware/spinal/formal/CheckpointFormal.sv": "8a78ea661b17c86f7c67b0bc2561ea3476127445a59914feb8791e9ad66c71fc",
+    "hardware/spinal/formal/requirements.txt": "311f5968668053a738c427830928df4f91f5160a4828dcd63074350c1c08ab89",
+    "hardware/spinal/formal/verify_checkpoints.py": "f7a005677fb52b1d3961ac5eabdae1c49baeec68979072e416c833d96a73c434",
+    "hardware/spinal/tools/verify_ape_execution.py": "56b5e3dbe6df3fc989c4c73aad908aa6571183e854622722c4de1c95bd2ff1db",
+    "hardware/spinal/formal/RenameLifecycleFormal.sv": "df1484dc07f2eb5a4776b4e4b79abeb215f37c23c0daac2d17e1f85761a9df51",
+    "hardware/spinal/formal/verify_rename_lifecycle.py": "cfa12363ef55c638703eb9d14b2b360c48d8d814bb2bb481553a37650c3e77f5",
+    "hardware/spinal/tools/probe_ape_synthesis.py": "32aed9ec1e302621aaeba08400fba2d7d1b07a380ed3f3ed57937ff8007c5c96",
+    "workloads/s03/test_evidence.py": "2591efbe1652fde345fe2ce7343c9a36ec8fa816bf96f2d5f8fffd0eb576c1c0",
+    "workloads/s03/evidence.py": "4be03b95a1903590c4e65dd8ed6ba95154915d60a64a37191458d2dbf28fe682"
+  },
+  "documentation_sha256": {
+    "README.md": "6a63a9f988ce891902af05c59d1f38252891ebaec590b09b2b5d9e3f929c0102",
+    "ROADMAP.md": "8d3e1d864e3bcb70ec36811c60c7ebd45cd1973b1adf683656a1120ecd7e0957",
+    "workloads/S02-COMPLETION.md": "8d4e5a48b8500c80d99fcb6bd5d5fec2b64a73fc6cea0b9f0d27f8ca599f3365",
+    "hardware/spinal/DEVELOPMENT.md": "810b9519928cf3026ebb53d30a52edd33f26bbc8d1cd22bbb0d5f4a353b66c63",
+    "hardware/spinal/spec/PPE-ISA-0.1.md": "1cbbb5eff2650805b43d9558b5335500702b61e944b93ba5b8aeb22983b383cb",
+    "hardware/spinal/spec/PPE-RTL-0.1.md": "089916c4839702ba3cc49378878c4f6fbbe8060a0aa8d6baff668988de74500d",
+    "workloads/target/treesitter/execute/README.md": "2c14068e23e837ae185908b6b3a23b97f3d59c6d7b57332e3954c16ae5f95a85",
+    "workloads/target/treesitter/bulk/README.md": "9292b9cccbd448e0f07a6952c6ec1e2d1bf815bc5ffee9e0d346a7ae7d7fbab6",
+    "hardware/spinal/spec/APE-0.3.md": "485a5f4051cb8d0217107ca5d37069665d84bd44732405147e7480db877953ac",
+    "hardware/spinal/spec/APE-0.4.md": "37cddc84d9b00993d4c34b8687927df0f8bcc6aba8ca8304cdfe24d8043d8096",
+    "hardware/spinal/spec/S03-PROGRESS.md": "79962b442e11ba26eb74b3a779b21fe57215d7610d705755ef1be7fe57e1d587",
+    "hardware/spinal/spec/APE-CHECKPOINT-FORMAL.md": "1a2e13d5c5a522a47e7fe8eacc9a157495d11ba20e2323a84f6979ab61c4ee7a",
+    "hardware/spinal/spec/APE-0.5.md": "91c0aa86c9f9a3c1e29f2b9c85823eeed902d17f87c79d5a9519ff4b1c131ba4",
+    "hardware/spinal/spec/S03-CLOSURE-PLAN.md": "f577bd82c7f7b913d81e81fda17529d08eb5e23798498a17e1e5b6c62a236c25",
+    "hardware/spinal/spec/APE-RENAME-FORMAL.md": "5032cfe7e736f815b12d7ff5d1a2d005bed76bc784e3ebd3468e45583cce6bd3",
+    "hardware/spinal/spec/APE-SYNTHESIS-PROBE.md": "71a6df0937ba87c8fd05a23813f7e77ad54efe4e28e5a95f77db0fbf77d51926",
+    "hardware/spinal/spec/APE-SHARED-SUBSTRATE.md": "de1b4e424a395b193d9487ea31ed52552f917653d0c266f954aa3c04c7e164a7",
+    "hardware/spinal/spec/APE-EARLY-RECOVERY-PLAN.md": "6b6a190c01398c704cfe9831563b4a47fcf8c75a91b9017eb0be0b6dadb48856",
+    "hardware/spinal/APE.md": "b74e349eb0c47e7e1faef401b1a10600c330e7708224a0ded8da4ce81d268ba1",
+    "hardware/spinal/spec/APE-VERIFICATION.md": "9a4b01e690d28d8056d25d28e0674173e14a608a11de8a45c8716c9d925db828",
+    "hardware/spinal/spec/APE-0.2.md": "2aa1e346dfc422b837bc9e98349bbc89c73a448855aec471c8ca87775a0c4296",
+    "hardware/spinal/spec/APE-ROADMAP.md": "23ea18317685da2d64a883df11732da14c7f2df56d64072a52e8ed895af0fba0",
+    "hardware/spinal/README.md": "7627526d463381e1509f37f162535293449c39fc1fc99767aafc35361dac558d"
+  },
+  "reports_sha256": {
+    "rename": "a1b0c210bbeb9e359475ad76e5e5503a39ac8db5837b6c312d69cea971efcb9d",
+    "compatibility": "4934110d0b167f651af1293f59b13680f4f944d3ed37a22cd2db6056a22888bd",
+    "recovery": "e9dd1eeb3b285368d5e96ed7ab3cb69c6944a30acc5198280fbb86441167f77c",
+    "formal": "4c920b0a14b4f3f1c3466ab04303b1caa7f0c3084206b14cd4d5c016c969d650",
+    "execution": "27b93a8b829116321f66372b1531d1e11c60cb1ab71f81dba64e9c99e98c712d",
+    "lifecycle_formal": "8565eb0e2849edf40c0bc6eef9b41586f05961991f716ebf73a99bd94b3a7eb3"
+  },
+  "collector_tests": {
+    "status": "passed",
+    "scope": "report shape and rejection behavior, not RTL verification",
+    "output_sha256": "93ed19b52248ca34cdaebd274c08b17091b36ecc2f74d810722328506051e219"
+  },
+  "early_recovery": {
+    "checkpoint_unit_runs": [
+      {
+        "physical_registers": 36,
+        "capacity": 1,
+        "cycles": 8000,
+        "captures": 1093,
+        "redirects": 546,
+        "nested_redirects": 0,
+        "commit_and_redirect": 369,
+        "checkpoint_stalls": 726,
+        "register_stalls": 1190,
+        "retirements": 3409,
+        "squashed_instructions": 412
+      },
+      {
+        "physical_registers": 36,
+        "capacity": 4,
+        "cycles": 8000,
+        "captures": 1616,
+        "redirects": 663,
+        "nested_redirects": 137,
+        "commit_and_redirect": 387,
+        "checkpoint_stalls": 49,
+        "register_stalls": 1607,
+        "retirements": 3020,
+        "squashed_instructions": 870
+      },
+      {
+        "physical_registers": 64,
+        "capacity": 2,
+        "cycles": 8000,
+        "captures": 1579,
+        "redirects": 737,
+        "nested_redirects": 105,
+        "commit_and_redirect": 551,
+        "checkpoint_stalls": 319,
+        "register_stalls": 0,
+        "retirements": 3551,
+        "squashed_instructions": 1200
+      },
+      {
+        "physical_registers": 64,
+        "capacity": 4,
+        "cycles": 8000,
+        "captures": 1798,
+        "redirects": 768,
+        "nested_redirects": 193,
+        "commit_and_redirect": 573,
+        "checkpoint_stalls": 50,
+        "register_stalls": 0,
+        "retirements": 3500,
+        "squashed_instructions": 1458
+      }
+    ],
+    "spike_matches": 108,
+    "timing_witnesses": {
+      "r16-off-p64-c1-early-witness": {
+        "early_memory_redirects": 6,
+        "target_issues_before_memory": 6,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 0,
+        "checkpoint_stall_cycles": 128
+      },
+      "r16-off-p64-c4-early-witness": {
+        "early_memory_redirects": 10,
+        "target_issues_before_memory": 10,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4,
+        "checkpoint_stall_cycles": 53
+      },
+      "r16-off-p36-c4-early-witness": {
+        "early_memory_redirects": 10,
+        "target_issues_before_memory": 8,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4,
+        "checkpoint_stall_cycles": 53
+      },
+      "r16-off-p64-c4-retire-witness": {
+        "early_memory_redirects": 0,
+        "target_issues_before_memory": 0,
+        "commit_and_redirect": 0,
+        "resolved_younger_squashes": 0,
+        "checkpoint_stall_cycles": 0
+      },
+      "r16-bimodal-p64-c1-early-witness": {
+        "early_memory_redirects": 6,
+        "target_issues_before_memory": 6,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 0,
+        "checkpoint_stall_cycles": 128
+      },
+      "r16-bimodal-p64-c4-early-witness": {
+        "early_memory_redirects": 10,
+        "target_issues_before_memory": 10,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4,
+        "checkpoint_stall_cycles": 53
+      },
+      "r16-bimodal-p36-c4-early-witness": {
+        "early_memory_redirects": 10,
+        "target_issues_before_memory": 8,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4,
+        "checkpoint_stall_cycles": 53
+      },
+      "r16-bimodal-p64-c4-retire-witness": {
+        "early_memory_redirects": 0,
+        "target_issues_before_memory": 0,
+        "commit_and_redirect": 0,
+        "resolved_younger_squashes": 0,
+        "checkpoint_stall_cycles": 0
+      },
+      "r16-off-p64-c2-early-witness": {
+        "early_memory_redirects": 10,
+        "target_issues_before_memory": 10,
+        "commit_and_redirect": 2,
+        "resolved_younger_squashes": 4,
+        "checkpoint_stall_cycles": 62
+      }
+    },
+    "cycle_diagnostics": [
+      {
+        "name": "older_load",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 47,
+        "retirement_cycles": 51
+      },
+      {
+        "name": "older_load",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 38,
+        "retirement_cycles": 45
+      },
+      {
+        "name": "nested_checkpoints",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 40,
+        "retirement_cycles": 41
+      },
+      {
+        "name": "nested_checkpoints",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 36,
+        "retirement_cycles": 37
+      },
+      {
+        "name": "jalr_link",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 42,
+        "retirement_cycles": 46
+      },
+      {
+        "name": "jalr_link",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 36,
+        "retirement_cycles": 42
+      },
+      {
+        "name": "older_bus_fault",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 32,
+        "retirement_cycles": 32
+      },
+      {
+        "name": "older_bus_fault",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 29,
+        "retirement_cycles": 29
+      },
+      {
+        "name": "faulting_link",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 36,
+        "retirement_cycles": 36
+      },
+      {
+        "name": "faulting_link",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 36,
+        "retirement_cycles": 36
+      },
+      {
+        "name": "checkpoint_exhaustion",
+        "invocation": 0,
+        "prediction": "off",
+        "early_cycles": 42,
+        "retirement_cycles": 42
+      },
+      {
+        "name": "checkpoint_exhaustion",
+        "invocation": 1,
+        "prediction": "off",
+        "early_cycles": 41,
+        "retirement_cycles": 41
+      },
+      {
+        "name": "older_load",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 47,
+        "retirement_cycles": 51
+      },
+      {
+        "name": "older_load",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 38,
+        "retirement_cycles": 45
+      },
+      {
+        "name": "nested_checkpoints",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 40,
+        "retirement_cycles": 41
+      },
+      {
+        "name": "nested_checkpoints",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 36,
+        "retirement_cycles": 37
+      },
+      {
+        "name": "jalr_link",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 42,
+        "retirement_cycles": 46
+      },
+      {
+        "name": "jalr_link",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 36,
+        "retirement_cycles": 42
+      },
+      {
+        "name": "older_bus_fault",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 32,
+        "retirement_cycles": 32
+      },
+      {
+        "name": "older_bus_fault",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 29,
+        "retirement_cycles": 29
+      },
+      {
+        "name": "faulting_link",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 36,
+        "retirement_cycles": 36
+      },
+      {
+        "name": "faulting_link",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 36,
+        "retirement_cycles": 36
+      },
+      {
+        "name": "checkpoint_exhaustion",
+        "invocation": 0,
+        "prediction": "bimodal",
+        "early_cycles": 42,
+        "retirement_cycles": 42
+      },
+      {
+        "name": "checkpoint_exhaustion",
+        "invocation": 1,
+        "prediction": "bimodal",
+        "early_cycles": 41,
+        "retirement_cycles": 41
+      }
+    ],
+    "memory_comparison_scope": "same randomized service policy, not necessarily identical realized waits; not a controlled performance comparison",
+    "generated_rtl_sha256": {
+      "build/ape_checkpoints/p36-c1/ApeRename/rtl/ApeRename.v": "918c56947718341f00ec41e526ad0f3e7e6b2dedec4745b6285edd392a3eb7fb",
+      "build/ape_checkpoints/p36-c1/tmp/job_1/ApeRename.v": "918c56947718341f00ec41e526ad0f3e7e6b2dedec4745b6285edd392a3eb7fb",
+      "build/ape_checkpoints/p36-c4/ApeRename/rtl/ApeRename.v": "11dc377364753c26f1a8e9d53cdf30988d39d51ef1ae44813f96bc846ee27e54",
+      "build/ape_checkpoints/p36-c4/tmp/job_2/ApeRename.v": "11dc377364753c26f1a8e9d53cdf30988d39d51ef1ae44813f96bc846ee27e54",
+      "build/ape_checkpoints/p64-c2/ApeRename/rtl/ApeRename.v": "e4692db6f351e02f7eb5386625716fed2043fc75618bc3086351bdd84de5fc73",
+      "build/ape_checkpoints/p64-c2/tmp/job_3/ApeRename.v": "e4692db6f351e02f7eb5386625716fed2043fc75618bc3086351bdd84de5fc73",
+      "build/ape_checkpoints/p64-c4/ApeRename/rtl/ApeRename.v": "508259ac2c6b66f4b77d5187642f0238a6cffe6c2fbb85104bc3ae19d97720c4",
+      "build/ape_checkpoints/p64-c4/tmp/job_4/ApeRename.v": "508259ac2c6b66f4b77d5187642f0238a6cffe6c2fbb85104bc3ae19d97720c4",
+      "build/ape_recovery/r16-bimodal-p36-c4-early-witness/sim/ApeCore/rtl/ApeCore.v": "95d2726f7ba6431aec9eb963c1373a2ea92efdc3e0e8466513ff101b39ffec99",
+      "build/ape_recovery/r16-bimodal-p36-c4-early-witness/sim/tmp/job_1/ApeCore.v": "95d2726f7ba6431aec9eb963c1373a2ea92efdc3e0e8466513ff101b39ffec99",
+      "build/ape_recovery/r16-bimodal-p64-c1-early-witness/sim/ApeCore/rtl/ApeCore.v": "004a47ae7f4aeeef8799a3f850dcd2dc597f8f16a0ae87a4edf1a285695792a1",
+      "build/ape_recovery/r16-bimodal-p64-c1-early-witness/sim/tmp/job_1/ApeCore.v": "004a47ae7f4aeeef8799a3f850dcd2dc597f8f16a0ae87a4edf1a285695792a1",
+      "build/ape_recovery/r16-bimodal-p64-c4-early-witness/sim/ApeCore/rtl/ApeCore.v": "84b96f8d0b0b5ae6b2f9a15aed658a01ba8f2423ee90e9faa7515ddfdfbc9d9e",
+      "build/ape_recovery/r16-bimodal-p64-c4-early-witness/sim/tmp/job_1/ApeCore.v": "84b96f8d0b0b5ae6b2f9a15aed658a01ba8f2423ee90e9faa7515ddfdfbc9d9e",
+      "build/ape_recovery/r16-bimodal-p64-c4-retire-witness/sim/ApeCore/rtl/ApeCore.v": "8a4159c37e3d39b987cdc9c1bc80c0750bd59f822d5c69c9f253e0ddd8e6289e",
+      "build/ape_recovery/r16-bimodal-p64-c4-retire-witness/sim/tmp/job_1/ApeCore.v": "8a4159c37e3d39b987cdc9c1bc80c0750bd59f822d5c69c9f253e0ddd8e6289e",
+      "build/ape_recovery/r16-off-p36-c4-early-witness/sim/ApeCore/rtl/ApeCore.v": "796df5571115e22a7ed952f3ca0c698d6c52a0f5e0817d399bbc6b3fc106b580",
+      "build/ape_recovery/r16-off-p36-c4-early-witness/sim/tmp/job_1/ApeCore.v": "796df5571115e22a7ed952f3ca0c698d6c52a0f5e0817d399bbc6b3fc106b580",
+      "build/ape_recovery/r16-off-p64-c1-early-witness/sim/ApeCore/rtl/ApeCore.v": "8f3b6a0af11e2fb0de5510ac2939a0bc1da2e2d524acda08a4cc270d55c9d6d0",
+      "build/ape_recovery/r16-off-p64-c1-early-witness/sim/tmp/job_1/ApeCore.v": "8f3b6a0af11e2fb0de5510ac2939a0bc1da2e2d524acda08a4cc270d55c9d6d0",
+      "build/ape_recovery/r16-off-p64-c2-early-witness/sim/ApeCore/rtl/ApeCore.v": "3667f59d7aad6d58b0e39b39dd37e7128f9a7992f6160c7cac13b75c1acdb797",
+      "build/ape_recovery/r16-off-p64-c2-early-witness/sim/tmp/job_1/ApeCore.v": "3667f59d7aad6d58b0e39b39dd37e7128f9a7992f6160c7cac13b75c1acdb797",
+      "build/ape_recovery/r16-off-p64-c4-early-witness/sim/ApeCore/rtl/ApeCore.v": "0e1ea8784bc97107f66b3b71819f21baef96dab69338ee0ccfa0d4087babbdc4",
+      "build/ape_recovery/r16-off-p64-c4-early-witness/sim/tmp/job_1/ApeCore.v": "0e1ea8784bc97107f66b3b71819f21baef96dab69338ee0ccfa0d4087babbdc4",
+      "build/ape_recovery/r16-off-p64-c4-retire-witness/sim/ApeCore/rtl/ApeCore.v": "ce634c3c807e1ba837c3c4cc24fc2bb648cc9882219cfe54b608f9400e783012",
+      "build/ape_recovery/r16-off-p64-c4-retire-witness/sim/tmp/job_1/ApeCore.v": "ce634c3c807e1ba837c3c4cc24fc2bb648cc9882219cfe54b608f9400e783012"
+    }
+  },
+  "registered_execution": {
+    "transport": {
+      "status": "passed",
+      "cycles": 16800,
+      "claim": "Actual elastic execution RTL transport, register latency, backpressure and clear; add/sub datapath only",
+      "configurations": [
+        {
+          "depth": 2,
+          "generation_bits": 1,
+          "cycles": 4200,
+          "accepted": 1510,
+          "completed": 1483,
+          "canceled": 27,
+          "input_stalls": 2077,
+          "full_cycles": 3662,
+          "clear_events": 15
+        },
+        {
+          "depth": 2,
+          "generation_bits": 2,
+          "cycles": 4200,
+          "accepted": 1499,
+          "completed": 1470,
+          "canceled": 29,
+          "input_stalls": 2075,
+          "full_cycles": 3619,
+          "clear_events": 15
+        },
+        {
+          "depth": 8,
+          "generation_bits": 1,
+          "cycles": 4200,
+          "accepted": 1720,
+          "completed": 1602,
+          "canceled": 118,
+          "input_stalls": 1855,
+          "full_cycles": 3290,
+          "clear_events": 15
+        },
+        {
+          "depth": 16,
+          "generation_bits": 2,
+          "cycles": 4200,
+          "accepted": 1740,
+          "completed": 1502,
+          "canceled": 238,
+          "input_stalls": 1825,
+          "full_cycles": 3176,
+          "clear_events": 15
+        }
+      ]
+    },
+    "ownership": {
+      "status": "passed",
+      "checks": 16000,
+      "claim": "Combinational completion guard and outstanding-token wrap exclusion; not a whole-core ownership proof",
+      "configurations": [
+        {
+          "generation_bits": 1,
+          "checks": 8000,
+          "qualified": 3067,
+          "rejected": 4933,
+          "wrap_conflicts": 1760
+        },
+        {
+          "generation_bits": 2,
+          "checks": 8000,
+          "qualified": 3067,
+          "rejected": 4933,
+          "wrap_conflicts": 907
+        }
+      ]
+    },
+    "core_suites": [
+      {
+        "configuration": [
+          8,
+          "off",
+          64,
+          2,
+          1
+        ],
+        "counters": {
+          "late_rejected": 306,
+          "rejected_after_slot_reuse": 0,
+          "physical_reuse_while_pending": 48,
+          "canceled_at_stop": 156,
+          "execution_stall_cycles": 0,
+          "generation_stall_cycles": 0,
+          "rename_stall_cycles": 0,
+          "max_execution_tokens": 2
+        }
+      },
+      {
+        "configuration": [
+          8,
+          "bimodal",
+          64,
+          8,
+          1
+        ],
+        "counters": {
+          "late_rejected": 996,
+          "rejected_after_slot_reuse": 30,
+          "physical_reuse_while_pending": 332,
+          "canceled_at_stop": 317,
+          "execution_stall_cycles": 0,
+          "generation_stall_cycles": 0,
+          "rename_stall_cycles": 0,
+          "max_execution_tokens": 8
+        }
+      },
+      {
+        "configuration": [
+          16,
+          "bimodal",
+          36,
+          2,
+          2
+        ],
+        "counters": {
+          "late_rejected": 70,
+          "rejected_after_slot_reuse": 0,
+          "physical_reuse_while_pending": 16,
+          "canceled_at_stop": 162,
+          "execution_stall_cycles": 0,
+          "generation_stall_cycles": 0,
+          "rename_stall_cycles": 70652,
+          "max_execution_tokens": 2
+        }
+      }
+    ],
+    "spike_matches": 288,
+    "explicit_profile_differences": 12,
+    "limits": [
+      "Not a whole-core formal proof; legal ownership state is supplied to guard unit tests",
+      "Core generation stalls and execution input stalls are reported, not assumed exercised",
+      "Extra result stages are delay stress, not arithmetic timing cuts",
+      "Real-tool, full standard, rename and checkpoint regressions are separate gates",
+      "Single issue/retire and head-only memory; no PPA or end-to-end speedup claim"
+    ]
+  },
+  "bounded_checkpoint_formal": {
+    "claim_class": "bounded_selected_checkpoint_RTL_properties",
+    "runs": [
+      {
+        "physical_registers": 36,
+        "slots": 8,
+        "capacity": 1,
+        "snapshot_field": 10,
+        "bounded_global_steps": 12,
+        "assertions": 8,
+        "bounded_status": "passed",
+        "cover_status": "passed",
+        "covers_reached": 4,
+        "negative_control": "counterexample_found",
+        "rtl_sha256": "918c56947718341f00ec41e526ad0f3e7e6b2dedec4745b6285edd392a3eb7fb"
+      },
+      {
+        "physical_registers": 36,
+        "slots": 8,
+        "capacity": 4,
+        "snapshot_field": 10,
+        "bounded_global_steps": 12,
+        "assertions": 8,
+        "bounded_status": "passed",
+        "cover_status": "passed",
+        "covers_reached": 5,
+        "negative_control": "counterexample_found",
+        "rtl_sha256": "11dc377364753c26f1a8e9d53cdf30988d39d51ef1ae44813f96bc846ee27e54"
+      }
+    ],
+    "assumptions": [
+      "Reset in the initial global state only; clear may occur later",
+      "Capture only a free slot below capacity; resolve only a live owner",
+      "No capture/allocation during redirect; no activity during reset/clear",
+      "Allocation tags 1..35; squash mask and snapshot values otherwise arbitrary",
+      "Single-clock sampled safety; no fairness or physical reset/metastability model"
+    ],
+    "limits": [
+      "Bounded global transitions only, not unbounded induction",
+      "P36/8 ROB slots, C1/C4, snapshot field x10; arbitrary watched slot and tag 1..35",
+      "Does not prove ROB age selection, committed/free exclusion, early timing or stale completion rejection",
+      "Negative control adds a false harness assertion; not a mutated-DUT coverage score",
+      "No full-core formal closure, synthesis timing, PPA or acceleration result"
+    ],
+    "tools": {
+      "packages": [
+        "click==8.5.0",
+        "platformdirs==4.12.4",
+        "wasmtime==47.0.1",
+        "yowasp-runtime==1.96",
+        "yowasp-yosys==0.69.0.0.post1233"
+      ],
+      "yosys_wasm_sha256": "77fe957bef892d75f74a0ce2165d7b328b6cda462a0e0051509df0c5a55ece49",
+      "yosys": "Yosys 0.69 (git sha1 9f75ca1f9, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+      "z3": "Z3 version 5.1.0 - 64 bit",
+      "z3_sha256": "c75b8e807d8b0fda30c392990520a0cd0cc00955a045f2c039453fed7fb8cb37"
+    }
+  },
+  "bounded_restricted_rename_formal": {
+    "claim_class": "bounded_restricted_rename_lifecycle_RTL_properties",
+    "bounded_global_steps": 16,
+    "assertions": 24,
+    "covers_reached": 6,
+    "negative_control": "counterexample_found",
+    "assumptions": [
+      "Reset only initially; relaunch clear may occur subsequently with no other activity",
+      "All allocations target architectural x10, with four outstanding writers maximum",
+      "Out-of-order writeback only to a live unwritten allocation; value is one arbitrary bit, other 63 bits zero",
+      "Retirement only at the oldest written allocation; may coincide with full recovery or new allocation",
+      "No writeback during full recovery; all checkpoint/resolve inputs disabled",
+      "No fairness or physical timing assumption; sampled single-clock safety"
+    ],
+    "limits": [
+      "Bounded proof under a restricted environment, not general multi-register rename or whole-core proof",
+      "Full recovery only; selective branch recovery and late-result qualification have separate gates",
+      "One-bit values validate selected data forwarding/commit cases, not all arithmetic values",
+      "False harness assertion control does not measure mutated-DUT coverage"
+    ],
+    "tools": {
+      "packages": [
+        "click==8.5.0",
+        "platformdirs==4.12.4",
+        "wasmtime==47.0.1",
+        "yowasp-runtime==1.96",
+        "yowasp-yosys==0.69.0.0.post1233"
+      ],
+      "yosys_wasm_sha256": "77fe957bef892d75f74a0ce2165d7b328b6cda462a0e0051509df0c5a55ece49",
+      "yosys": "Yosys 0.69 (git sha1 9f75ca1f9, Release, Clang /workspace/YoWASP/yosys/wasi-sdk-33.0-x86_64-linux/share/cmake/../..//bin/clang++ 22.1.0)",
+      "z3": "Z3 version 5.1.0 - 64 bit",
+      "z3_sha256": "c75b8e807d8b0fda30c392990520a0cd0cc00955a045f2c039453fed7fb8cb37"
+    }
+  },
+  "generic_synthesis_diagnostics": [
+    {
+      "report_sha256": "edd542989eb441207ae5fe01d8503301c6b04ddd99edb2305f6f9d88bd0d6813",
+      "configuration": {
+        "rob_entries": 4,
+        "prediction": "bimodal",
+        "program_words": 1024,
+        "physical_registers": 64,
+        "issue_width": 1,
+        "execution_stages": 2,
+        "generation_bits": 2
+      },
+      "generated_rtl_sha256": "cf5e038469dfcfb6c5e626ebb6e5b0b50562b0e4d2a8d53992d43465f036f8b1",
+      "generic_cells_including_metadata": 129935,
+      "longest_path_generic_cells": 64,
+      "constraints": {
+        "flow": "Yosys generic, flattened, memory_map, no ABC",
+        "memory": "All storage mapped to flip-flops/muxes; no SRAM macros",
+        "clock_target_ns": null,
+        "cell_library": null,
+        "interconnect_model": null
+      },
+      "limits": [
+        "Diagnostic only; does not justify a final performance-core design point",
+        "Longest topological path counts generic cells, not propagation delay or clock frequency",
+        "Includes 1024-word instruction storage and debug observation logic; not the large-tool memory capacity",
+        "Not a technology-mapped area, placed/routed implementation, SRAM integration or energy estimate"
+      ]
+    },
+    {
+      "report_sha256": "9d301407d839b3d8604bb7e235851e18feada284166d20fcc4ae6fcd8fd7f30a",
+      "configuration": {
+        "rob_entries": 8,
+        "prediction": "bimodal",
+        "program_words": 1024,
+        "physical_registers": 64,
+        "issue_width": 1,
+        "execution_stages": 2,
+        "generation_bits": 2
+      },
+      "generated_rtl_sha256": "0d1655387731031b3771a5ce5bdca16266895d541c7e0b02f62af5a749eac8ca",
+      "generic_cells_including_metadata": 148297,
+      "longest_path_generic_cells": 64,
+      "constraints": {
+        "flow": "Yosys generic, flattened, memory_map, no ABC",
+        "memory": "All storage mapped to flip-flops/muxes; no SRAM macros",
+        "clock_target_ns": null,
+        "cell_library": null,
+        "interconnect_model": null
+      },
+      "limits": [
+        "Diagnostic only; does not justify a final performance-core design point",
+        "Longest topological path counts generic cells, not propagation delay or clock frequency",
+        "Includes 1024-word instruction storage and debug observation logic; not the large-tool memory capacity",
+        "Not a technology-mapped area, placed/routed implementation, SRAM integration or energy estimate"
+      ]
+    },
+    {
+      "report_sha256": "2d7ab11e7d899c9e9d1a433725029305c5dda8fee633d1e644dd1c7402af0354",
+      "configuration": {
+        "rob_entries": 16,
+        "prediction": "bimodal",
+        "program_words": 1024,
+        "physical_registers": 64,
+        "issue_width": 1,
+        "execution_stages": 2,
+        "generation_bits": 2
+      },
+      "generated_rtl_sha256": "d6947a5259bee4a36d3f88a9adf498eb92db822d725edbb4e0445b3dfd852e15",
+      "generic_cells_including_metadata": 186084,
+      "longest_path_generic_cells": 64,
+      "constraints": {
+        "flow": "Yosys generic, flattened, memory_map, no ABC",
+        "memory": "All storage mapped to flip-flops/muxes; no SRAM macros",
+        "clock_target_ns": null,
+        "cell_library": null,
+        "interconnect_model": null
+      },
+      "limits": [
+        "Diagnostic only; does not justify a final performance-core design point",
+        "Longest topological path counts generic cells, not propagation delay or clock frequency",
+        "Includes 1024-word instruction storage and debug observation logic; not the large-tool memory capacity",
+        "Not a technology-mapped area, placed/routed implementation, SRAM integration or energy estimate"
+      ]
+    }
+  ],
+  "physical_rename": {
+    "unit_runs": [
+      {
+        "physical_registers": 33,
+        "cycles": 6000,
+        "allocations": 1353,
+        "resource_stalls": 3315,
+        "recoveries": 212,
+        "retirements": 1284,
+        "relaunches": 7,
+        "out_of_order_writebacks": 0,
+        "commit_and_recovery": 89
+      },
+      {
+        "physical_registers": 36,
+        "cycles": 6000,
+        "allocations": 3024,
+        "resource_stalls": 1608,
+        "recoveries": 211,
+        "retirements": 2500,
+        "relaunches": 7,
+        "out_of_order_writebacks": 404,
+        "commit_and_recovery": 190
+      },
+      {
+        "physical_registers": 64,
+        "cycles": 6000,
+        "allocations": 4644,
+        "resource_stalls": 12,
+        "recoveries": 205,
+        "retirements": 2281,
+        "relaunches": 7,
+        "out_of_order_writebacks": 1494,
+        "commit_and_recovery": 174
+      }
+    ],
+    "pressure_counters": [
+      {
+        "rob_entries": 16,
+        "prediction": "off",
+        "physical_registers": 36,
+        "rename_stall_cycles": 67011
+      },
+      {
+        "rob_entries": 16,
+        "prediction": "bimodal",
+        "physical_registers": 36,
+        "rename_stall_cycles": 70652
+      }
+    ],
+    "spike_matches": 192,
+    "explicit_profile_differences": 8,
+    "generated_rtl_sha256": {
+      "build/ape_pressure/r16-bimodal-p36/sim/ApeCore/rtl/ApeCore.v": "95d2726f7ba6431aec9eb963c1373a2ea92efdc3e0e8466513ff101b39ffec99",
+      "build/ape_pressure/r16-bimodal-p36/sim/tmp/job_1/ApeCore.v": "95d2726f7ba6431aec9eb963c1373a2ea92efdc3e0e8466513ff101b39ffec99",
+      "build/ape_pressure/r16-off-p36/sim/ApeCore/rtl/ApeCore.v": "796df5571115e22a7ed952f3ca0c698d6c52a0f5e0817d399bbc6b3fc106b580",
+      "build/ape_pressure/r16-off-p36/sim/tmp/job_1/ApeCore.v": "796df5571115e22a7ed952f3ca0c698d6c52a0f5e0817d399bbc6b3fc106b580",
+      "build/ape_rename/p33/ApeRename/rtl/ApeRename.v": "f6609e1ac6ca0acdf51d87bf01899af0eeeecf1b4657bcfd0273f6a35d47130d",
+      "build/ape_rename/p33/tmp/job_1/ApeRename.v": "f6609e1ac6ca0acdf51d87bf01899af0eeeecf1b4657bcfd0273f6a35d47130d",
+      "build/ape_rename/p36/ApeRename/rtl/ApeRename.v": "11dc377364753c26f1a8e9d53cdf30988d39d51ef1ae44813f96bc846ee27e54",
+      "build/ape_rename/p36/tmp/job_2/ApeRename.v": "11dc377364753c26f1a8e9d53cdf30988d39d51ef1ae44813f96bc846ee27e54",
+      "build/ape_rename/p64/ApeRename/rtl/ApeRename.v": "508259ac2c6b66f4b77d5187642f0238a6cffe6c2fbb85104bc3ae19d97720c4",
+      "build/ape_rename/p64/tmp/job_3/ApeRename.v": "508259ac2c6b66f4b77d5187642f0238a6cffe6c2fbb85104bc3ae19d97720c4"
+    }
+  },
+  "compatibility": {
+    "native_runs": 90,
+    "bulk_tool_invocations": 42,
+    "spinal_tool_invocations": 18,
+    "matched_retirements": 860981474,
+    "matched_memory_events": 357201875,
+    "bulk_generated_rtl_sha256": {
+      "ApeCore.v": "5d7458f479601a928ca65108840dc0975453b2fdcb64091157b09525c8afa2d3"
+    },
+    "ppe_invocations": 224,
+    "regressions": {
+      "ape_rtl_invocations": 600,
+      "predictor_checks": 4096,
+      "spike_matches": 576,
+      "explicit_profile_differences": 24,
+      "bounded_application_invocations": 144,
+      "committed_legacy_invocations": 123,
+      "legacy_source": {
+        "repository_path": "hardware/spinal/src/main/scala/hats/TaskTile.scala",
+        "commit": "5256b6df3379c03caa1be8c3f1f07fa615dc72d8",
+        "sha256": "cdf0e4b8a2d71cad50f5ba368c74812c5cbdd7e9804dd8fa434c0036d2e38fb6"
+      }
+    }
+  },
+  "limits": [
+    "Completed-gate summary, not a new simulation run or formal proof",
+    "Qualified registered execution with single issue/retire; no multi-issue candidate yet",
+    "A separate generic synthesis probe is diagnostic only; no technology-based clock, energy or end-to-end agent acceleration result",
+    "Issue #4 remains open against its original acceptance criteria"
+  ]
+}

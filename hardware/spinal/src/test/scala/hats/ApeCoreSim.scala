@@ -13,6 +13,18 @@ object ApeCoreSim extends App {
   val mode = args.lift(1).getOrElse("bimodal")
   require(Set("off", "bimodal").contains(mode))
   val prediction = mode == "bimodal"
+  val physical = args.lift(2).map(_.toInt).getOrElse(64)
+  val pressure = args.length >= 3
+  val checkpoints = args.lift(3).map(_.toInt).getOrElse(4)
+  val early = args.lift(4).getOrElse("early") == "early"
+  require(args.lift(4).forall(Set("early", "retire").contains))
+  val focused = args.length >= 4
+  val recoverySuite = args.lift(5).contains("recovery")
+  val executionStages = args.lift(6).map(_.toInt).getOrElse(2)
+  val generationBits = args.lift(7).map(_.toInt).getOrElse(2)
+  val pipelineVariant = args.length >= 7
+  val issueWidth = args.lift(8).map(_.toInt).getOrElse(1)
+  val widthVariant = args.length >= 9
   case class Test(name: String, image: String, cause: Int = 3, writable: Boolean = true,
                   busError: Boolean = false, entry: BigInt = 0, expected: Option[BigInt] = None)
   val names = Seq("integer_alu", "rename_raw_waw_war", "wrong_path_effects", "branches",
@@ -28,27 +40,35 @@ object ApeCoreSim extends App {
     15 -> BigInt(4950), 16 -> BigInt(42), 18 -> BigInt(274), 19 -> BigInt(0), 23 -> BigInt(42), 24 -> BigInt(42),
     25 -> BigInt(42), 26 -> BigInt(42), 27 -> BigInt(42), 28 -> BigInt(42),
     29 -> BigInt(42), 30 -> BigInt(42), 31 -> BigInt(42))
-  val tests = names.zipWithIndex.map { case (name, i) =>
+  val standardTests = names.zipWithIndex.map { case (name, i) =>
     Test(name, s"p$i", traps.getOrElse(i, 3), writable = i != 12,
       busError = i == 13 || i == 21, expected = known.get(i))
   } ++ (0 until 8).map(i => Test(s"random_$i", s"random$i")) ++
     (0 until 8).map(i => Test(s"control_$i", s"control$i")) ++ Seq(
     Test("entry_alignment", "p0", cause = 0, entry = 2),
     Test("entry_bounds", "p0", cause = 1, entry = 4096))
-  val out = Paths.get(s"build/ape/r$entries-$mode")
+  val recoveryNames = Seq("older_load", "nested_checkpoints", "jalr_link", "older_bus_fault", "faulting_link", "checkpoint_exhaustion")
+  val tests = if (recoverySuite) recoveryNames.zipWithIndex.map { case (name, i) =>
+    Test(name, s"recovery$i", cause = if (i == 3) 5 else if (i == 4) 0 else 3, busError = i == 3, expected = Some(BigInt(42)))
+  } else standardTests
+  val out = Paths.get(if (widthVariant) s"build/ape_multi/core/r$entries-$mode-p$physical-c$checkpoints-d$executionStages-g$generationBits-w$issueWidth-${if (recoverySuite) "recovery" else "standard"}"
+    else if (pipelineVariant) s"build/ape_execution/core/r$entries-$mode-p$physical-c$checkpoints-d$executionStages-g$generationBits-${if (recoverySuite) "recovery" else "standard"}"
+    else if (focused) s"build/ape_recovery/r$entries-$mode-p$physical-c$checkpoints-${if (early) "early" else "retire"}${if (recoverySuite) "-witness" else ""}"
+    else if (pressure) s"build/ape_pressure/r$entries-$mode-p$physical" else s"build/ape/r$entries-$mode")
   Files.createDirectories(out)
   def writeFile(name: String, content: String): Unit =
     Files.write(out.resolve(name), content.getBytes(StandardCharsets.UTF_8))
   writeFile("validation.json", "{\"status\":\"running\"}\n")
   val compiled = SimConfig.withVerilator.withWave.addSimulatorFlag("-CFLAGS -DWData=EData")
-    .workspacePath(s"build/ape/sim/r$entries-$mode")
-    .compile(new ApeCore(ApeConfig(robEntries = entries, prediction = prediction)))
+    .workspacePath(if (pressure) out.resolve("sim").toString else s"build/ape/sim/r$entries-$mode")
+    .compile(new ApeCore(ApeConfig(robEntries = entries, prediction = prediction, physicalRegisters = physical,
+      earlyRecovery = early, branchCheckpoints = checkpoints, executionStages = executionStages, generationBits = generationBits, issueWidth = issueWidth)))
   val reports = mutable.ArrayBuffer[String]()
   case class Request(address: BigInt, data: BigInt, size: Int, write: Boolean)
   tests.zipWithIndex.foreach { case (test, testIndex) =>
     compiled.doSim(test.name, seed = testIndex + 1) { dut =>
       val rng = new Random(testIndex + 1)
-      val source = scala.io.Source.fromFile(s"build/ape/programs/${test.image}.hex")
+      val source = scala.io.Source.fromFile(s"build/${if (recoverySuite) "ape_recovery" else "ape"}/programs/${test.image}.hex")
       val program = try source.getLines().map(java.lang.Long.parseLong(_, 16)).toVector finally source.close()
       dut.clockDomain.clockSim #= false
       dut.clockDomain.assertReset()
@@ -87,6 +107,12 @@ object ApeCoreSim extends App {
           writable = test.writable, busError = test.busError)
         val issuedPcs, finishedPcs, retiredPcs = mutable.ArrayBuffer[BigInt]()
         val trace = mutable.ArrayBuffer[String]()
+        val resolutions = mutable.Map[Int, (BigInt, BigInt, BigInt, Boolean, Int)]()
+        // This ledger follows issued identities and observed squash events;
+        // it never reads the DUT's internal ownership/filter implementation.
+        val executions = mutable.Map[(Int, Int), (BigInt, Int, Int)]()
+        val killedExecutions = mutable.Set[(Int, Int)]()
+        val allocations = mutable.Map[Int, (Int, Int)]()
         // External-oracle interchange: values below come from DUT signals and
         // the supplied memory service, never from ApeReference retirement values.
         val architectural = mutable.ArrayBuffer[String]()
@@ -95,6 +121,13 @@ object ApeCoreSim extends App {
         var held: Option[Request] = None
         var cycle = 0
         var stalls = 0
+        var renameStalls = 0
+        var checkpointStalls, earlyMemoryRedirects, concurrentCommitRedirects = 0
+        var targetBeforeMemory, nestedResolvedSquashes = 0
+        var executionStalls, generationStalls, lateRejected, rejectedAfterReuse, reusedPhysicalWhilePending = 0
+        var maxExecutions, acceptedCompletions, canceledAtStop = 0
+        var dualIssueCycles, issuedOperations, completionStalls, robStalls = 0
+        var earlyTarget: Option[BigInt] = None
         var commandWrites = 0
         var branches = 0
         var branchMisses = 0
@@ -115,12 +148,17 @@ object ApeCoreSim extends App {
           dut.io.response.data #= reply.map(_._2).getOrElse(BigInt(0))
           dut.io.response.error #= test.busError
           sleep(1)
+          val allocationsBeforeEdge = allocations.toMap
+          if (dut.io.renameBlocked.toBoolean) renameStalls += 1
+          if (dut.io.checkpointBlocked.toBoolean) checkpointStalls += 1
+          if (dut.io.executionBlocked.toBoolean) executionStalls += 1
+          if (dut.io.generationBlocked.toBoolean) generationStalls += 1
           val req = if (dut.io.memory.valid.toBoolean) Some(Request(dut.io.memory.address.toBigInt,
             dut.io.memory.data.toBigInt, dut.io.memory.size.toInt, dut.io.memory.write.toBoolean)) else None
           held.foreach(x => assert(req.contains(x), s"memory request changed while stalled at $cycle"))
           held = if (!dut.io.memory.ready.toBoolean) req else None
           if (held.nonEmpty) stalls += 1
-          if (reply.nonEmpty && dut.io.response.ready.toBoolean) pending = None
+          if (reply.nonEmpty && dut.io.response.ready.toBoolean) { pending = None; trace += s"$cycle response" }
           if (req.nonEmpty && dut.io.memory.ready.toBoolean) {
             assert(pending.isEmpty, "more than one external transaction outstanding")
             val r = req.get
@@ -153,13 +191,46 @@ object ApeCoreSim extends App {
               else if (test.busError) BigInt(0) else data
             architectural += s"""{"kind":"memory","address":"${r.address}","bytes":$bytes,"write":${r.write},"data":"$publishedData","error":${test.busError}}"""
           }
-          if (dut.io.issued.valid.toBoolean) {
-            issuedPcs += dut.io.issued.pc.toBigInt
+          val laneEvents = dut.io.issues.filter(_.valid.toBoolean)
+          assert(dut.io.issueCount.toInt == laneEvents.size, "issue counter differs from accepted lane events")
+          assert(laneEvents.map(e => e.identity.slot.toInt).distinct.size == laneEvents.size, "duplicate same-edge issue")
+          if (laneEvents.size == 2) dualIssueCycles += 1
+          issuedOperations += laneEvents.size
+          if (dut.io.completionBlocked.toBoolean) completionStalls += 1
+          if (dut.io.robBlocked.toBoolean) robStalls += 1
+          for (event <- laneEvents) {
+            issuedPcs += event.pc.toBigInt
+            val id = (event.identity.slot.toInt, event.identity.generation.toInt)
+            assert(!executions.contains(id), "execution lease reused before it drained")
+            executions(id) = (issuedPcs.last, cycle, event.identity.destination.toInt)
             trace += s"$cycle issue ${issuedPcs.last}"
+            if (earlyTarget.contains(issuedPcs.last) && pending.nonEmpty) { targetBeforeMemory += 1; earlyTarget = None }
           }
           if (dut.io.predicted.valid.toBoolean) {
+            assert(!resolutions.contains(dut.io.predicted.slot.toInt), "ROB slot reused before its resolution was retired/squashed")
+            val slot = dut.io.predicted.slot.toInt
+            val gen = dut.io.predicted.generation.toInt
+            val dest = dut.io.predicted.destination.toInt
+            assert(!executions.contains((slot, gen)), "allocation aliased an outstanding generation")
+            if (dut.io.predicted.writes.toBoolean && killedExecutions.exists(id => executions(id)._3 == dest))
+              reusedPhysicalWhilePending += 1
+            allocations(slot) = (gen, dest)
             trace += s"$cycle predict ${dut.io.predicted.pc.toBigInt} ${dut.io.predicted.next.toBigInt}"
           }
+          if (dut.io.completion.valid.toBoolean) {
+            val id = (dut.io.completion.slot.toInt, dut.io.completion.generation.toInt)
+            val token = executions.remove(id).getOrElse(sys.error("completion without an outstanding execution lease"))
+            assert(cycle - token._2 >= executionStages, "execution completed before its pipeline latency")
+            val wasKilled = killedExecutions.remove(id)
+            val accepted = dut.io.completion.accepted.toBoolean
+            assert(accepted == !wasKilled, "late completion qualification disagrees with observed squash history")
+            if (accepted) acceptedCompletions += 1 else {
+              lateRejected += 1
+              if (allocationsBeforeEdge.get(id._1).exists(_ != (id._2, token._3))) rejectedAfterReuse += 1
+            }
+            trace += s"$cycle completion ${id._1} ${id._2} ${token._1} $accepted"
+          }
+          maxExecutions = maxExecutions.max(executions.size)
           if (dut.io.finished.valid.toBoolean) {
             finishedPcs += dut.io.finished.pc.toBigInt
             trace += s"$cycle finish ${finishedPcs.last}"
@@ -187,6 +258,29 @@ object ApeCoreSim extends App {
           if (dut.io.redirect.valid.toBoolean) {
             redirects += 1
             trace += s"$cycle redirect ${dut.io.redirect.from.toBigInt} ${dut.io.redirect.to.toBigInt}"
+            if (pending.nonEmpty) {
+              assert(dut.io.resolved.valid.toBoolean && dut.io.resolved.olderMemory.toBoolean && dut.io.resolved.olderInstructions.toInt > 0,
+                "redirect with pending memory did not identify older live work")
+              earlyMemoryRedirects += 1; earlyTarget = Some(dut.io.redirect.to.toBigInt)
+            }
+            if (dut.io.retired.valid.toBoolean && dut.io.retired.pc.toBigInt != dut.io.redirect.from.toBigInt)
+              concurrentCommitRedirects += 1
+          }
+          if (dut.io.resolved.valid.toBoolean) {
+            val slot = dut.io.resolved.slot.toInt
+            val from = dut.io.resolved.pc.toBigInt
+            val predicted = dut.io.resolved.predictedNext.toBigInt
+            val actual = dut.io.resolved.actualNext.toBigInt
+            val fault = dut.io.resolved.fault.toBoolean
+            assert(!resolutions.contains(slot), "control instruction resolved twice")
+            resolutions(slot) = (from, predicted, actual, fault, cycle)
+            if (early) {
+              assert(dut.io.redirect.valid.toBoolean == (!fault && predicted != actual), "incorrect execution-time recovery")
+              if (!fault && predicted != actual) {
+                assert(dut.io.redirect.from.toBigInt == from && dut.io.redirect.to.toBigInt == actual)
+              }
+            }
+            trace += s"$cycle resolve $slot $from $predicted $actual $fault"
           }
           if (dut.io.controlRetired.valid.toBoolean) {
             controls += 1
@@ -194,7 +288,10 @@ object ApeCoreSim extends App {
             val predicted = dut.io.controlRetired.predictedNext.toBigInt
             val actual = dut.io.controlRetired.actualNext.toBigInt
             assert(actual == reference.pc, "control-flow result differs from ISA model")
-            assert(dut.io.redirect.valid.toBoolean == (predicted != actual), "incorrect recovery decision")
+            val resolved = resolutions.remove(dut.io.controlRetired.slot.toInt).getOrElse(sys.error("control retired without resolution"))
+            assert(resolved._1 == branchPc && resolved._2 == predicted && resolved._3 == actual && !resolved._4 && resolved._5 < cycle,
+              "retirement does not match its earlier control resolution")
+            if (!early) assert(dut.io.redirect.valid.toBoolean == (predicted != actual), "incorrect retirement-time recovery")
             if (dut.io.controlRetired.conditional.toBoolean) {
               branches += 1
               if (predicted != actual) branchMisses += 1
@@ -203,6 +300,12 @@ object ApeCoreSim extends App {
             }
             trace += s"$cycle control $branchPc $predicted $actual"
           }
+          val squashed = dut.io.squashed.toBigInt
+          executions.keys.filter(id => squashed.testBit(id._1)).foreach(killedExecutions.add)
+          nestedResolvedSquashes += resolutions.keys.count(squashed.testBit)
+          for (slot <- 0 until entries if squashed.testBit(slot)) resolutions.remove(slot)
+          // The retirement baseline flushes every younger entry on redirect.
+          if (!early && dut.io.redirect.valid.toBoolean) resolutions.clear()
           if (dut.io.halt.valid.toBoolean) {
             val trap = try { reference.step(); sys.error("RTL trapped but sequential model did not") }
               catch { case t: Trap => t }
@@ -213,6 +316,8 @@ object ApeCoreSim extends App {
             test.expected.foreach(v => assert(dut.io.halt.value.toBigInt == v, s"known-answer mismatch: $v"))
             assert(memory == reference.memory, "memory differs from sequential execution")
             assert(pending.isEmpty && held.isEmpty, "halt published before external memory drained")
+            canceledAtStop = executions.size
+            executions.clear(); killedExecutions.clear()
             architectural += s"""{"kind":"trap","pc":"${dut.io.halt.pc.toBigInt}","cause":${dut.io.halt.cause.toInt},"value":"${dut.io.halt.value.toBigInt}"}"""
             halted = true
           }
@@ -225,6 +330,14 @@ object ApeCoreSim extends App {
           s"""{"schema":1,"name":"${test.name}","image":"${test.image}","entry":"${test.entry}","writable":${test.writable},"bus_error":${test.busError},"invocation":$invocation}
 """)
         assert(halted, s"timeout in ${test.name}")
+        if (recoverySuite && early) {
+          if (test.image == "recovery0") assert(earlyMemoryRedirects > 0 && targetBeforeMemory > 0,
+            "early redirect and correct-target execution did not precede the older memory response")
+          if (test.image == "recovery1" && checkpoints >= 2) assert(nestedResolvedSquashes > 0 && concurrentCommitRedirects > 0,
+            "nested recovery / older commit overlap was not exercised")
+          if (test.image == "recovery3") assert(earlyMemoryRedirects > 0, "older fault did not follow younger early recovery")
+          if (test.image == "recovery5") assert(checkpointStalls > 0, "checkpoint exhaustion was not exercised")
+        }
         if (test.image == "p1") {
           assert(Seq(4, 8, 12).forall(p => issuedPcs.contains(BigInt(p)) && finishedPcs.contains(BigInt(p))),
             "missing events in out-of-order evidence")
@@ -253,15 +366,15 @@ object ApeCoreSim extends App {
           dut.io.response.valid #= false
           assert(dut.io.halt.valid.toBoolean && !dut.io.launch.ready.toBoolean)
           assert(dut.io.halt.pc.toBigInt == stopPc && dut.io.halt.value.toBigInt == stopValue)
-          assert(!dut.io.memory.valid.toBoolean && !dut.io.retired.valid.toBoolean)
+          assert(!dut.io.memory.valid.toBoolean && !dut.io.retired.valid.toBoolean && !dut.io.completion.valid.toBoolean)
           edge()
         }
         dut.io.halt.ready #= true; edge(); dut.io.halt.ready #= false
-        reports += s"""{"name":"${test.name}","invocation":$invocation,"passed":true,"cycles":$cycle,"retired":${retiredPcs.size},"result":"$stopValue","memory_requests":${memoryRequests.size},"request_stall_cycles":$stalls,"command_writes":$commandWrites,"controls":$controls,"branches":$branches,"branch_misses":$branchMisses,"redirects":$redirects,"predicted_taken_branches":$predictedTakenBranches}"""
+        reports += s"""{"name":"${test.name}","invocation":$invocation,"passed":true,"cycles":$cycle,"retired":${retiredPcs.size},"result":"$stopValue","memory_requests":${memoryRequests.size},"request_stall_cycles":$stalls,"rename_stall_cycles":$renameStalls,"checkpoint_stall_cycles":$checkpointStalls,"execution_stall_cycles":$executionStalls,"generation_stall_cycles":$generationStalls,"max_execution_tokens":$maxExecutions,"issue_width":$issueWidth,"dual_issue_cycles":$dualIssueCycles,"issued_operations":$issuedOperations,"completion_stall_cycles":$completionStalls,"rob_stall_cycles":$robStalls,"accepted_completions":$acceptedCompletions,"late_rejected":$lateRejected,"rejected_after_slot_reuse":$rejectedAfterReuse,"physical_reuse_while_pending":$reusedPhysicalWhilePending,"canceled_at_stop":$canceledAtStop,"early_memory_redirects":$earlyMemoryRedirects,"target_issues_before_memory":$targetBeforeMemory,"commit_and_redirect":$concurrentCommitRedirects,"resolved_younger_squashes":$nestedResolvedSquashes,"command_writes":$commandWrites,"controls":$controls,"branches":$branches,"branch_misses":$branchMisses,"redirects":$redirects,"predicted_taken_branches":$predictedTakenBranches}"""
       }
     }
   }
-  writeFile("validation.json", s"""{"status":"passed","rob_entries":$entries,"prediction":"$mode","claim":"Generated RTL compared at retirement with a local sequential RV64I model; not full ISA conformance or big-core performance","scenarios":${tests.size},"runs":${reports.size},"results":[${reports.mkString(",")}]}
+  writeFile("validation.json", s"""{"status":"passed","rob_entries":$entries,"physical_registers":$physical,"prediction":"$mode","early_recovery":$early,"checkpoint_capacity":$checkpoints,"execution_stages":$executionStages,"generation_bits":$generationBits,"issue_width":$issueWidth,"recovery_suite":$recoverySuite,"claim":"Generated RTL compared at retirement with a local sequential RV64I model; not full ISA conformance or big-core performance","scenarios":${tests.size},"runs":${reports.size},"results":[${reports.mkString(",")}]}
 """)
   println(s"APE PASS: ${tests.size} scenarios, ${reports.size} invocations, ROB=$entries, prediction=$mode")
 }
