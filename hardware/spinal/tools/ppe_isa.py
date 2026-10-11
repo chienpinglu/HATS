@@ -1,4 +1,4 @@
-"""Original PPE-ISA-0.1 codec, assembler and independent functional reference.
+"""PPE-ISA-0.1 codec plus S04 AMOADD extension, assembler and functional reference.
 
 This executes an ISA model, not PPE RTL or a host-substitution execution backend.
 The model is the specification-side oracle for the subsequent SpinalHDL core.
@@ -11,12 +11,12 @@ OPS = {name: value for value, name in enumerate((
     "MOVI", "MOV", "ADD", "SUB", "AND", "OR", "XOR", "SHL", "SHR", "SAR", "LT", "LTU",
     "VMOVI", "VMOV", "VADD", "VSUB", "VAND", "VOR", "VXOR", "VSHL", "VSHR", "VSAR",
     "VCMPEQ", "VCMPLT", "VCMPLTU", "SELECT", "JMP", "JNZ", "SPLIT", "JOIN",
-    "LOAD", "STORE", "VLOAD", "VSTORE", "FENCE", "BARRIER", "RETURN"), 1)}
+    "LOAD", "STORE", "VLOAD", "VSTORE", "FENCE", "BARRIER", "RETURN", "AMOADD"), 1)}
 NAMES = {value: name for name, value in OPS.items()}
 SCALAR_BINARY = {"ADD", "SUB", "AND", "OR", "XOR", "SHL", "SHR", "SAR", "LT", "LTU"}
 VECTOR_BINARY = {"V" + n for n in ("ADD", "SUB", "AND", "OR", "XOR", "SHL", "SHR", "SAR")}
 COMPARE = {"VCMPEQ", "VCMPLT", "VCMPLTU"}
-MEMORY = {"LOAD", "STORE", "VLOAD", "VSTORE"}
+MEMORY = {"LOAD", "STORE", "VLOAD", "VSTORE", "AMOADD"}
 HEADER = struct.Struct("<8sHHIHHIII")
 
 
@@ -56,6 +56,9 @@ class Instruction:
             used = {"d", "width", "flags", "imm" if self.op.endswith("I") else "a"}
             if self.width not in (2, 3) or (self.flags & 1 and self.width != 2): raise ValueError("Invalid move width")
             if self.flags & 2 and self.op != "VMOV": raise ValueError("Broadcast only on VMOV register source")
+        elif self.op == "AMOADD":
+            used = {"d", "a", "b", "width", "imm"}
+            if self.width != 3 or self.flags: raise ValueError("AMOADD is an unflagged scalar 64-bit operation")
         elif self.op in MEMORY:
             used = {"d", "a", "width", "flags", "imm"}
             if self.op.startswith("V"): used.add("b")
@@ -188,6 +191,22 @@ class Memory:
         self.events.append({"address": address, "size": size, "store": store, "lane": lane, "value": value & ((1 << (size*8))-1), "error": 0})
         return value
 
+    def atomic_add(self, address, operand, lane=0):
+        size = 8
+        cause = (2 if address % size else 3 if not self.base <= address or address + size > self.base + len(self.data)
+                 or address + size > 1 << 64 or not self.writable else 4 if address in self.fail_addresses else 0)
+        if cause:
+            self.events.append({"address": address, "size": size, "store": True, "atomic": "add",
+                                "operand": operand & MASK, "lane": lane, "error": cause})
+            raise Fault(cause, address, 1 << lane)
+        offset = address - self.base
+        old = int.from_bytes(self.data[offset:offset+size], "little")
+        new = (old + operand) & MASK
+        self.data[offset:offset+size] = new.to_bytes(size, "little")
+        self.events.append({"address": address, "size": size, "store": True, "atomic": "add",
+                            "operand": operand & MASK, "old": old, "value": new, "lane": lane, "error": 0})
+        return old
+
 
 class Wave:
     def __init__(self, code, memory, argument=0, argument_bytes=0, group=0, groups=1, task=1):
@@ -265,19 +284,19 @@ class Wave:
                 if frame[4] and frame[1]: frame[4] = False; self.active = frame[1]; next_pc = frame[2]
                 else: self.active = frame[0]; self.stack.pop()
             elif op in MEMORY:
-                vector = op.startswith("V"); store = op.endswith("STORE")
+                vector = op.startswith("V"); atomic = op == "AMOADD"; store = op.endswith("STORE") or atomic
                 if not vector: self.uniform()
                 memory = self.scratch if i.flags & 2 else self.memory
                 loaded = []
                 for lane in lanes if vector else [0]:
                     address = self.scalar[i.a] + (self.vector[i.b][lane] if vector else 0) + i.imm
                     if not 0 <= address <= MASK: raise Fault(3, address & MASK, (1 << lane) if vector else 0)
-                    data = self.vector[i.d][lane] if vector else self.scalar[i.d]
-                    try: value = memory.access(address, 1 << i.width, store, data, lane)
+                    data = self.vector[i.d][lane] if vector else self.scalar[i.b] if atomic else self.scalar[i.d]
+                    try: value = memory.atomic_add(address, data, lane) if atomic else memory.access(address, 1 << i.width, store, data, lane)
                     except Fault as fault:
                         if not vector: fault.lanes = 0
                         raise
-                    if not store: loaded.append((lane, signed(value, 8 << i.width) & MASK if i.flags & 1 else value))
+                    if not store or atomic: loaded.append((lane, signed(value, 8 << i.width) & MASK if i.flags & 1 else value))
                 # All-lane register publication is delayed until every read succeeds.
                 for lane, value in loaded:
                     if vector: self.vector[i.d][lane] = value

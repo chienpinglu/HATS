@@ -120,10 +120,11 @@ FENCE is the profile's task-domain acquire/release operation; BARRIER is the
 single-wave group's drain/acquire/release operation. Both require full mask and
 empty stack. In the synchronous uncached reference they have no outstanding work
 to drain. RTL completes each memory instruction only after every selected lane
-drains; delayed-response tests require that no subsequent retirement, including
-a fence or barrier, occurs with an outstanding request. This verifies the
-declared single-wave ordering, **not coherence, multi-wave synchronization or
-CP publication**.
+drains; in the S04 cache hierarchy, they then wait for clean-only D-L1
+maintenance acknowledgement before retirement. Directed tests check backing
+memory visibility of accepted stores at retirement. This orders ordinary
+cacheable-RAM writeback; it does **not** provide coherence, multi-wave
+synchronization, atomic serialization, device ordering, or CP publication.
 
 ## Reference model and fault records
 

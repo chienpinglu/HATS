@@ -131,8 +131,11 @@ load speculation, store forwarding, disambiguation or replay.
   protocol; software cancellation cannot roll back those writes.
 - The memory service must be quiesced/reset along with the core. Late/duplicate
   responses, watchdog recovery and asynchronous cancellation are not supported.
-- FENCE is satisfied by head-only ordering on this single-hart port. This is not
-  a multi-agent coherence or complete RVWMO verification claim.
+- In the legacy `memoryHierarchy = None` profile, FENCE is satisfied by
+  head-only ordering. In the S04 hierarchy profile, it additionally waits for
+  clean-only D-L1 maintenance acknowledgement before retirement. This orders
+  ordinary cacheable-RAM writeback; it is not multi-agent coherence or complete
+  RVWMO verification.
 
 Instruction storage is an idle-loadable memory: 4 KiB in the standard profile,
 256 KiB in the real-tool profile. Every reachable word must be

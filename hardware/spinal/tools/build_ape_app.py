@@ -1,5 +1,6 @@
 """Build a real freestanding LP64 diff executable and byte-exact input cases."""
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import struct
@@ -18,6 +19,11 @@ def sha(path):
 
 
 def main():
+    global OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=OUT,
+                        help="output directory (default: build/ape_app)")
+    OUT = parser.parse_args().output.resolve()
     OUT.mkdir(parents=True, exist_ok=True)
     clang = find_tool("HATS_RV_CLANG", ["/opt/homebrew/opt/llvm/bin/clang", "clang"])
     ld = find_tool("HATS_RV_LD", ["/opt/homebrew/opt/llvm/bin/ld.lld", "/opt/homebrew/opt/lld/bin/ld.lld", "ld.lld"])

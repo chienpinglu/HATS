@@ -8,13 +8,16 @@
 #include <map>
 #include <stdexcept>
 #include <string>
+#include <vector>
+#include <iterator>
 
 class ApeEnvironment final : public simif_t {
  public:
   cfg_t cfg;
   std::map<size_t, processor_t*> harts;
-  std::array<uint8_t, 4096> code{};
-  std::array<uint8_t, 65536> data{};
+  std::vector<uint8_t> code = std::vector<uint8_t>(1 << 20);
+  std::vector<uint8_t> data = std::vector<uint8_t>(65536);
+  reg_t data_base = 0x10000;
   bool writable, bus_error;
 
   ApeEnvironment(bool w, bool e) : writable(w), bus_error(e) {
@@ -38,17 +41,17 @@ class ApeEnvironment final : public simif_t {
   }
   bool access(reg_t addr, size_t len, bool store, uint8_t* bytes) {
     // APE platform policy only. Alignment and instruction semantics belong to Spike.
-    if (addr < 0x10000 || addr >= 0x20000 || len > 0x20000 - addr ||
+    if (addr < data_base || addr - data_base > data.size() || len > data.size() - (addr - data_base) ||
         (store && !writable)) return false;
     if (len != 1 && len != 2 && len != 4 && len != 8)
       throw std::runtime_error("unsupported platform transaction width");
     uint64_t value = 0;
     if (store) {
       for (size_t i = 0; i < len; ++i) value |= uint64_t(bytes[i]) << (8*i);
-      if (!bus_error) for (size_t i = 0; i < len; ++i) data[addr-0x10000+i] = bytes[i];
+      if (!bus_error) for (size_t i = 0; i < len; ++i) data[addr-data_base+i] = bytes[i];
     } else if (!bus_error) {
       for (size_t i = 0; i < len; ++i) {
-        bytes[i] = data[addr-0x10000+i];
+        bytes[i] = data[addr-data_base+i];
         value |= uint64_t(bytes[i]) << (8*i);
       }
     }
@@ -66,21 +69,31 @@ class ApeEnvironment final : public simif_t {
 
 int main(int argc, char** argv) {
   try {
-    if (argc != 6 && argc != 8)
-      throw std::runtime_error("usage: adapter image.hex entry writable bus_error raw-log [data.bin argument]");
+    if (argc != 6 && argc != 8 && argc != 9 && argc != 10)
+      throw std::runtime_error("usage: adapter image.hex entry writable bus_error raw-log [data.bin argument [data-base]]");
     for (int i : {3, 4})
       if (std::string(argv[i]) != "0" && std::string(argv[i]) != "1") throw std::runtime_error("bad boolean");
     size_t consumed = 0;
     uint64_t entry = std::stoull(argv[2], &consumed, 10);
     if (consumed != std::string(argv[2]).size()) throw std::runtime_error("bad entry");
     ApeEnvironment env(std::string(argv[3]) == "1", std::string(argv[4]) == "1");
-    uint64_t argument = 0;
-    if (argc == 8) {
+  uint64_t argument = 0;
+  bool stop_at_parser_entry = false;
+    if (argc >= 8) {
       std::ifstream data(argv[6], std::ios::binary);
-      if (!data.read(reinterpret_cast<char*>(env.data.data()), env.data.size()) || data.peek() != EOF)
-        throw std::runtime_error("data image must contain exactly 65536 bytes");
+      if (!data) throw std::runtime_error("cannot open data image");
+      env.data.assign(std::istreambuf_iterator<char>(data), std::istreambuf_iterator<char>());
+      if (env.data.empty()) throw std::runtime_error("data image is empty");
       argument = std::stoull(argv[7], &consumed, 10);
       if (consumed != std::string(argv[7]).size()) throw std::runtime_error("bad argument");
+      if (argc == 9) {
+        env.data_base = std::stoull(argv[8], &consumed, 0);
+        if (consumed != std::string(argv[8]).size()) throw std::runtime_error("bad data base");
+      }
+      if (argc == 10) {
+        if (std::string(argv[9]) != "1") throw std::runtime_error("bad parser-entry mode");
+        stop_at_parser_entry = true;
+      }
     }
     std::ifstream input(argv[1]);
     if (!input) throw std::runtime_error("missing code image");
@@ -94,6 +107,9 @@ int main(int argc, char** argv) {
       for (size_t i = 0; i < 4; ++i) env.code[offset++] = word >> (8*i);
     }
     if (!offset) throw std::runtime_error("empty code image");
+    // Keep the architectural executable aperture equal to the loaded image;
+    // the larger vector is only a capacity for larger test images.
+    env.code.resize(offset);
     FILE* log = std::fopen(argv[5], "w");
     if (!log) throw std::runtime_error("cannot open raw Spike log");
     // Spike is responsible for decode, execution, register writes, PC and traps.
@@ -120,6 +136,11 @@ int main(int argc, char** argv) {
         return 0;
       }
       if (s->minstret->read() != before + 1) throw std::runtime_error("step retired multiple instructions");
+      if (stop_at_parser_entry && pc == 0x34) {
+        std::cout << "{\"kind\":\"parser_start\"}\n";
+        std::fflush(stdout);
+        return 0;
+      }
       unsigned rd = 0;
       for (const auto& pair : s->log_reg_write) {
         if ((pair.first & 15) == 0 && (pair.first >> 4) != 0) {

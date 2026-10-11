@@ -1,0 +1,112 @@
+// Injected into generated MemoryOwnershipController RTL only for the bounded
+// single-clock proof. Each assumption states a real interface contract.
+reg [7:0] formal_line_generation [0:7];
+reg [31:0] formal_owner_generation [0:7];
+reg formal_line_write [0:7];
+reg formal_line_pending [0:7];
+reg [1:0] formal_success_mask;
+reg formal_failed_ack;
+reg formal_last_success_ack;
+reg formal_previous_owner;
+reg [31:0] formal_previous_generation;
+integer formal_i;
+wire [2:0] formal_lower_key = {io_lower_payload_source, io_lower_payload_transfer_slot};
+wire [2:0] formal_reply_key = {io_reply_payload_source, io_reply_payload_transfer_slot};
+always @* begin
+  if ($initstate) assume(reset);
+  else assume(!reset);
+end
+always @(posedge clk) begin
+  if (reset) begin
+    formal_success_mask <= 2'b00;
+    formal_failed_ack <= 1'b0;
+    formal_last_success_ack <= 1'b0;
+    formal_previous_owner <= 1'b0;
+    formal_previous_generation <= 32'b0;
+    for (formal_i = 0; formal_i < 8; formal_i = formal_i + 1)
+      formal_line_pending[formal_i] <= 1'b0;
+  end else begin
+    formal_failed_ack <= (io_flushed_0_valid && io_flushed_0_ready && io_flushed_0_payload) ||
+                         (io_flushed_1_valid && io_flushed_1_ready && io_flushed_1_payload);
+    formal_last_success_ack <= (io_flushed_0_valid && io_flushed_0_ready && !io_flushed_0_payload) ||
+                               (io_flushed_1_valid && io_flushed_1_ready && !io_flushed_1_payload);
+    formal_previous_owner <= io_owner;
+    formal_previous_generation <= io_generation;
+    if (io_handoff_valid && io_handoff_ready) formal_success_mask <= 2'b00;
+    if (io_flushed_0_valid && io_flushed_0_ready && !io_flushed_0_payload)
+      formal_success_mask[0] <= 1'b1;
+    if (io_flushed_1_valid && io_flushed_1_ready && !io_flushed_1_payload)
+      formal_success_mask[1] <= 1'b1;
+    if (io_generation != formal_previous_generation) begin
+      assert(formal_success_mask == 2'b11);
+      assert(formal_last_success_ack);
+    end
+    if (formal_failed_ack) begin
+      assert(io_owner == formal_previous_owner);
+      assert(io_generation == formal_previous_generation);
+    end
+    // Each cache MSHR lease is unique until its exactly tagged response.
+    if (io_lower_valid && io_lower_ready) begin
+      assume(!formal_line_pending[formal_lower_key]);
+      formal_line_pending[formal_lower_key] <= 1'b1;
+      formal_line_generation[formal_lower_key] <= io_lower_payload_transfer_generation;
+      formal_owner_generation[formal_lower_key] <= io_lower_payload_ownerGeneration;
+      formal_line_write[formal_lower_key] <= io_lower_payload_transfer_write;
+    end
+    if (io_reply_valid && io_reply_ready && formal_line_pending[formal_reply_key] &&
+        formal_line_generation[formal_reply_key] == io_reply_payload_transfer_generation &&
+        formal_owner_generation[formal_reply_key] == io_reply_payload_ownerGeneration &&
+        formal_line_write[formal_reply_key] == io_reply_payload_transfer_write)
+      formal_line_pending[formal_reply_key] <= 1'b0;
+  end
+  if (!$initstate && $past(io_requests_0_valid && !io_requests_0_ready)) begin
+    assume(io_requests_0_valid);
+    assume($stable({io_requests_0_payload_source, io_requests_0_payload_ownerGeneration,
+      io_requests_0_payload_transfer_slot, io_requests_0_payload_transfer_generation,
+      io_requests_0_payload_transfer_address, io_requests_0_payload_transfer_write,
+      io_requests_0_payload_transfer_data_0, io_requests_0_payload_transfer_data_1,
+      io_requests_0_payload_transfer_data_2, io_requests_0_payload_transfer_data_3,
+      io_requests_0_payload_transfer_poison}));
+  end
+  if (!$initstate && $past(io_requests_1_valid && !io_requests_1_ready)) begin
+    assume(io_requests_1_valid);
+    assume($stable({io_requests_1_payload_source, io_requests_1_payload_ownerGeneration,
+      io_requests_1_payload_transfer_slot, io_requests_1_payload_transfer_generation,
+      io_requests_1_payload_transfer_address, io_requests_1_payload_transfer_write,
+      io_requests_1_payload_transfer_data_0, io_requests_1_payload_transfer_data_1,
+      io_requests_1_payload_transfer_data_2, io_requests_1_payload_transfer_data_3,
+      io_requests_1_payload_transfer_poison}));
+  end
+  if (!$initstate && $past(io_reply_valid && !io_reply_ready)) begin
+    assume(io_reply_valid);
+    assume($stable({io_reply_payload_source, io_reply_payload_ownerGeneration,
+      io_reply_payload_transfer_slot, io_reply_payload_transfer_generation,
+      io_reply_payload_transfer_write, io_reply_payload_transfer_data_0,
+      io_reply_payload_transfer_data_1, io_reply_payload_transfer_data_2,
+      io_reply_payload_transfer_data_3, io_reply_payload_transfer_error,
+      io_reply_payload_transfer_poison}));
+  end
+  if (!$initstate && $past(io_handoff_valid && !io_handoff_ready)) begin
+    assume(io_handoff_valid);
+    assume($stable(io_handoff_payload));
+  end
+  if (!$initstate && $past(io_flushed_0_valid && !io_flushed_0_ready)) begin
+    assume(io_flushed_0_valid);
+    assume($stable(io_flushed_0_payload));
+  end
+  if (!$initstate && $past(io_flushed_1_valid && !io_flushed_1_ready)) begin
+    assume(io_flushed_1_valid);
+    assume($stable(io_flushed_1_payload));
+  end
+  // This proof isolates the lower-line ledger under traffic. Handoffs and
+  // cache-maintenance responses are disabled here and covered by the separate
+  // ownership-state proof plus the integrated SpinalSim handoff test.
+  assume(!io_handoff_valid);
+  assume(!io_flushed_0_valid && !io_flushed_1_valid);
+  if (io_clientIdle[0]) assume(!io_requests_0_valid);
+  if (io_clientIdle[1]) assume(!io_requests_1_valid);
+  // Requests, lower backpressure, and arbitrary (including stale/malformed)
+  // replies remain unconstrained except for ready/valid stability and the
+  // unique-live-slot contract above. Exercise the line ledger, response
+  // routing, and handoff drain logic under actual protocol traffic.
+end

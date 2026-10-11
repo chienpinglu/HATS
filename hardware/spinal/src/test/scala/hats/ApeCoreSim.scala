@@ -51,16 +51,20 @@ object ApeCoreSim extends App {
   val tests = if (recoverySuite) recoveryNames.zipWithIndex.map { case (name, i) =>
     Test(name, s"recovery$i", cause = if (i == 3) 5 else if (i == 4) 0 else 3, busError = i == 3, expected = Some(BigInt(42)))
   } else standardTests
-  val out = Paths.get(if (widthVariant) s"build/ape_multi/core/r$entries-$mode-p$physical-c$checkpoints-d$executionStages-g$generationBits-w$issueWidth-${if (recoverySuite) "recovery" else "standard"}"
+  val defaultOutput = if (widthVariant) s"build/ape_multi/core/r$entries-$mode-p$physical-c$checkpoints-d$executionStages-g$generationBits-w$issueWidth-${if (recoverySuite) "recovery" else "standard"}"
     else if (pipelineVariant) s"build/ape_execution/core/r$entries-$mode-p$physical-c$checkpoints-d$executionStages-g$generationBits-${if (recoverySuite) "recovery" else "standard"}"
     else if (focused) s"build/ape_recovery/r$entries-$mode-p$physical-c$checkpoints-${if (early) "early" else "retire"}${if (recoverySuite) "-witness" else ""}"
-    else if (pressure) s"build/ape_pressure/r$entries-$mode-p$physical" else s"build/ape/r$entries-$mode")
+    else if (pressure) s"build/ape_pressure/r$entries-$mode-p$physical" else s"build/ape/r$entries-$mode"
+  // Later stages must not overwrite the accepted S03 simulation evidence.
+  val out = Paths.get(args.lift(9).getOrElse(defaultOutput))
+  val programRoot = Paths.get(args.lift(10).getOrElse("."))
   Files.createDirectories(out)
   def writeFile(name: String, content: String): Unit =
     Files.write(out.resolve(name), content.getBytes(StandardCharsets.UTF_8))
   writeFile("validation.json", "{\"status\":\"running\"}\n")
-  val compiled = SimConfig.withVerilator.withWave.addSimulatorFlag("-CFLAGS -DWData=EData")
-    .workspacePath(if (pressure) out.resolve("sim").toString else s"build/ape/sim/r$entries-$mode")
+  val simWorkspace = if (pressure || args.length >= 10) out.resolve("sim") else Paths.get(s"build/ape/sim/r$entries-$mode")
+  val compiled = SimConfig.withVerilator.withWave.addSimulatorFlag("-MAKEFLAGS -j1").addSimulatorFlag("-CFLAGS -DWData=EData")
+    .workspacePath(simWorkspace.toString)
     .compile(new ApeCore(ApeConfig(robEntries = entries, prediction = prediction, physicalRegisters = physical,
       earlyRecovery = early, branchCheckpoints = checkpoints, executionStages = executionStages, generationBits = generationBits, issueWidth = issueWidth)))
   val reports = mutable.ArrayBuffer[String]()
@@ -68,7 +72,7 @@ object ApeCoreSim extends App {
   tests.zipWithIndex.foreach { case (test, testIndex) =>
     compiled.doSim(test.name, seed = testIndex + 1) { dut =>
       val rng = new Random(testIndex + 1)
-      val source = scala.io.Source.fromFile(s"build/${if (recoverySuite) "ape_recovery" else "ape"}/programs/${test.image}.hex")
+      val source = scala.io.Source.fromFile(programRoot.resolve(s"build/${if (recoverySuite) "ape_recovery" else "ape"}/programs/${test.image}.hex").toFile)
       val program = try source.getLines().map(java.lang.Long.parseLong(_, 16)).toVector finally source.close()
       dut.clockDomain.clockSim #= false
       dut.clockDomain.assertReset()
@@ -376,5 +380,6 @@ object ApeCoreSim extends App {
   }
   writeFile("validation.json", s"""{"status":"passed","rob_entries":$entries,"physical_registers":$physical,"prediction":"$mode","early_recovery":$early,"checkpoint_capacity":$checkpoints,"execution_stages":$executionStages,"generation_bits":$generationBits,"issue_width":$issueWidth,"recovery_suite":$recoverySuite,"claim":"Generated RTL compared at retirement with a local sequential RV64I model; not full ISA conformance or big-core performance","scenarios":${tests.size},"runs":${reports.size},"results":[${reports.mkString(",")}]}
 """)
+  ApeSimArtifactCleanup.discardVerilatorBuildTree(simWorkspace, "ApeCore")
   println(s"APE PASS: ${tests.size} scenarios, ${reports.size} invocations, ROB=$entries, prediction=$mode")
 }

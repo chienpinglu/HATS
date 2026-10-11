@@ -7,7 +7,7 @@ import spinal.core._
   */
 object ApeOp extends SpinalEnum {
   val ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND,
-      CONSTANT, PC_ADD, BRANCH, JUMP_RELATIVE, JUMP_REGISTER, LOAD, STORE,
+      CONSTANT, PC_ADD, BRANCH, JUMP_RELATIVE, JUMP_REGISTER, LOAD, STORE, ATOMIC_ADD_D,
       FENCE, BREAK, ILLEGAL = newElement()
 }
 

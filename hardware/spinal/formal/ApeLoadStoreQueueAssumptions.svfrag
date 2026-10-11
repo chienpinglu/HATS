@@ -1,0 +1,12 @@
+// The real ApeCore wires each ROB row's identity.slot to that row index.
+// This is the only input assumption needed for the LSQ's owner-uniqueness proof.
+always @* begin
+  assume(io_rows_0_identity_slot == 3'd0);
+  assume(io_rows_1_identity_slot == 3'd1);
+  assume(io_rows_2_identity_slot == 3'd2);
+  assume(io_rows_3_identity_slot == 3'd3);
+  assume(io_rows_4_identity_slot == 3'd4);
+  assume(io_rows_5_identity_slot == 3'd5);
+  assume(io_rows_6_identity_slot == 3'd6);
+  assume(io_rows_7_identity_slot == 3'd7);
+end

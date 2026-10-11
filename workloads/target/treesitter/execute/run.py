@@ -65,12 +65,13 @@ def expected_helpers(v):
 
 
 class Execution:
-    def __init__(self):
+    def __init__(self, output_root=None):
         self.libc = newlib.check(); self.reference = spike.check()
         self.runtime, self.grammar = native.sources()
         if native.fixture_manifest() != json.loads((native.ROOT / "cases.lock.json").read_text()):
             raise ValueError("Frozen fixtures changed")
-        self.out = WORKLOADS / "results" / f"s02-treesitter-{time.time_ns()}"; self.out.mkdir(parents=True)
+        self.out = Path(output_root).resolve() if output_root else WORKLOADS / "results" / f"s02-treesitter-{time.time_ns()}"
+        self.out.mkdir(parents=True, exist_ok=False)
         self.cc = newlib.tool("clang")
         includes = [ROOT, newlib.BUILD / "riscv64-unknown-elf/newlib/targ-include", newlib.source() / "newlib/libc/include",
                     self.runtime / "lib/include", self.runtime / "lib/src", self.grammar / "src"]
@@ -93,8 +94,10 @@ class Execution:
 
     def command(self, cmd, timeout=180):
         self.report["commands"].append([str(p).replace(str(REPO), "${HATS_ROOT}") for p in cmd])
+        env = {"PATH": "/opt/homebrew/bin:/usr/bin:/bin", "LC_ALL": "C", "TMPDIR": str(self.out / "tmp")}
+        Path(env["TMPDIR"]).mkdir(exist_ok=True)
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout,
-                              env={"PATH": "/opt/homebrew/bin:/usr/bin:/bin", "LC_ALL": "C"})
+                              env=env)
         if proc.returncode: raise RuntimeError(f"Command failed: {cmd}\n{proc.stderr[-8000:]}")
         return proc
 
@@ -187,6 +190,11 @@ class Execution:
                 if trace and len(first) + len(second) > 4096: raise ValueError("Text traces limited to small fixtures; avoid accidental multi-GB output")
                 args = (image.MAGIC, int(kind == "incremental"), len(first), len(second), image.HEAP_BYTES, image.OUTPUT_BYTES, 0, 0)
                 output, stats = self.invoke(exe, parser, name + "-" + kind, args, first, second, limit, trace)
+                # Build a second Spike-authoritative prefix through startup and
+                # the BSS clear, stopping at the first parser instruction. This
+                # supplies an explicitly labelled warm-start image for the much
+                # slower cache RTL integration; the direct RTL still checks cold
+                # startup and the original complete architectural trace.
                 result = decode_result(output)
                 if stats["result"] or result["status"]: raise ValueError("Target program failed")
                 checked = native.check_output(second if kind == "incremental" else first, result)

@@ -105,12 +105,12 @@ class ApeExecute(c: ApeConfig) extends Component {
   }
   when(x.op === ApeOp.JUMP_REGISTER) { calculated.next := (a + x.immediate) & x.indirectTargetMask }
   calculated.control := x.op === ApeOp.BRANCH || x.op === ApeOp.JUMP_RELATIVE || x.op === ApeOp.JUMP_REGISTER
-  calculated.memory := x.op === ApeOp.LOAD || x.op === ApeOp.STORE
-  calculated.address := a + x.immediate
+  calculated.memory := x.op === ApeOp.LOAD || x.op === ApeOp.STORE || x.op === ApeOp.ATOMIC_ADD_D
+  calculated.address := Mux(x.op === ApeOp.ATOMIC_ADD_D, a, a + x.immediate)
   val bytes = (U(1, 65 bits) |<< x.memorySize).resize(65)
   val misaligned = (calculated.address.resize(65) & (bytes - 1)) =/= 0
   val illegalAccess = calculated.address < x.base || calculated.address.resize(65) + bytes > x.limit.resize(65) ||
-    (x.op === ApeOp.STORE && !x.writable)
+    ((x.op === ApeOp.STORE || x.op === ApeOp.ATOMIC_ADD_D) && !x.writable)
   val targetMisaligned = (calculated.next & x.alignmentMask) =/= 0
   calculated.faultKind := x.faultKind
   when(!x.fault) {

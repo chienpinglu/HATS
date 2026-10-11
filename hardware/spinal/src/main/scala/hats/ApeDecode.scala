@@ -15,7 +15,9 @@ case class ApeDecodedOp() extends Bundle {
   val loadSigned = Bool()
 }
 
-/** Public RV64I encodings only. C/M/A/F/D, CSR and privileged instructions trap. */
+/** Public RV64I encodings plus aligned RV64A AMOADD.D. Other C/M/A/F/D, CSR
+  * and privileged instructions trap.
+  */
 class ApeDecode(inst: Bits) extends Area {
   val decoded = ApeDecodedOp()
   val op = decoded.op
@@ -97,6 +99,12 @@ class ApeDecode(inst: Bits) extends Area {
     is(0x23) {
       op := ApeOp.STORE; valid := f3 <= 3; use1 := True; use2 := True
       imm := (inst(31 downto 25) ## inst(11 downto 7)).asSInt.resize(64).asUInt
+    }
+    is(0x2f) {
+      // aq/rl are accepted; the LSQ serializes AMOADD.D against other memory
+      // operations, which is stronger than either requested ordering bit.
+      op := ApeOp.ATOMIC_ADD_D; valid := f3 === 3 && inst(31 downto 27) === 0
+      writes := True; use1 := True; use2 := True; imm := 0
     }
     is(0x0f) { op := ApeOp.FENCE; valid := f3 === 0 }
     is(0x73) { when(inst === B(0x00100073L, 32 bits)) { op := ApeOp.BREAK; valid := True } }

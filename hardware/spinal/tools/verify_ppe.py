@@ -15,7 +15,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def sha(path):
-    with path.open("rb") as f: return hashlib.file_digest(f, "sha256").hexdigest()
+    with path.open("rb") as f:
+        digest = hashlib.sha256()
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            digest.update(chunk)
+        return digest.hexdigest()
 
 
 def compare(folder, invocation):

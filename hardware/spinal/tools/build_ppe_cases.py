@@ -5,7 +5,7 @@ from pathlib import Path
 import random
 import struct
 import ppe_isa as p
-from ppe_programs import delimiter_candidates
+from ppe_programs import delimiter_candidates, vector_relu_epilogue
 
 
 def op(name, **fields): return name, fields
@@ -121,6 +121,19 @@ def cases():
         for group in range(max(1, (len(raw)+7)//8)):
             result.append((f"delimiter_{size}_g{group}", delimiter_candidates(), bytes(data),
                            {"argumentBytes": 24, "group": group, "groups": max(1, (len(raw)+7)//8)}))
+    # HATS-authored vector inference epilogue: residual+bias followed by ReLU.
+    # Use one common 256-element input and 32 separately launched PPE groups;
+    # every group has its own exact architectural/final-byte reference run.
+    ai_data = bytearray(b"\xa5" * 4096)
+    struct.pack_into("<4Q", ai_data, 0, 256, 1280, 2304, 256)
+    for index in range(256):
+        left = ((index * 37 + 11) % 101) - 50
+        right = ((index * 19 + 7) % 71) - 35
+        struct.pack_into("<i", ai_data, 256 + index*4, left)
+        struct.pack_into("<i", ai_data, 1280 + index*4, right)
+    for group in range(32):
+        result.append((f"ai_relu_256_g{group}", vector_relu_epilogue(), bytes(ai_data),
+                       {"argumentBytes": 24, "group": group, "groups": 32}))
     rng = random.Random(0x48415453)
     for sample in range(8):
         items = [op("MOVI", d=r, imm=rng.randrange(-(1 << 31), 1 << 31)) for r in range(8, 32)]

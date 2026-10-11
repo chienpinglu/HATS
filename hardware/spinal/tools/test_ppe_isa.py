@@ -187,6 +187,21 @@ class WaveTests(unittest.TestCase):
         self.assertFalse(w.memory.events)
         self.assertEqual(w.scalar[8], 0)
 
+    def test_s04_scalar_atomic_add_architecture_and_faults(self):
+        memory = p.Memory(struct.pack("<Q", 10), base=0x1000)
+        w = self.run_code([op("MOVI", d=8, imm=0x1000), op("MOVI", d=9, imm=3),
+                           op("AMOADD", d=10, a=8, b=9), op("RETURN", a=10)], memory)
+        self.assertEqual(w.completion["status"], "success")
+        self.assertEqual((w.scalar[10], struct.unpack("<Q", memory.data)[0]), (10, 13))
+        self.assertEqual(memory.events[-1], {"address": 0x1000, "size": 8, "store": True,
+            "atomic": "add", "operand": 3, "old": 10, "value": 13, "lane": 0, "error": 0})
+        for instruction in (p.Instruction("AMOADD", width=2), p.Instruction("AMOADD", flags=1)):
+            with self.subTest(instruction=instruction), self.assertRaises(ValueError): instruction.encode()
+        readonly = p.Memory(struct.pack("<Q", 21), base=0x1000, writable=False)
+        w = self.run_code([op("MOVI", d=8, imm=0x1000), op("MOVI", d=9, imm=5),
+                           op("AMOADD", d=10, a=8, b=9), op("RETURN")], readonly)
+        self.assertEqual((w.completion["cause"], w.scalar[10], readonly.data), (3, 0, struct.pack("<Q", 21)))
+
     def test_vector_arithmetic_matches_independent_values(self):
         expected = {"VADD": 5, "VSUB": p.MASK-8, "VAND": 6, "VOR": p.MASK, "VXOR": p.MASK-6,
                     "VSHL": (-2 << 7) & p.MASK, "VSHR": (p.MASK-1) >> 7, "VSAR": p.MASK}

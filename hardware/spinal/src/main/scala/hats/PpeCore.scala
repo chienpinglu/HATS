@@ -3,12 +3,15 @@ package hats
 import spinal.core._
 import spinal.lib._
 
-case class PpeConfig(programWords: Int = 1024) {
+case class PpeConfig(programWords: Int = 1024, memoryHierarchy: Option[MemoryHierarchyConfig] = None,
+                     instructionCache: Boolean = false, instructionBase: BigInt = 0x100000) {
   require(programWords >= 16 && programWords <= 65536 && isPow2(programWords))
+  require(!instructionCache || memoryHierarchy.isDefined)
+  require(instructionBase >= 0 && instructionBase % 128 == 0 && instructionBase + programWords*8 < (BigInt(1) << 64))
   val codeBits = log2Up(programWords)
 }
 
-/** Independent hardware decoder for the original PPE-ISA-0.1 encoding. */
+/** Independent hardware decoder for PPE-ISA-0.1 plus the scoped S04 AMOADD extension. */
 class PpeDecode(inst: Bits) extends Area {
   val op = inst(7 downto 0).asUInt
   val d = inst(12 downto 8).asUInt
@@ -19,8 +22,9 @@ class PpeDecode(inst: Bits) extends Area {
   val flags = inst(29 downto 28)
   val immediate = inst(63 downto 32).asSInt
   val vector = (op >= 13 && op <= 26) || op === 33 || op === 34
-  val memory = op >= 31 && op <= 34
-  val store = op === 32 || op === 34
+  val atomicAdd = op === 38
+  val memory = (op >= 31 && op <= 34) || atomicAdd
+  val store = op === 32 || op === 34 || atomicAdd
   val compare = op >= 23 && op <= 25
   val scalarWrite = op >= 1 && op <= 12
   val arithmetic = op >= 1 && op <= 26
@@ -53,6 +57,8 @@ class PpeDecode(inst: Bits) extends Area {
     is(31, 32) { allowed := B(fields("d", "a", "w", "f", "i"), 64 bits); encoding := True }
     is(33, 34) { allowed := B(fields("d", "a", "b", "w", "f", "i"), 64 bits); encoding := True }
     is(37) { allowed := B(fields("a"), 64 bits); encoding := True }
+    // S04 extension: scalar, naturally aligned 64-bit atomic fetch-add.
+    is(38) { allowed := B(fields("d", "a", "b", "w", "i"), 64 bits); encoding := width === 3 && flags === 0 }
   }
   val legal = encoding && (inst & ~allowed) === 0 &&
     (!arithmetic || ((width === 2 || width === 3) && (!flags(0) || width === 2))) &&
@@ -60,12 +66,14 @@ class PpeDecode(inst: Bits) extends Area {
 }
 
 object PpeState extends SpinalEnum {
-  val IDLE, CLEAR, FETCH, EXECUTE, LANE, SEND, WAIT, LOAD_COMMIT, RETIRE, HALT = newElement()
+  val IDLE, CLEAR, FETCH, EXECUTE, LANE, SEND, WAIT, MEMORY_BEGIN, MEMORY_WAIT, LOAD_COMMIT,
+      FENCE_BEGIN, FENCE_WAIT, RETIRE, DRAIN, HALT = newElement()
 }
 
 /** One resident wave, eight logical lanes; original integer PPE implementation.
   * Code registration/structured-region validation is a trusted loader obligation.
-  * Global memory is one-outstanding, tagged, uncached; scratch is separate.
+  * The default profile retains serial uncached transport; the optional hierarchy
+  * profile uses coalesced word traffic and a four-bank scratchpad.
   * Architectural inspection ports are verification collateral, not a chip pinout.
   */
 class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
@@ -106,7 +114,7 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
       val address, data = UInt(64 bits)
       val size = UInt(2 bits)
       val lane = UInt(3 bits)
-      val write, scratch = Bool()
+      val write, scratch, atomicAdd = Bool()
       val error = UInt(4 bits)
     })
     val scalar = out Vec(UInt(64 bits), 32)
@@ -117,12 +125,23 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
     val inspectScratch = in UInt(9 bits)
     val scratchData = out Bits(64 bits)
     val busy, waiting = out Bool()
+    val cacheRequest = c.memoryHierarchy.map(m => master Stream(CacheWordRequest(m))).orNull
+    val cacheResponse = c.memoryHierarchy.map(m => slave Stream(CacheWordResponse(m))).orNull
+    val systemFence = c.memoryHierarchy.map(_ => master Stream(Bool())).orNull
+    val systemFenceResult = c.memoryHierarchy.map(_ => slave Stream(Bool())).orNull
+    val memoryOutstanding = c.memoryHierarchy.map(_ => out UInt(4 bits)).orNull
+    val memoryWords, memoryLanes, memoryRejected, scratchParallel = c.memoryHierarchy.map(_ => out UInt(64 bits)).orNull
+    val fetchRequest = if (c.instructionCache) master Stream(CacheWordRequest(c.memoryHierarchy.get)) else null
+    val fetchResponse = if (c.instructionCache) slave Stream(CacheWordResponse(c.memoryHierarchy.get)) else null
+    val instructionInvalidate = if (c.instructionCache) in Bool() else null
+    val fetchRequests, fetchDiscarded, fetchFaults = out UInt(64 bits)
   }
   val state = Reg(PpeState()) init PpeState.IDLE
-  val code = Mem(Bits(64 bits), c.programWords)
-  io.program.ready := state === PpeState.IDLE && !io.launch.valid
-  when(io.program.fire) { code.write(io.program.index, io.program.instruction) }
-  io.launch.ready := state === PpeState.IDLE
+  val code = if (!c.instructionCache) Mem(Bits(64 bits), c.programWords) else null
+  val fetchIdle, fetchAvailable, fetchError = Bool()
+  io.program.ready := state === PpeState.IDLE && !io.launch.valid && fetchIdle
+  if (code != null) when(io.program.fire) { code.write(io.program.index, io.program.instruction) }
+  io.launch.ready := state === PpeState.IDLE && fetchIdle
   val s = Vec.fill(32)(Reg(UInt(64 bits)) init 0)
   val v = Vec.fill(32)(Vec.fill(8)(Reg(UInt(64 bits)) init 0))
   val predicate = Vec.fill(8)(Reg(Bits(8 bits)) init 0)
@@ -132,15 +151,17 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
   val frameElse, frameJoin = Vec.fill(8)(Reg(UInt(32 bits)) init 0)
   val frameThen = Vec.fill(8)(RegInit(False))
   val top = (depth - 1).resize(3)
-  val scratch = Mem(Bits(64 bits), 512)
+  val scratch = if (c.memoryHierarchy.isEmpty) Mem(Bits(64 bits), 512) else null
   val clearIndex = Reg(UInt(9 bits)) init 0
   val scratchAddress = UInt(9 bits)
   val scratchWrite = Bool()
   val scratchWriteData = Bits(64 bits)
   val scratchMask = Bits(8 bits)
   scratchAddress := 0; scratchWrite := False; scratchWriteData := 0; scratchMask := 0
-  scratch.write(scratchAddress, scratchWriteData, scratchWrite, scratchMask)
-  io.scratchData := scratch.readAsync(io.inspectScratch)
+  if (scratch != null) {
+    scratch.write(scratchAddress, scratchWriteData, scratchWrite, scratchMask)
+    io.scratchData := scratch.readAsync(io.inspectScratch)
+  }
   val task, epoch, base, limit, ticks = Reg(UInt(64 bits)) init 0
   val addressSpace, generation, count, reservation, transaction = Reg(UInt(32 bits)) init 0
   val writable, expired = RegInit(False)
@@ -160,7 +181,7 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
   def bytePc(value: UInt): UInt = (value.resize(64) << 3).resize(64)
   def fault(reason: Int, address: UInt = U(0, 64 bits), mask: Bits = B(0, 8 bits)): Unit = {
     status := 2; cause := reason; faultPc := bytePc(pc); faultAddress := address; faultMask := mask
-    resultValue := 0; state := PpeState.HALT
+    resultValue := 0; state := (if (c.instructionCache) PpeState.DRAIN else PpeState.HALT)
   }
   def retire(): Unit = { state := PpeState.RETIRE }
   def finishLane(): Unit = { lane := Mux(dec.vector, lane + 1, U(8, 4 bits)); state := PpeState.LANE }
@@ -181,8 +202,8 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
     is(1) { dataMask := 0xffff }
     is(2) { dataMask := U(BigInt("ffffffff", 16), 64 bits) }
   }
-  val storeValue = Mux(dec.vector, v(dec.d)(laneId), s(dec.d)) & dataMask
-  val scratchWord = scratch.readAsync(address(11 downto 3))
+  val storeValue = Mux(dec.atomicAdd, s(dec.b), Mux(dec.vector, v(dec.d)(laneId), s(dec.d))) & dataMask
+  val scratchWord = if (scratch != null) scratch.readAsync(address(11 downto 3)) else B(0, 64 bits)
   val shift = (address(2 downto 0) << 3).resize(6)
   val scratchValue = (scratchWord.asUInt |>> shift) & dataMask
   def extend(value: UInt): UInt = {
@@ -203,7 +224,7 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
   io.scalar := s; io.vector := v; io.predicate := predicate
   io.activeMask := active; io.depth := depth
   io.busy := state =/= PpeState.IDLE
-  io.waiting := state === PpeState.WAIT
+  io.waiting := state === PpeState.WAIT || state === PpeState.MEMORY_WAIT || state === PpeState.DRAIN
   io.completion.valid := state === PpeState.HALT
   io.completion.task := task; io.completion.epoch := epoch; io.completion.value := resultValue
   io.completion.pc := faultPc; io.completion.address := faultAddress
@@ -213,7 +234,17 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
   io.retired.instruction := inst; io.retired.mask := instMask
   io.access.valid := False; io.access.address := 0; io.access.data := 0
   io.access.size := dec.width; io.access.lane := 0; io.access.write := dec.store
-  io.access.scratch := dec.flags(1); io.access.error := 0
+  io.access.scratch := dec.flags(1); io.access.atomicAdd := dec.atomicAdd; io.access.error := 0
+  if (c.memoryHierarchy.nonEmpty) {
+    io.systemFence.valid := state === PpeState.FENCE_BEGIN
+    io.systemFence.payload := False // clean-only; ordinary cacheable RAM scope
+    when(io.systemFence.fire) { state := PpeState.FENCE_WAIT }
+    io.systemFenceResult.ready := state === PpeState.FENCE_WAIT
+    when(io.systemFenceResult.fire) {
+      when(io.systemFenceResult.payload) { fault(4) }
+        .otherwise { state := PpeState.RETIRE }
+    }
+  }
   io.memory.valid := state === PpeState.SEND
   io.memory.task := task; io.memory.epoch := epoch
   io.memory.addressSpace := addressSpace; io.memory.generation := generation
@@ -223,14 +254,91 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
   io.response.ready := True // Consume stale replies without publishing effects.
   val matching = io.response.task === task && io.response.epoch === epoch &&
     io.response.addressSpace === addressSpace && io.response.generation === generation && io.response.transaction === transaction
-  val fetched = code.readAsync(pc.resize(c.codeBits))
   val timedOut = expired || ticks === 0
+  val fetched = Bits(64 bits)
+  if (c.instructionCache) {
+    val fetch = new CachedInstructionFetch(c.memoryHierarchy.get)
+    fetch.io.pc := U(c.instructionBase, 64 bits) + bytePc(pc)
+    fetch.io.accessible := pc < count && active.orR
+    fetch.io.enable := state === PpeState.FETCH && !timedOut
+    fetch.io.clear := io.instructionInvalidate || io.launch.fire
+    io.fetchRequest <> fetch.io.request; fetch.io.response <> io.fetchResponse
+    fetched := fetch.io.word; fetchIdle := fetch.io.idle
+    fetchAvailable := fetch.io.available; fetchError := fetch.io.error
+    io.fetchRequests := fetch.io.requests; io.fetchDiscarded := fetch.io.discarded; io.fetchFaults := fetch.io.faults
+  } else {
+    fetched := code.readAsync(pc.resize(c.codeBits))
+    fetchIdle := True; fetchAvailable := True; fetchError := False
+    io.fetchRequests := 0; io.fetchDiscarded := 0; io.fetchFaults := 0
+  }
+  val hierarchy = c.memoryHierarchy.map { m => new Area {
+    val memory = new PpeMemoryEngine(m)
+    val banks = new BankedScratchpad(m)
+    io.cacheRequest <> memory.io.request; memory.io.response <> io.cacheResponse
+    for (b <- 0 until 4) {
+      banks.io.request(b) <> memory.io.scratchRequest(b)
+      memory.io.scratchResponse(b) <> banks.io.response(b)
+    }
+    banks.io.clear := state === PpeState.CLEAR && !timedOut
+    banks.io.clearRow := clearIndex.resize(7)
+    banks.io.inspect := io.inspectScratch; io.scratchData := banks.io.data
+    io.memoryOutstanding := memory.io.outstanding
+    io.memoryWords := memory.io.words; io.memoryLanes := memory.io.lanes
+    io.memoryRejected := memory.io.rejectedReplies; io.scratchParallel := memory.io.bankParallelCycles
+    memory.io.cancel := timedOut
+    memory.io.instruction.valid := state === PpeState.MEMORY_BEGIN && !timedOut
+    memory.io.instruction.mask := Mux(dec.vector, active, B(1, 8 bits))
+    memory.io.instruction.width := dec.width
+    memory.io.instruction.write := dec.store; memory.io.instruction.atomicAdd := dec.atomicAdd
+    memory.io.instruction.scratch := dec.flags(1)
+    for (n <- 0 until 8) {
+      val full = s(dec.a).resize(66).asSInt +
+        Mux(dec.vector, v(dec.b)(n), U(0, 64 bits)).resize(66).asSInt + dec.immediate.resize(66)
+      val a = full.asUInt.resize(64)
+      val overflow = full < 0 || full.asUInt > U((BigInt(1) << 64) - 1, 66 bits)
+      val aligned = (a & (bytes.resize(64) - 1)) === 0
+      val end = a.resize(65) + bytes.resize(65)
+      val valid = Mux(dec.flags(1), end <= reservation.resize(65),
+        a >= base && end <= limit.resize(65) && (!dec.store || writable))
+      memory.io.instruction.address(n) := a
+      memory.io.instruction.data(n) := Mux(dec.atomicAdd, s(dec.b), Mux(dec.vector, v(dec.d)(n), s(dec.d))) & dataMask
+      memory.io.instruction.report(n) := !overflow
+      memory.io.instruction.error(n) := Mux(overflow, U(3, 4 bits),
+        Mux(!aligned, U(2, 4 bits), Mux(!valid, U(3, 4 bits), U(0, 4 bits))))
+    }
+    memory.io.access.ready := state === PpeState.MEMORY_WAIT
+    memory.io.finished.ready := state === PpeState.MEMORY_WAIT
+    when(memory.io.access.fire) {
+      val a = memory.io.access
+      when(a.report) { event(a.address, Mux(dec.atomicAdd, s(dec.b), a.data), a.lane, a.error) }
+      when(a.error =/= 0) {
+        status := 2; cause := a.error; faultPc := bytePc(pc); faultAddress := a.address
+        faultMask := Mux(dec.vector, B(1, 8 bits) |<< a.lane, B(0, 8 bits)); resultValue := 0
+      }.otherwise {
+        when(dec.atomicAdd) { s(dec.d) := a.data }
+          .elsewhen(!dec.store) { buffered(a.lane) := extend(a.data) }
+      }
+    }
+    when(state === PpeState.MEMORY_BEGIN) {
+      when(timedOut) { fault(5) }
+        .elsewhen(memory.io.instruction.fire) { state := PpeState.MEMORY_WAIT }
+    }
+    when(memory.io.finished.fire) {
+      when(memory.io.finished.failed) { state := PpeState.HALT }
+        .elsewhen(timedOut || memory.io.finished.cancelled) { fault(5) }
+        .elsewhen(dec.store) { retire() }
+        .otherwise { state := PpeState.LOAD_COMMIT }
+    }
+    when(state === PpeState.HALT || state === PpeState.IDLE) {
+      assert(memory.io.idle && banks.io.idle, "PPE completion before memory drain")
+    }
+  }}
   when(state =/= PpeState.IDLE && state =/= PpeState.HALT) {
     when(ticks =/= 0) { ticks := ticks - 1 }
     when(ticks <= 1) { expired := True }
   }
 
-  // One physical scalar ALU and eight logical-lane ALUs; memory remains serial.
+  // One physical scalar ALU and eight logical-lane ALUs.
   def alu(left: UInt, right: UInt, operation: UInt): UInt = {
     val x, y, raw, result = UInt(64 bits)
     x := left; y := right
@@ -313,12 +421,15 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
       when(timedOut) { fault(5) }.otherwise {
         scratchAddress := clearIndex; scratchWrite := True; scratchWriteData := 0; scratchMask := 255
         clearIndex := clearIndex + 1
-        when(clearIndex === 511) { state := PpeState.FETCH }
+        when(clearIndex === (if (c.memoryHierarchy.isDefined) 127 else 511)) { state := PpeState.FETCH }
       }
     }
     is(PpeState.FETCH) {
       when(timedOut) { fault(5) }.elsewhen(pc >= count || active === 0) { fault(1) }
-        .otherwise { inst := fetched; instMask := active; nextPc := pc + 1; state := PpeState.EXECUTE }
+        .elsewhen(fetchAvailable) {
+          when(fetchError) { fault(4, U(c.instructionBase, 64 bits) + bytePc(pc)) }
+            .otherwise { inst := fetched; instMask := active; nextPc := pc + 1; state := PpeState.EXECUTE }
+        }
     }
     is(PpeState.EXECUTE) {
       when(timedOut) { fault(5) }.elsewhen(!dec.legal) { fault(1) }
@@ -359,8 +470,14 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
               }.otherwise { active := frameMask(top); depth := depth - 1 }
               retire()
             }
-          }.elsewhen(dec.memory) { lane := 0; state := PpeState.LANE }
-          .elsewhen(dec.op === 35 || dec.op === 36) { retire() }
+          }.elsewhen(dec.memory) {
+            if (c.memoryHierarchy.isDefined) { lane := 0; state := PpeState.MEMORY_BEGIN }
+            else { when(dec.atomicAdd) { fault(1) }.otherwise { lane := 0; state := PpeState.LANE } }
+          }
+          .elsewhen(dec.op === 35 || dec.op === 36) {
+            if (c.memoryHierarchy.nonEmpty) { state := PpeState.FENCE_BEGIN }
+            else { retire() }
+          }
           .elsewhen(dec.op === 37) {
             status := 1; cause := 0; resultValue := s(dec.a); faultPc := bytePc(pc)
             returning := True; retire()
@@ -411,10 +528,12 @@ class PpeCore(c: PpeConfig = PpeConfig()) extends Component {
     }
     is(PpeState.RETIRE) {
       pc := nextPc
-      when(returning) { state := PpeState.HALT }.otherwise { state := PpeState.FETCH }
+      when(returning) { state := (if (c.instructionCache) PpeState.DRAIN else PpeState.HALT) }.otherwise { state := PpeState.FETCH }
     }
+    is(PpeState.DRAIN) { when(fetchIdle) { state := PpeState.HALT } }
     is(PpeState.HALT) { when(io.completion.fire) { state := PpeState.IDLE } }
   }
+  when(state === PpeState.HALT || state === PpeState.IDLE) { assert(fetchIdle, "PPE fetch completion before drain") }
 }
 
 object GeneratePpe extends App {

@@ -13,7 +13,8 @@ object ApeApplicationSim extends App {
   val entries = args.headOption.map(_.toInt).getOrElse(8)
   val mode = args.lift(1).getOrElse("bimodal")
   require(Set("off", "bimodal").contains(mode))
-  val root = Paths.get("build/ape_app")
+  val root = Paths.get(args.lift(2).getOrElse("build/ape_app")).toAbsolutePath
+  val selectedCase = args.lift(3)
   val out = root.resolve(s"r$entries-$mode")
   Files.createDirectories(out)
   def text(path: java.nio.file.Path): Vector[String] = {
@@ -28,10 +29,13 @@ object ApeApplicationSim extends App {
   }.toMap
   val program = text(root.resolve("code.hex")).map(java.lang.Long.parseLong(_, 16))
   require(program.size == 1024)
-  val names = text(root.resolve("cases.txt"))
-  require(names.distinct.size == names.size && names.forall(_.matches("[a-z0-9_]+")))
+  val allNames = text(root.resolve("cases.txt"))
+  require(allNames.distinct.size == allNames.size && allNames.forall(_.matches("[a-z0-9_]+")))
+  selectedCase.foreach(name => require(allNames.contains(name), s"unknown application case: $name"))
+  val names = selectedCase.map(name => allNames.filter(_ == name)).getOrElse(allNames)
+  require(names.nonEmpty)
   val compiled = SimConfig.withVerilator.addSimulatorFlag("-CFLAGS -DWData=EData")
-    .workspacePath(s"build/ape_app/sim/r$entries-$mode")
+    .workspacePath(root.resolve(s"sim/r$entries-$mode").toString)
     .compile(new ApeCore(ApeConfig(robEntries = entries, prediction = mode == "bimodal")))
   case class Request(address: BigInt, data: BigInt, size: Int, write: Boolean)
   val results = mutable.ArrayBuffer[String]()
@@ -144,5 +148,6 @@ object ApeApplicationSim extends App {
   }
   save("validation.json", s"""{"status":"passed","rob_entries":$entries,"prediction":"$mode","results":[${results.mkString(",")}]}
 """)
+  ApeSimArtifactCleanup.discardVerilatorBuildTree(root.resolve(s"sim/r$entries-$mode"), "ApeCore")
   println(s"APE application PASS: ${results.size} invocations ROB=$entries mode=$mode")
 }

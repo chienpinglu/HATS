@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "issue": 5,
+  "stage": "S04",
+  "status": "passed_focused_current_source_rtl_simulation",
+  "S04_complete": false,
+  "claim_class": "actual_PPE_I_D_L1_32_group_task_current_source_increment",
+  "created_utc": "2026-10-12T02:43:37Z",
+  "command": "cd hardware/spinal && bash tools/sbtw \"Test / runMain hats.PpeDelimiterApplicationSim <absolute-fixture-dir> <absolute-temp-output-dir> 32 8\"",
+  "fixture_gate": "hardware/spinal/build/s04/ppe-memory-1791737896156617000/gate.json",
+  "fixture_gate_sha256": "c2571f95f9d7c99d6be77f630e051ef32e57ae90ab93df30022e627ec505967c",
+  "fixture_input_sha256": {
+    "case.properties": "8a6f7aaa7ded2bf81bec3e55188d9692a1ea35720c3f6ef938c207416a303665",
+    "code.hex": "0cc32730fd43eda20807576afe7268976f6e4ea627bbc39b9bd34a83a1ee1f96",
+    "memory.bin": "80a667306dbdad41c9783c11f72b5ed717f49cc26750a4b8305e846f1f9c42f6"
+  },
+  "current_source_sha256": {
+    "hardware/spinal/src/main/scala/hats/PpeCore.scala": "bd96cfc2111299cb2e283ed8753a3f24e8461257aa4ebaa7e93a0921fdf396d4",
+    "hardware/spinal/src/main/scala/hats/PpeMemoryEngine.scala": "8e76b9963abb3b2d8b321f22ebb0e593fc99a96d4cc1983f78e5a949fcf6afdd",
+    "hardware/spinal/src/main/scala/hats/PpeCachedDataTile.scala": "c163efbfc60eec51e2b16a10eacf6553e7d86505a14802dcbb1246db3b982d07",
+    "hardware/spinal/src/main/scala/hats/MemoryHierarchy.scala": "33f7d59c92ba2e68310bce7512627639e9670dcc9d6920a4b3ba3f6a78d3ecc7",
+    "hardware/spinal/src/main/scala/hats/CacheLineFabric.scala": "724552c44f433bc519a0e803574b2a37a4a998235a33ab2f62fd660b4cab5851",
+    "hardware/spinal/src/main/scala/hats/CachedInstructionFetch.scala": "868b804431fc0c9d36cee220d82a13609838baf289bc3f21b67810ae08fdf726",
+    "hardware/spinal/src/test/scala/hats/PpeDelimiterApplicationSim.scala": "884e6c08c6297f3d773d402baf1d64641c11e07857fc3bbc311b5b0dd9cf21d3"
+  },
+  "run_result": {
+    "status": "passed",
+    "claim_class": "actual_PPE_I_D_L1_32_group_task",
+    "groups_completed": 32,
+    "input_bytes": 256,
+    "loads": 352,
+    "stores": 256,
+    "retired": 1056,
+    "instruction_fetches": 9,
+    "accepted_lines": 44,
+    "completed_lines": 44,
+    "reorders": 0,
+    "request_stalls": 31,
+    "max_outstanding": 1,
+    "i_hits": 1047,
+    "i_misses": 9,
+    "d_hits": 136,
+    "d_misses": 24,
+    "sets": 32,
+    "mshrs": 8,
+    "output_sha256": "75636dc4c5986fdb33923c088583a88c2e4a6c026be0bac8315f2e9f6f1cfbd7"
+  },
+  "full_output_memory_sha256": "75636dc4c5986fdb33923c088583a88c2e4a6c026be0bac8315f2e9f6f1cfbd7",
+  "external_service_model": "Behavioral byte-array line service with deterministic seeded variable latency, lower-request backpressure, and flush/drain; not a memory controller or calibrated HBM/LPDDR timing.",
+  "limits": [
+    "Single focused PPE delimiter task only; broad PPE instruction/cache matrix was not rerun against current changed PPE ISA/core sources.",
+    "The application deliberately executes groups sequentially; this run does not witness concurrent PPE misses, response reordering, full MSHR occupancy, or scratchpad banking stress.",
+    "The run reused an earlier source-bound fixture gate whose input hashes are included; code and memory workload bytes were unchanged.",
+    "This result does not establish general APE/PPE coherence, concurrent cross-engine atomicity, calibrated memory bandwidth, or S04 completion."
+  ]
+}
