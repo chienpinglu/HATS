@@ -4,7 +4,7 @@
   "stage": "S04",
   "S04_complete": true,
   "status": "verified_complete",
-  "created_utc": "2026-10-11T20:40:46.846320+00:00",
+  "created_utc": "2026-10-11T20:42:53.588418+00:00",
   "claim_class": "APE_PPE_bilateral_ownership_hierarchy_increment_only",
   "source_sha256": {
     "hardware/spinal/formal/verify_ownership_formal.py": "2aeea44600ff54f41863bdb48c50cc3ba3ddef674fc6a38f25e84343487feb19",
@@ -103,7 +103,7 @@
   "document_sha256": {
     "hardware/spinal/spec/S04-MEMORY-ARCHITECTURE.md": "a956497c351f2ea7a7a5918ff783bf200dfe60e3297b3a3a302172f18786e13e",
     "hardware/spinal/spec/PPE-S04-ATOMIC-EXTENSION.md": "531ae42177305c6f2c6139b990b96ed3e8a1df31c1e5f63608e5c4048decd852",
-    "workloads/s04/README.md": "02fe8b6e85077dad6806ac985617736293f1cdd06d52376cad660d4e86c92113",
+    "workloads/s04/README.md": "c6e6d4be927d851962a4a3042ba48db7d9952201834a728ea7ca63d8f5cf6341",
     "workloads/s04/PPE-DESIGN-POINTS.json": "e2dbec17316ee05557e6669dc3e6694bebec66425a83a622696cd5da8d58b92b",
     "workloads/evidence/S04-APE-APPLICATION-TRACE-DESIGN-POINTS.json": "77cf7d1e41de76ec3be8cc682f1d46eb801cc500050fc52b7ccf2c71ec3e6fa7",
     "workloads/evidence/S04-APE-CACHED-APPLICATION-CURRENT.json": "4a78e61fb1f7b37c3a76d9f0ed3e01b46bd98a575a27974c482db7a262515abb",
@@ -120,7 +120,7 @@
     "workloads/evidence/S04-APE-HEAP-EXHAUSTION-UNICODE-COLD.json": "8902c086bc81b1820fb96928a659bb64d39970a264721a6e174537836d22da7f",
     "workloads/evidence/S04-APE-HEAP-EXHAUSTION-UNICODE-INCREMENTAL.json": "c6658413fa2c63a1dfc7a3e13112d9179f3c3d63df1f4234c2085b70527ca938",
     "workloads/s04/INSTRUCTION-PROGRESS.md": "19319e4058d0bf4b4404fb888b48c13148f15a8d726cc10e9eabc7188af12941",
-    "workloads/s04/PPE-DATA-PROGRESS.md": "d2df68f16d2aed16bc41b9b8f48260e085866d8e29b5d28709724f719d7b852a",
+    "workloads/s04/PPE-DATA-PROGRESS.md": "2e6791f73915af858e56b0bfaea80206d981039edb4e73430ac62cd03708e518",
     "workloads/s04/PPE-INSTRUCTION-PROGRESS.md": "9a88c471924879d565dc19e7cef2366d0ee4f58d865585b92208cfb665e55ab5"
   },
   "gate_sha256": {

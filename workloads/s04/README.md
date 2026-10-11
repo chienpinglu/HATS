@@ -1,7 +1,7 @@
 # S04 memory hierarchy progress
 
 Issue: [#5](https://github.com/chienpinglu/HATS/issues/5).
-Status: AC1–AC5 pass the source-bound completion audit; GitHub issue closure is pending the scoped commit/push handoff.
+Status: S04 implementation and AC1–AC5 source-bound audit are complete; commit `8a788cd03e944008fadf51b81eb379a5bb528c06` is pushed to `main`. GitHub Issue #5 is still open because the available GitHub integration is read-only and the local CLI credentials are invalid; issue closure needs a signed-in write session.
 Specification: [memory architecture](../../hardware/spinal/spec/S04-MEMORY-ARCHITECTURE.md).
 
 ## Current-source APE replay and real-tool update
@@ -107,8 +107,10 @@ ownership contract is exclusive clean/invalidate handoff rather than general
 coherence; proofs are bounded/per-module rather than unbounded full-chip proofs;
 resource observations are not worst-case bounds; and external line timing is
 behavioral, not measured HBM/LPDDR performance. No hardware PMU result is
-claimed. The issue will be closed only after the implementation/evidence commit
-is pushed and these completion records are attached to the issue.
+claimed. The implementation/evidence commit is pushed. The audit is ready to
+attach to Issue #5; the available GitHub integration currently lacks write
+access, and the local CLI credentials are invalid, so the issue itself remains
+open pending an authorized GitHub session.
 
 The refreshed [APE instruction/cache increment](../evidence/S04-INSTRUCTION-INCREMENT.json)
 uses the current source-bound [48-image APE memory gate](../../hardware/spinal/build/s04/ape-memory-1791747405365193000/gate.json),
